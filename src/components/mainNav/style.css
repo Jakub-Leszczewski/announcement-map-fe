@@ -2,6 +2,7 @@
     margin: 5px;
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 
 .MainNav__right-side {
@@ -11,7 +12,7 @@
 .MainNav__left-side {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 34px auto;
+    grid-template-rows: 36px auto;
     grid-gap: 10px;
     flex-basis: 100%;
 }
@@ -34,7 +35,7 @@
 @media only screen and (min-width: 700px) {
     .MainNav__left-side {
         grid-template-columns: repeat(5, 1fr);
-        grid-template-rows: 34px;
+        grid-template-rows: 36px;
         width: 70%;
         max-width: 700px;
     }

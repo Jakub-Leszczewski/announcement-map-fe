@@ -1,12 +1,10 @@
 .Select__select {
     background-color: #FFFFFF;
     border: 1px solid #B1B1B1;
-    border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
     outline: none;
     font-size: .8rem;
     font-weight: bold;
-    color: #4d4d4d;
     padding: 0 10px;
 }
 

@@ -1,7 +1,6 @@
 .SearchBar__input {
     width: auto;
     height: 100%;
-    border-radius: 10px;
     border: 1px solid #B1B1B1;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
     padding: 0 10px;

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { MainNav } from '../nav/MainNav'
+import { MainNav } from '../mainNav/MainNav'
 import { UserMenu } from '../userMenu/UserMenu'
 
 function App() {
