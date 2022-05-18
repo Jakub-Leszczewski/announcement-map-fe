@@ -1,7 +1,8 @@
 import React from 'react';
+import './style.css';
 
 export function SearchBar() {
   return(
-    <input type="text" placeholder="szukaj"/>
+    <input className="SearchBar__input" type="text" placeholder="szukaj"/>
   );
 }
