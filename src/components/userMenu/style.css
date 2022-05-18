@@ -1,0 +1,10 @@
+.UserMenu__section {
+    position: absolute;
+    background-color: #B1B1B1;
+    right: 0;
+    width: fit-content;
+    max-width: 90vw;
+    height: fit-content;
+    max-height: 80vw;
+    margin: 10px;
+}
