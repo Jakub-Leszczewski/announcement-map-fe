@@ -12,7 +12,7 @@ interface Props {
 export function Select({ children, categories, width, height, padding }: Props) {
   return(
     <select
-      className="Select__select"
+      className="Select"
       style={{width, height, padding}}
     >
       <option value="*">wszystko</option>

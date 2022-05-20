@@ -1,6 +1,7 @@
 import React from 'react';
 import './style.css';
-import { LoginChoice } from '../../view/loginChoice/LoginChoice'
+import { SignInChoiceView } from '../../view/signInChoiceView/SignInChoiceView'
+import { SignInView } from '../../view/signInView/SignInView'
 
 export const UserMenu = () => {
   const isOpen = true;
@@ -8,8 +9,9 @@ export const UserMenu = () => {
   if(!isOpen) return null;
 
   return(
-    <section className="UserMenu__section">
-      <LoginChoice/>
+    <section className="UserMenu">
+      {/*<SignInChoiceView/>*/}
+      <SignInView/>
     </section>
   );
 }

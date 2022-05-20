@@ -1,4 +1,4 @@
-.SearchBar__input {
+.SearchBar {
     width: auto;
     height: 100%;
     border: 1px solid #B1B1B1;
@@ -8,10 +8,10 @@
     font-size: 1rem;
 }
 
-.SearchBar__input:focus {
+.SearchBar:focus {
     border: 1px solid #757575;
 }
 
-.SearchBar__input::placeholder {
+.SearchBar::placeholder {
     font-size: .9rem;
 }

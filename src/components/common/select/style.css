@@ -1,4 +1,4 @@
-.Select__select {
+.Select {
     background-color: #FFFFFF;
     border: 1px solid #B1B1B1;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
@@ -8,10 +8,10 @@
     padding: 0 10px;
 }
 
-.Select__select option {
+.Select option {
     background-color: rgba(255, 255, 255, 0.35);
 }
 
-.Select__select:focus {
+.Select:focus {
     border: 1px solid #757575;
 }

@@ -12,7 +12,7 @@ interface Props {
 export function Button({children, width = '100%', height = '34px', padding = '5px', borderRadius = '10px'}: Props) {
   return(
     <button
-      className="Button__button"
+      className="Button"
       style={{
         width: (typeof width === 'number') ? `${width}px` : width,
         height: (typeof height === 'number') ? `${height}px` : height,
