@@ -1,19 +1,18 @@
-.Button__button {
+.Button {
     background-color: #FFFFFF;
     border: 1px solid #B1B1B1;
-    border-radius: 10px;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
     font-size: .8rem;
     font-weight: bold;
-    color: #4d4d4d;
+    min-height: fit-content;
 }
 
-.Button__button:hover {
+.Button:hover {
     background-color: #fafafa;
     cursor: pointer;
 }
 
-.Button__button:active {
+.Button:active {
     background-color: #f1f1f1;
     cursor: pointer;
 }
