@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { PasswordInput } from '../common/passwordInput/PasswordInput'
 import { ActionType } from '../../view/signupView/action-type'
 import { Action, UserFormState } from '../../view/signupView/signup-form-reducer'
+import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
 
 interface Props {
   userForm: UserFormState,
@@ -11,13 +12,6 @@ interface Props {
 export const PasswordFields = ({userForm, changeFormHandle}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
   const [repeatPasswordWasFocus, setRepeatPasswordWasFocus] = useState<boolean>(false);
-
-  const passwordValidation = (password: string): boolean => {
-    const regularExpression = /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{8,36}$/;
-    return !!(password && regularExpression.test(password));
-  }
-
-  const repeatPasswordCompareWithPassword = (password: string, repeatPassword: string) => password === repeatPassword;
 
   const onPasswordBlur = () => {
     setPasswordWasFocus(true);
