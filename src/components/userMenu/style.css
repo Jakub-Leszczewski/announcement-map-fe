@@ -1,0 +1,9 @@
+.UserMenu {
+    position: absolute;
+    right: 0;
+    width: fit-content;
+    max-width: 90vw;
+    height: fit-content;
+    max-height: 80vw;
+    margin: 10px;
+}

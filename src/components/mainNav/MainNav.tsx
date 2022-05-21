@@ -7,10 +7,10 @@ import { UserAvatar } from '../userAvatar/UserAvatar'
 
 export function MainNav() {
   return (
-    <nav className="MainNav__nav">
+    <nav className="MainNav">
       <div className="MainNav__left-side">
         <SearchBar />
-        <Button height="100%" width="100%" padding="5px">Dodaj ogłoszenie</Button>
+        <Button height={'auto'} width="100%" padding="5px">Dodaj ogłoszenie</Button>
         <Select
           height="100%"
           padding="5px"

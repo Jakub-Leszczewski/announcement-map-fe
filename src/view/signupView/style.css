@@ -1,0 +1,25 @@
+.Signup {
+    border: 1px solid #B1B1B1;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.Signup__form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 10px;
+}
+
+.Signup__form>.Button {
+    margin: 10px 0 0 0;
+}
+
+.PasswordInput, .ShortTextInput {
+    margin: 3px 0;
+}
+
+.Signup__validation-error {
+    color: red;
+    font-size: 0.7rem;
+}
