@@ -1,13 +1,17 @@
 import React from 'react';
 import './App.css';
 import { MainNav } from '../mainNav/MainNav'
-import { UserMenu } from '../userMenu/UserMenu'
+import { MainNav } from '../nav/MainNav'
+import { Provider } from 'react-redux'
+import { store } from '../../store'
 
 function App() {
   return (
     <div className="App">
-      <MainNav/>
-      <UserMenu/>
+      <Provider store={store}>
+        <MainNav/>
+        <UserMenu/>
+      </Provider>
     </div>
   );
 }
