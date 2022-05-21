@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import './style.css';
 
-export const PasswordInput = () => {
+interface Props {
+  placeholder: string;
+}
+
+export const PasswordInput = ({ placeholder }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const onMouseDown = () => {
@@ -14,7 +18,11 @@ export const PasswordInput = () => {
 
   return (
     <div className="PasswordInput">
-      <input className="PasswordInput__input" type={visible ? "text" : "password"}/>
+      <input
+        className="PasswordInput__input"
+        type={visible ? "text" : "password"}
+        placeholder={placeholder}
+      />
       <div className="PasswordInput__icon" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
         {
           visible

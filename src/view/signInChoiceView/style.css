@@ -14,8 +14,3 @@
 .SignInChoice__buttons-container>button {
     margin: 6px 0;
 }
-
-.SignInChoice>header{
-    display: flex;
-    align-items: center;
-}

@@ -1,24 +1,28 @@
 import React from 'react';
 import './style.css';
 import { Button } from '../../components/common/button/Button';
-import { ArrowButton } from '../../components/common/arrowButton/ArrowButton'
 import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
 import { PasswordInput } from '../../components/common/passwordInput/PasswordInput'
 import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
 
-export const SignInView = () => {
+export const SignupView = () => {
   const isOpen = true;
 
   if(!isOpen) return null;
 
   return(
-    <section className="SignIn">
-      <UserMenuHeader title="Logowanie"/>
+    <section className="Signup">
+      <UserMenuHeader title="Rejestracja"/>
 
-      <form className="SignIn__form">
+      <form className="Signup__form">
+        <ShortTextInput placeholder="imie"/>
+        <ShortTextInput placeholder="nazwisko"/>
         <ShortTextInput placeholder="login"/>
+        <ShortTextInput placeholder="email"/>
+        <br/>
         <PasswordInput placeholder="hasło"/>
-        <Button width="100%" height={30} borderRadius="15px">Zaloguj się</Button>
+        <PasswordInput placeholder="potwierdź hasło"/>
+        <Button width="100%" height={30} borderRadius="15px">Zarejestruj</Button>
       </form>
     </section>
   );

@@ -1,8 +1,16 @@
 import React from 'react';
 import './style.css';
 
-export const ShortTextInput = () => {
+interface Props {
+  placeholder: string;
+}
+
+export const ShortTextInput = ({placeholder}: Props) => {
   return (
-    <input className="ShortTextInput" type="text"/>
+    <input
+      className="ShortTextInput"
+      type="text"
+      placeholder={placeholder}
+    />
   );
 }
