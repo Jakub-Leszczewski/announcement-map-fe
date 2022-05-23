@@ -5,7 +5,6 @@ import { setJwt } from '../../store/slices/user-slice'
 interface AuthHandlerOverload {
   (url: string): Promise<AuthHandlerReturn>;
   (url: string, username: string, password: string): Promise<AuthHandlerReturn>;
-  (url: string, username: string, password: string, store: Store): Promise<AuthHandlerReturn>;
 }
 
 interface AuthHandlerReturn {
@@ -14,7 +13,7 @@ interface AuthHandlerReturn {
   error: string | null;
 }
 
-export const auth:AuthHandlerOverload = async (url, username?, password?, store?) => {
+export const auth:AuthHandlerOverload = async (url, username?, password?) => {
   const isSignIn = username && password;
 
   try {

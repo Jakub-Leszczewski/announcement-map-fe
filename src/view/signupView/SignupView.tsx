@@ -1,4 +1,4 @@
-import React, { FormEvent, useReducer } from 'react'
+import React, { FormEvent, useEffect, useReducer, useState } from 'react'
 import './style.css'
 import { Button } from '../../components/common/button/Button'
 import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
@@ -7,7 +7,9 @@ import { Action, signupFormReducer, UserFormState } from './signup-form-reducer'
 import { ActionType } from './action-type'
 import { PasswordFields } from '../../components/passwordFields/PasswordFields'
 import { useDispatch } from 'react-redux'
-import { openSignInChoice } from '../../store/slices/app-slice'
+import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
+import { api } from '../../utils/api/api'
+import { HttpMethod } from '../../utils/api/http-method'
 
 const initialUserFormState: UserFormState = {
   firstName: '',
@@ -19,29 +21,50 @@ const initialUserFormState: UserFormState = {
 }
 
 export function SignupView() {
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
   const dispatchStore = useDispatch();
 
+  useEffect(() => {
+    (async () => {
+      if(isSubmit) {
+        const data = await api('http://localhost:3001/api/auth/signup', {
+          method: HttpMethod.POST,
+          payload: userForm,
+        });
+
+        if(data.status !== 201 && data.data?.error) {
+          setError(data.data.error)
+        } else if(data.status === 201) {
+          dispatchStore(openSignIn('Konto zostało pomyślnie utworzone.'));
+        }
+
+        setIsSubmit(false);
+      }
+    })();
+  }, [isSubmit]);
+
   const goBackHandler = () => {
-    dispatchStore(openSignInChoice(undefined as never));
+    dispatchStore(openSignInChoice(undefined));
   }
 
   const changeFormHandle = (action: Action) => {
     dispatch(action);
   }
 
-  const onSubmitHandle = (e: FormEvent) => {
+  const onSubmitHandle = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmit(true);
   }
-
-  const isOpen = true;
-  if (!isOpen) return null;
 
   return (
     <section className="Signup">
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
 
       <form onSubmit={onSubmitHandle} className="Signup__form">
+        {error && <p className="Signup__validation-error">{error}</p>}
+
         <ShortTextInput
           placeholder="imie"
           maxLength={60}

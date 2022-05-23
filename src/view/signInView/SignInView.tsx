@@ -4,12 +4,13 @@ import { Button } from '../../components/common/button/Button';
 import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
 import { PasswordInput } from '../../components/common/passwordInput/PasswordInput'
 import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { openSignInChoice } from '../../store/slices/app-slice'
 import { Action, signInFormReducer, SignInFormState } from './sign-in-form-reducer'
 import { ActionType } from './action-type'
 import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
+import { StoreType } from '../../store'
 
 const initialSignInFormState: SignInFormState= {
   username: '',
@@ -20,6 +21,7 @@ export const SignInView = () => {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [singInForm, dispatch] = useReducer<React.Reducer<SignInFormState, Action>>(signInFormReducer, initialSignInFormState);
+  const appStore = useSelector((store: StoreType) => store.app);
   const dispatchStore = useDispatch();
 
   useEffect(() => {
@@ -55,7 +57,8 @@ export const SignInView = () => {
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
       <form className="SignIn__form" onSubmit={submitHandler}>
-        <p className="SignIn__error">{error}</p>
+        {error && <p className="SignIn__error">{error}</p>}
+        {appStore.payload && <p className="SignIn__info">{appStore.payload}</p>}
         <ShortTextInput
           required={true}
           minLength={3}

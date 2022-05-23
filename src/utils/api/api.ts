@@ -6,28 +6,22 @@ interface ApiHandlerReturn {
   data: any;
 }
 
-interface ApiHandlerParams {
-  url: string;
+interface Options {
   method?: HttpMethod;
   payload?: any;
   store?: Store;
   jwt?: string;
 }
 
-export const api = async ({
-  url,
-  method = HttpMethod.GET,
-  payload,
-  jwt
-}: ApiHandlerParams): Promise<ApiHandlerReturn> => {
+export const api = async (url: string, options?: Options): Promise<ApiHandlerReturn> => {
   try {
       const res = await fetch(url, {
-        method: method,
+        method: options?.method || HttpMethod.GET,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${jwt}`
+          'Authorization': `Bearer ${options?.jwt || ''}`
         },
-        body: JSON.stringify(payload),
+        body: options?.payload && JSON.stringify(options?.payload),
         credentials: 'include',
       });
 
