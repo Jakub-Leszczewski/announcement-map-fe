@@ -3,9 +3,6 @@ import { Store } from '../../store'
 import { setJwt } from '../../store/slices/user-slice'
 
 interface AuthHandlerOverload {
-  /*
-  * hello
-  * */
   (url: string): Promise<AuthHandlerReturn>;
   (url: string, username: string, password: string): Promise<AuthHandlerReturn>;
   (url: string, username: string, password: string, store: Store): Promise<AuthHandlerReturn>;
@@ -16,9 +13,10 @@ interface AuthHandlerReturn {
   jwt: string | null;
 }
 
-export const authHandler:AuthHandlerOverload = async (url, username?, password?, store?) => {
+export const auth:AuthHandlerOverload = async (url, username?, password?, store?) => {
   const isSignIn = username && password;
-  const fetchAuth = async (): Promise<AuthHandlerReturn> => {
+
+  try {
     const res = await fetch(url, {
       method: isSignIn ? HttpMethod.POST : HttpMethod.GET,
       headers: {
@@ -37,7 +35,12 @@ export const authHandler:AuthHandlerOverload = async (url, username?, password?,
       status: res.status,
       jwt: data.token || null,
     }
-  }
+  } catch (err) {
+    console.log(err);
 
-  return await fetchAuth();
+    return {
+      status: null,
+      jwt: null,
+    }
+  }
 }
