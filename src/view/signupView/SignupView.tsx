@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useReducer } from 'react'
+import React, { FormEvent, useReducer } from 'react'
 import './style.css'
 import { Button } from '../../components/common/button/Button'
 import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
@@ -6,11 +6,8 @@ import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuH
 import { Action, signupFormReducer, UserFormState } from './signup-form-reducer'
 import { ActionType } from './action-type'
 import { PasswordFields } from '../../components/passwordFields/PasswordFields'
-import { useSelector } from 'react-redux'
-import { StoreType } from '../../store'
-import { useApi } from '../../hooks/useApi'
-import { HttpMethod } from '../../utils/api/http-method'
-import { AuthContext } from '../../components/auth/Auth'
+import { useDispatch } from 'react-redux'
+import { openSignInChoice } from '../../store/slices/app-slice'
 
 const initialUserFormState: UserFormState = {
   firstName: '',
@@ -22,19 +19,13 @@ const initialUserFormState: UserFormState = {
 }
 
 export function SignupView() {
-  const userStore = useSelector((store: StoreType) => store.user);
   const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
-  const [loading, status, data] = useApi('http://localhost:3001/api/users/451af1df-3e5a-4d20-94f6-4f189bff0266');
-  // const [loadingAuth, statusAuth, dataAuth] = useApi('http://localhost:3001/api/auth/signin', HttpMethod.POST, {
-  //   username: 'ezterr12',
-  //   password: 'ezterr12',
-  // });
+  const dispatchStore = useDispatch();
 
-  const context = useContext(AuthContext);
+  const goBackHandler = () => {
+    dispatchStore(openSignInChoice(undefined as never));
+  }
 
-  // console.log(context);
-  console.log(loading, status, data);
-  // console.log('test')
   const changeFormHandle = (action: Action) => {
     dispatch(action);
   }
@@ -48,10 +39,7 @@ export function SignupView() {
 
   return (
     <section className="Signup">
-      <button onClick={() => {
-        console.log(userStore.jwt);
-      }}>siema</button>
-      <UserMenuHeader title="Rejestracja" />
+      <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
 
       <form onSubmit={onSubmitHandle} className="Signup__form">
         <ShortTextInput

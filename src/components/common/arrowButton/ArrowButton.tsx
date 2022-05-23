@@ -2,9 +2,13 @@ import React from 'react';
 import './style.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-export const ArrowButton = () => {
+interface Props {
+  onClick?: () => void;
+}
+
+export const ArrowButton = ({onClick}: Props) => {
   return(
-    <button className="ArrowButton">
+    <button className="ArrowButton" onClick={onClick}>
       <i className="bi bi-arrow-left-short"/>
     </button>
   )

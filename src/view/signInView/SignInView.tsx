@@ -5,15 +5,19 @@ import { ArrowButton } from '../../components/common/arrowButton/ArrowButton'
 import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
 import { PasswordInput } from '../../components/common/passwordInput/PasswordInput'
 import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
+import { useDispatch } from 'react-redux'
+import { openSignInChoice } from '../../store/slices/app-slice'
 
 export const SignInView = () => {
-  const isOpen = true;
+  const dispatch = useDispatch();
 
-  if(!isOpen) return null;
+  const goBackHandler = () => {
+    dispatch(openSignInChoice(undefined as never));
+  }
 
   return(
     <section className="SignIn">
-      <UserMenuHeader title="Logowanie"/>
+      <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
       <form className="SignIn__form">
         <ShortTextInput placeholder="login"/>

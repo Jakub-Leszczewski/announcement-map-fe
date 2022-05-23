@@ -7,12 +7,14 @@ interface Props {
   height?: number | string;
   padding?: number | string;
   borderRadius?: number | string;
+  onClick?: () => void;
 }
 
-export function Button({children, width = '100%', height = '34px', padding = '5px', borderRadius = '10px'}: Props) {
+export function Button({children, width = '100%', height = '34px', padding = '5px', borderRadius = '10px', onClick}: Props) {
   return(
     <button
       className="Button"
+      onClick={onClick}
       style={{
         width: (typeof width === 'number') ? `${width}px` : width,
         height: (typeof height === 'number') ? `${height}px` : height,

@@ -4,12 +4,13 @@ import { ArrowButton } from '../arrowButton/ArrowButton'
 
 interface Props {
   title: string;
+  onClick?: () => void;
 }
 
-export const UserMenuHeader = ({title}: Props) => {
+export const UserMenuHeader = ({title, onClick}: Props) => {
   return (
     <header className="UserMenuHeader">
-      <ArrowButton/>
+      <ArrowButton onClick={onClick}/>
       <h2>{title}</h2>
     </header>
   );
