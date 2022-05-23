@@ -28,6 +28,7 @@ interface JWT extends UserForResData {
 export const AuthContext = createContext<UserForResData>(initialUser)
 
 export const Auth = ({children}: Props) => {
+  const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
   const dataFromJwt = useMemo(() => {
@@ -38,6 +39,20 @@ export const Auth = ({children}: Props) => {
       exp: 0,
       iat: 0,
     } as JWT;
+  }, [userStore]);
+
+  useEffect(() => {
+    if(!userStore.jwt) {
+      (async () => {
+        const userAuth = await auth('http://localhost:3001/api/auth/token');
+
+        if(userAuth.status === 200 && userAuth.jwt) {
+          dispatch(setJwt(userAuth.jwt));
+        } else {
+          dispatch(setJwt(''));
+        }
+      })();
+    }
   }, [userStore]);
 
   return(

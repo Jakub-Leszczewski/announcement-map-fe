@@ -18,3 +18,8 @@
 .PasswordInput, .ShortTextInput {
     margin: 3px 0;
 }
+
+.SignIn__error {
+    color: red;
+    font-size: 0.7rem;
+}

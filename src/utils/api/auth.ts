@@ -11,6 +11,7 @@ interface AuthHandlerOverload {
 interface AuthHandlerReturn {
   status: number | null;
   jwt: string | null;
+  error: string | null;
 }
 
 export const auth:AuthHandlerOverload = async (url, username?, password?, store?) => {
@@ -34,6 +35,7 @@ export const auth:AuthHandlerOverload = async (url, username?, password?, store?
     return {
       status: res.status,
       jwt: data.token || null,
+      error: data.error || null,
     }
   } catch (err) {
     console.log(err);
@@ -41,6 +43,7 @@ export const auth:AuthHandlerOverload = async (url, username?, password?, store?
     return {
       status: null,
       jwt: null,
+      error: null,
     }
   }
 }
