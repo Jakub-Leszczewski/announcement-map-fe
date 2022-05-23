@@ -1,26 +1,23 @@
 import React, { useContext } from 'react'
 import './style.css';
 import { Button } from '../../components/common/button/Button';
-import { ArrowButton } from '../../components/common/arrowButton/ArrowButton'
 import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
-import { AuthContext } from '../../components/auth/Auth'
-import { useDispatch, useSelector } from 'react-redux'
-import { ActionType, openNone, openSignIn, openSignInChoice, openSignup } from '../../store/slices/app-slice'
-import { StoreType } from '../../store'
+import { useDispatch } from 'react-redux'
+import { openNone, openSignIn, openSignup } from '../../store/slices/app-slice'
 
 export const SignInChoiceView = () => {
   const dispatch = useDispatch();
 
   const goBackHandler = () => {
-    dispatch(openNone(undefined as never));
+    dispatch(openNone(undefined));
   }
 
   const goSignInHandler = () => {
-    dispatch(openSignIn(undefined as never));
+    dispatch(openSignIn(undefined));
   }
 
   const goSignupHandler = () => {
-    dispatch(openSignup(undefined as never));
+    dispatch(openSignup(undefined));
   }
 
   return(

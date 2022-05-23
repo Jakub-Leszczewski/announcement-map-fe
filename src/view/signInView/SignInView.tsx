@@ -39,7 +39,7 @@ export const SignInView = () => {
   }, [isSubmit])
 
   const goBackHandler = () => {
-    dispatchStore(openSignInChoice(undefined as never));
+    dispatchStore(openSignInChoice(undefined));
   }
 
   const changeFormHandle = (action: Action) => {
