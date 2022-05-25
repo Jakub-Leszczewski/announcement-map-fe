@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import './UserMenu.css'
-import { SignupView } from '../../view/signupView/SignupView'
+import { SignupView } from '../../view/SignupView/SignupView'
 import { useSelector } from 'react-redux'
 import { StoreType } from '../../store'
 import { ActionType } from '../../store/slices/app-slice'
 import { AuthContext } from '../Auth/Auth'
-import { SignInChoiceView } from '../../view/signInChoiceView/SignInChoiceView'
-import { SignInView } from '../../view/signInView/SignInView'
+import { SignInChoiceView } from '../../view/SignInChoiceView/SignInChoiceView'
+import { SignInView } from '../../view/SignInView/SignInView'
 
 export const UserMenu = () => {
   const context = useContext(AuthContext);

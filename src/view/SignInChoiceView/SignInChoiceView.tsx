@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import './style.css';
+import './SignInChoiceView.css';
 import { Button } from '../../components/common/Button/Button';
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
