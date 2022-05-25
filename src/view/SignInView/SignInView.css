@@ -1,0 +1,30 @@
+.SignIn {
+    border: 1px solid #B1B1B1;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.SignIn__form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 10px;
+}
+
+.SignIn__form>.Button {
+    margin: 10px 0 0 0;
+}
+
+.PasswordInput, .ShortTextInput {
+    margin: 3px 0;
+}
+
+.SignIn__error {
+    color: red;
+    font-size: 0.7rem;
+}
+
+.SignIn__info {
+    color: green;
+    font-size: 0.7rem;
+}
