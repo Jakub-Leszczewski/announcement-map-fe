@@ -10,7 +10,7 @@ interface Options {
   method?: HttpMethod;
   payload?: any;
   store?: Store;
-  jwt?: string;
+  jwt?: string | null;
 }
 
 export const api = async (url: string, options?: Options): Promise<ApiHandlerReturn> => {

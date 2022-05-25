@@ -1,6 +1,4 @@
 import { HttpMethod } from './http-method'
-import { Store } from '../../store'
-import { setJwt } from '../../store/slices/user-slice'
 
 interface AuthHandlerOverload {
   (url: string): Promise<AuthHandlerReturn>;
