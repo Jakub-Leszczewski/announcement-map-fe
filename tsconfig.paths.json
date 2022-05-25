@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "types": ["../backend/types"]
+      "types": ["../announcement-map-be/types"]
     }
   }
 }

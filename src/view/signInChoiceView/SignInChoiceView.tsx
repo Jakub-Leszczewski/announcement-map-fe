@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import './style.css';
-import { Button } from '../../components/common/button/Button';
-import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
+import { Button } from '../../components/common/Button/Button';
+import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
 import { openNone, openSignIn, openSignup } from '../../store/slices/app-slice'
 

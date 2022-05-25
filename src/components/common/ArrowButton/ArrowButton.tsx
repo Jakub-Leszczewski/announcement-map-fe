@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css';
+import './ArrowButton.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 interface Props {

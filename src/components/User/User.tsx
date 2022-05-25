@@ -1,10 +1,11 @@
 import React, { useContext } from 'react'
-import './style.css'
+import './User.css'
 import { useDispatch } from 'react-redux'
-import { AuthContext } from '../auth/Auth'
+import { AuthContext } from '../Auth/Auth'
 import { openSignInChoice, openUser } from '../../store/slices/app-slice'
+import { UserAvatar } from '../UserAvatar/UserAvatar'
 
-export const UserAvatar = () => {
+export const User = () => {
   const context = useContext(AuthContext);
   const dispatch = useDispatch();
 
@@ -19,8 +20,8 @@ export const UserAvatar = () => {
   return <>
     {
       context.id
-      ? <div className='UserAvatar__avatar' onClick={userAccount}/>
-      : <p className="UserAvatar__login-text" onClick={userLogInHandler}>zaloguj się</p>
+      ? <UserAvatar onClick={userAccount}/>
+      : <p className="User__login-text" onClick={userLogInHandler}>zaloguj się</p>
     }
   </>
 }

@@ -1,9 +1,9 @@
 import React from 'react';
-import { SearchBar } from '../common/searchBar/SearchBar';
-import { Button } from '../common/button/Button';
-import { Select } from '../common/select/Select';
-import './style.css';
-import { UserAvatar } from '../userAvatar/UserAvatar'
+import { SearchBar } from '../common/SearchBar/SearchBar';
+import { Button } from '../common/Button/Button';
+import { Select } from '../common/Select/Select';
+import './MainNav.css';
+import { User } from '../User/User'
 
 export function MainNav() {
   return (
@@ -24,7 +24,7 @@ export function MainNav() {
       </div>
 
       <div className="MainNav__right-side">
-        <UserAvatar/>
+        <User/>
       </div>
     </nav>
   );

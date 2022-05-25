@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
-import './style.css';
+import './PasswordInput.css';
 
 interface Props {
   placeholder: string;
