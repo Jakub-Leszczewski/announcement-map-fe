@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface UserStateType {
-  jwt: string;
+  jwt: string | null;
 }
 
 interface SetJwt {
-  payload: string
+  payload: string | null;
 }
 
 type Action = SetJwt;
 
 const initialState: UserStateType = {
-  jwt: '',
+  jwt: null,
 }
 
 export const userSlice = createSlice({
