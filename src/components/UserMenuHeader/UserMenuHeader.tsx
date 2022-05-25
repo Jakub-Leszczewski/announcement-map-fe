@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
-import './style.css';
-import { ArrowButton } from '../arrowButton/ArrowButton'
+import './UserMenuHeader.css';
+import { ArrowButton } from '../common/ArrowButton/ArrowButton'
 
 interface Props {
   title: string;

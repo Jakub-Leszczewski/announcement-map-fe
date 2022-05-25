@@ -1,15 +1,14 @@
 import React from 'react';
-import './style.css';
+import './Select.css';
 
 interface Props {
-  children?: React.ReactNode;
   categories: any[]; //@TODO change type to type from be
   width?: string;
   height?: string;
   padding?: string;
 }
 
-export function Select({ children, categories, width, height, padding }: Props) {
+export function Select({ categories, width, height, padding }: Props) {
   return(
     <select
       className="Select"

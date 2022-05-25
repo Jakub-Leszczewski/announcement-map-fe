@@ -1,9 +1,9 @@
 import React, { FormEvent, useEffect, useReducer, useState } from 'react'
 import './style.css';
-import { Button } from '../../components/common/button/Button';
-import { ShortTextInput } from '../../components/common/shortTextInput/ShortTextInput'
-import { PasswordInput } from '../../components/common/passwordInput/PasswordInput'
-import { UserMenuHeader } from '../../components/common/userMenuHeader/UserMenuHeader'
+import { Button } from '../../components/common/Button/Button';
+import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
+import { PasswordInput } from '../../components/common/PasswordInput/PasswordInput'
+import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { openSignInChoice } from '../../store/slices/app-slice'
 import { Action, signInFormReducer, SignInFormState } from './sign-in-form-reducer'

@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from 'react'
-import './style.css';
+import './ShortTextInput.css';
 
 interface Props {
   placeholder: string;

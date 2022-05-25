@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import './style.css'
+import './UserMenu.css'
 import { SignupView } from '../../view/signupView/SignupView'
 import { useSelector } from 'react-redux'
 import { StoreType } from '../../store'
 import { ActionType } from '../../store/slices/app-slice'
-import { AuthContext } from '../auth/Auth'
+import { AuthContext } from '../Auth/Auth'
 import { SignInChoiceView } from '../../view/signInChoiceView/SignInChoiceView'
 import { SignInView } from '../../view/signInView/SignInView'
 
