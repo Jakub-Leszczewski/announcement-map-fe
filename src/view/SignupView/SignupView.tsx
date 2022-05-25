@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useReducer, useState } from 'react'
-import './style.css'
+import './SignupView.css'
 import { Button } from '../../components/common/Button/Button'
 import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
