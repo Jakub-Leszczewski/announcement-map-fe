@@ -17,9 +17,9 @@ export const useApiAuth = (url: string, method?: HttpMethod, payload?: any) => {
   const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
-  const userJwt = userStore.jwt ? jwtDecode(userStore.jwt) : '';
+  const userJwtDecoded = userStore.jwt ? jwtDecode(userStore.jwt) : null;
 
-  const apiCall = async (jwt: string) => {
+  const apiCall = async (jwt: string | null) => {
     const data = await api(url, {method, payload, jwt})
     setLoading(false);
     setStatus(data.status);
@@ -30,7 +30,7 @@ export const useApiAuth = (url: string, method?: HttpMethod, payload?: any) => {
 
   useEffect(() => {
     (async () => {
-      if(userJwt && (userJwt as any).exp > Date.now() + 10000 && !isRefresh) {
+      if(userJwtDecoded && (userJwtDecoded as any).exp > Date.now() + 10000 && !isRefresh) {
         const status = await apiCall(userStore.jwt);
 
         if(status === 401) {
@@ -41,8 +41,7 @@ export const useApiAuth = (url: string, method?: HttpMethod, payload?: any) => {
         const authData = await auth('http://localhost:3001/api/auth/token');
         setNewJwt(authData.jwt);
 
-        if(authData.jwt)
-        await apiCall(authData.jwt);
+        await apiCall(authData.jwt || '');
       }
     })();
   }, [isRefresh]);
