@@ -60,7 +60,7 @@ export const SignInView = () => {
         {error && <p className="SignInView__error">{error}</p>}
         {appStore.payload && <p className="SignInView__info">{appStore.payload}</p>}
         <ShortTextInput
-          required={true}
+          required
           minLength={3}
           maxLength={60}
           placeholder="login"
@@ -73,6 +73,7 @@ export const SignInView = () => {
         <PasswordInput
           placeholder="hasło"
           value={singInForm.password}
+          required
           onChange={(e) => {
             changeFormHandle({type: ActionType.CHANGE_PASSWORD, payload: e.target.value})
           }}

@@ -1,68 +1,74 @@
-import React, { FormEvent, useEffect, useReducer, useState } from 'react'
-import './SignupView.css'
+import React, { FormEvent, useContext, useEffect, useReducer, useState } from 'react'
+import './AccountSettingsView.css'
 import { Button } from '../../components/common/Button/Button'
 import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { Action, signupFormReducer, UserFormState } from './signup-form-reducer'
+import { accountSettingsFormReducer, Action, UserFormState } from './account-settings-form-reducer'
 import { ActionType } from './action-type'
-import { PasswordFields } from '../../components/PasswordFields/PasswordFields'
 import { useDispatch } from 'react-redux'
-import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
-import { api } from '../../utils/api/api'
+import { openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
+import { AuthContext } from '../../components/Auth/Auth'
+import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
+import { apiAuth } from '../../utils/api/apiAuth'
 import { HttpMethod } from '../../utils/api/http-method'
 
-const initialUserFormState: UserFormState = {
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  password: '',
-  repeatPassword: '',
-}
+export function AccountSettingsView() {
+  const context = useContext(AuthContext);
+  const initialUserFormState: UserFormState = {
+    firstName: context.firstName || '',
+    lastName: context.lastName || '',
+    username: context.username || '',
+    email: context.email || '',
+    newPassword: '',
+    repeatNewPassword: '',
+  }
 
-export function SignupView() {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
+  const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
   const dispatchStore = useDispatch();
 
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await api('http://localhost:3001/api/auth/signup', {
-          method: HttpMethod.POST,
+        const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
+          method: HttpMethod.PATCH,
           payload: userForm,
+          jwt: context.jwt
         });
-
-        if(data.status !== 201 && data.data?.error) {
-          setError(data.data.error)
-        } else if(data.status === 201) {
-          dispatchStore(openSignIn('Konto zostało pomyślnie utworzone.'));
-        }
-
         setIsSubmit(false);
       }
     })();
   }, [isSubmit]);
 
   const goBackHandler = () => {
-    dispatchStore(openSignInChoice(undefined));
+    dispatchStore(openUser(undefined));
   }
 
   const changeFormHandle = (action: Action) => {
     dispatch(action);
   }
 
-  const onSubmitHandle = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmit(true);
+
+    if(userForm.email !== context.email || userForm.newPassword) {
+      dispatchStore(openAccountSettingsConfirm(userForm));
+    } else {
+      setIsSubmit(true);
+    }
   }
 
   return (
     <section className="SignupView">
-      <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
+      <UserMenuHeader title="Zarządzaj kontem" onClick={goBackHandler}/>
 
-      <form onSubmit={onSubmitHandle} className="SignupView__form">
+      <div className="UserView__avatar">
+        <UserAvatarBig/>
+      </div>
+
+      <form onSubmit={onSubmitHandler} className="SignupView__form">
         {error && <p className="SignupView__validation-error">{error}</p>}
 
         <ShortTextInput
@@ -86,16 +92,6 @@ export function SignupView() {
           }}
         />
         <ShortTextInput
-          placeholder="login"
-          maxLength={60}
-          minLength={3}
-          required
-          value={userForm.username}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_USERNAME, payload: e.target.value})
-          }}
-        />
-        <ShortTextInput
           placeholder="email"
           email
           maxLength={255}
@@ -108,13 +104,21 @@ export function SignupView() {
         />
 
         <br />
-        <PasswordFields
+        <NewPasswordFields
           userForm={userForm}
           changeFormHandle={changeFormHandle}
-          required
         />
-        <Button width="100%" height={30} borderRadius="15px">Zarejestruj</Button>
+
+        <Button
+          width="100%"
+          height={30}
+          borderRadius="15px"
+        >Zapisz</Button>
       </form>
     </section>
   );
 }
+
+//@TODO dokończyć to
+//@TODO uporządkować kod
+//@TODO wyczyscić wszystkie pliki
