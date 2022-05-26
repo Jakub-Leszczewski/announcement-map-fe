@@ -53,12 +53,12 @@ export const SignInView = () => {
   }
 
   return(
-    <section className="SignIn">
+    <section className="SignInView">
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
-      <form className="SignIn__form" onSubmit={submitHandler}>
-        {error && <p className="SignIn__error">{error}</p>}
-        {appStore.payload && <p className="SignIn__info">{appStore.payload}</p>}
+      <form className="SignInView__form" onSubmit={submitHandler}>
+        {error && <p className="SignInView__error">{error}</p>}
+        {appStore.payload && <p className="SignInView__info">{appStore.payload}</p>}
         <ShortTextInput
           required={true}
           minLength={3}

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import './UserAvatar.css'
 
 interface Props {
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const UserAvatar = ({onClick}: Props) => {

@@ -25,7 +25,7 @@ export const PasswordFields = ({userForm, changeFormHandle}:Props) => {
     {
       passwordValidation(userForm.password) || !passwordWasFocus
         ? null
-        : <p className="Signup__validation-error">
+        : <p className="SignupView__validation-error">
           Hasło powinno zawierać 8-36 znaków, co najmniej jedną literę i cyfrę
         </p>
     }
@@ -41,7 +41,7 @@ export const PasswordFields = ({userForm, changeFormHandle}:Props) => {
     {
       repeatPasswordCompareWithPassword(userForm.password, userForm.repeatPassword) || !repeatPasswordWasFocus
         ? null
-        : <p className="Signup__validation-error">
+        : <p className="SignupView__validation-error">
           Hasła muszą być takie same
         </p>
     }
