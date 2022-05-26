@@ -1,0 +1,78 @@
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react'
+import './AccountSettingsConfirmView.css'
+import { Button } from '../../components/common/Button/Button'
+import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
+import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
+import { useDispatch, useSelector } from 'react-redux'
+import { openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
+import { AuthContext } from '../../components/Auth/Auth'
+import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
+import { PasswordInput } from '../../components/common/PasswordInput/PasswordInput'
+import { StoreType } from '../../store'
+import { apiAuth } from '../../utils/api/apiAuth'
+import { HttpMethod } from '../../utils/api/http-method'
+
+
+export function AccountSettingsConfirmView() {
+  const context = useContext(AuthContext);
+  const appStore = useSelector((store: StoreType) => store.app);
+
+  const [password, setPassword] = useState<string>('');
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const dispatchStore = useDispatch();
+  console.log({ ...appStore.payload, password })
+  useEffect(() => {
+    (async () => {
+      if(isSubmit && password) {
+        const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
+          method: HttpMethod.PATCH,
+          payload: { ...appStore.payload, password },
+          jwt: context.jwt
+        });
+        setIsSubmit(false);
+      }
+    })();
+  }, [isSubmit])
+
+  const goBackHandler = () => {
+    dispatchStore(openUser(undefined));
+  }
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmit(true);
+  }
+
+  return (
+    <section className="SignupView">
+      <UserMenuHeader title="Weryfikacja" onClick={goBackHandler}/>
+
+      <div className="UserView__avatar">
+        <UserAvatarBig/>
+      </div>
+
+      <form onSubmit={onSubmitHandler} className="SignupView__form">
+        {error && <p className="SignupView__validation-error">{error}</p>}
+
+       <PasswordInput
+        placeholder="Podaj hasło"
+        value={password}
+        onChange={(e: ChangeEvent<HTMLInputElement>)=> setPassword(e.target.value)}
+       />
+
+        <Button
+          width="100%"
+          height={30}
+          borderRadius="15px"
+        >Zapisz</Button>
+      </form>
+    </section>
+  );
+}
+
+//@TODO Dodać komunikaty błedu
+//@TODO Dodać tablice z tłumaczeniami
+//@TODO uporządkować kod
+//@TODO wyczyscić wszystkie pliki

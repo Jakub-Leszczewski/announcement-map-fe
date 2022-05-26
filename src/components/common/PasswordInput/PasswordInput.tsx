@@ -6,10 +6,12 @@ interface Props {
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   onFocus?: (e: ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
   value?: string;
+  disabled?: boolean;
 }
 
-export const PasswordInput = ({ placeholder, value, onChange, onFocus, onBlur }: Props) => {
+export const PasswordInput = ({ placeholder, value, onChange, onFocus, onBlur, disabled, required }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
 
   const onMouseDown = () => {
@@ -26,13 +28,14 @@ export const PasswordInput = ({ placeholder, value, onChange, onFocus, onBlur }:
         className="PasswordInput__input"
         type={visible ? "text" : "password"}
         placeholder={placeholder}
-        required={true}
+        required={required}
         minLength={8}
         maxLength={36}
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
         value={value}
+        disabled={disabled}
       />
       <div className="PasswordInput__icon" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
         {

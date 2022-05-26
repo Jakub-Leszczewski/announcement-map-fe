@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { UserFormState } from '../../view/AccountSettingsView/account-settings-form-reducer'
 
 export enum ActionType {
   OPEN_NONE = 'OPEN_NONE',
@@ -10,11 +11,12 @@ export enum ActionType {
   OPEN_ANNOUNCEMENT_VIEW = 'OPEN_ANNOUNCEMENT_VIEW',
   OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
   OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
+  OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
 }
 
 interface AppStateType {
   openWindow: ActionType;
-  payload: string | undefined;
+  payload: string | undefined | any;
 }
 
 interface OpenNone {
@@ -51,6 +53,10 @@ interface OpenAddAnnouncement {
 
 interface OpenAccountSettings {
   payload: undefined;
+}
+
+interface OpenAccountSettingsConfirm {
+  payload: any;
 }
 
 
@@ -107,6 +113,11 @@ export const appSlice = createSlice({
       state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS;
       state.payload = action.payload;
     },
+
+    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
+      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS_CONFIRM;
+      state.payload = action.payload;
+    },
   }
 });
 
@@ -119,5 +130,6 @@ export const {
   openAnnouncements,
   openAnnouncementView,
   openAddAnnouncement,
-  openAccountSettings
+  openAccountSettings,
+  openAccountSettingsConfirm,
 } = appSlice.actions;

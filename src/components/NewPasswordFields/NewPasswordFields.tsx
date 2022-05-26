@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { PasswordInput } from '../common/PasswordInput/PasswordInput'
-import { ActionType } from '../../view/SignupView/action-type'
-import { Action, UserFormState } from '../../view/SignupView/signup-form-reducer'
 import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
+import { ActionType } from '../../view/AccountSettingsView/action-type'
+import { Action, UserFormState } from '../../view/AccountSettingsView/account-settings-form-reducer'
 
 interface Props {
   userForm: UserFormState,
@@ -11,7 +11,7 @@ interface Props {
   required?: boolean;
 }
 
-export const PasswordFields = ({userForm, changeFormHandle, disabled, required}:Props) => {
+export const NewPasswordFields = ({userForm, changeFormHandle, disabled, required}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
   const [repeatPasswordWasFocus, setRepeatPasswordWasFocus] = useState<boolean>(false);
 
@@ -25,38 +25,38 @@ export const PasswordFields = ({userForm, changeFormHandle, disabled, required}:
 
   return <>
     {
-      passwordValidation(userForm.password) || !passwordWasFocus
+      passwordValidation(userForm.newPassword) || !passwordWasFocus
         ? null
         : <p className="SignupView__validation-error">
           Hasło powinno zawierać 8-36 znaków, co najmniej jedną literę i cyfrę
         </p>
     }
     <PasswordInput
-      placeholder="hasło"
-      value={userForm.password}
+      placeholder="nowe hasło"
+      value={userForm.newPassword}
       onBlur={onPasswordBlur}
       disabled={disabled}
       required={required}
       onChange={(e) => {
-        changeFormHandle({type: ActionType.CHANGE_PASSWORD, payload: e.target.value})
+        changeFormHandle({type: ActionType.CHANGE_NEW_PASSWORD, payload: e.target.value})
       }}
     />
 
     {
-      repeatPasswordCompareWithPassword(userForm.password, userForm.repeatPassword) || !repeatPasswordWasFocus
+      repeatPasswordCompareWithPassword(userForm.newPassword, userForm.repeatNewPassword) || !repeatPasswordWasFocus
         ? null
         : <p className="SignupView__validation-error">
           Hasła muszą być takie same
         </p>
     }
     <PasswordInput
-      placeholder="potwierdź hasło"
-      value={userForm.repeatPassword}
+      placeholder="potwierdź nowe hasło"
+      value={userForm.repeatNewPassword}
       onBlur={onRepeatPasswordBlur}
       disabled={disabled}
       required={required}
       onChange={(e) => {
-        changeFormHandle({type: ActionType.CHANGE_REPEAT_PASSWORD, payload: e.target.value})
+        changeFormHandle({type: ActionType.CHANGE_REPEAT_NEW_PASSWORD, payload: e.target.value})
       }}
     />
   </>
