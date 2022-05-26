@@ -41,7 +41,7 @@ export const useApiAuth = (url: string, method?: HttpMethod, payload?: any) => {
         const authData = await auth('http://localhost:3001/api/auth/token');
         setNewJwt(authData.jwt);
 
-        await apiCall(authData.jwt || '');
+        await apiCall(authData.jwt || null);
       }
     })();
   }, [isRefresh]);
