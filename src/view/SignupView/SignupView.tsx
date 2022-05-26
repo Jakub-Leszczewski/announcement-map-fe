@@ -59,11 +59,11 @@ export function SignupView() {
   }
 
   return (
-    <section className="Signup">
+    <section className="SignupView">
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
 
-      <form onSubmit={onSubmitHandle} className="Signup__form">
-        {error && <p className="Signup__validation-error">{error}</p>}
+      <form onSubmit={onSubmitHandle} className="SignupView__form">
+        {error && <p className="SignupView__validation-error">{error}</p>}
 
         <ShortTextInput
           placeholder="imie"
