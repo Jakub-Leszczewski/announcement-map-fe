@@ -10,7 +10,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-const initialUser: UserForResData = {
+interface UserJwt extends UserForResData {
+  exp: number;
+  iat: number;
+  jwt: string | null;
+}
+
+const initialUser: UserJwt = {
   id: '',
   firstName: '',
   lastName: '',
@@ -18,27 +24,26 @@ const initialUser: UserForResData = {
   email: '',
   avatar: '',
   role: UserRole.User,
+  exp: 0,
+  iat: 0,
+  jwt: null,
 }
 
-interface JWT extends UserForResData {
-  exp: number;
-  iat: number;
-}
-
-export const AuthContext = createContext<UserForResData>(initialUser)
+export const AuthContext = createContext<UserJwt>(initialUser)
 
 export const Auth = ({children}: Props) => {
   const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
-  const dataFromJwt = useMemo(() => {
-    if(userStore.jwt) return jwtDecode(userStore.jwt) as JWT;
+  const dataFromJwt = useMemo((): UserJwt => {
+    if(userStore.jwt) return jwtDecode(userStore.jwt);
 
     return {
       ...initialUser,
       exp: 0,
       iat: 0,
-    } as JWT;
+      jwt: null,
+    };
   }, [userStore]);
 
   useEffect(() => {
@@ -56,7 +61,7 @@ export const Auth = ({children}: Props) => {
   }, [userStore]);
 
   return(
-    <AuthContext.Provider value={dataFromJwt}>
+    <AuthContext.Provider value={{ ...dataFromJwt, jwt: userStore.jwt }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { HttpMethod } from './http-method'
+import { HttpMethods } from '../../types/http-methods'
 import { Store } from '../../store'
 
 interface ApiHandlerReturn {
@@ -7,7 +7,7 @@ interface ApiHandlerReturn {
 }
 
 interface Options {
-  method?: HttpMethod;
+  method?: HttpMethods;
   payload?: any;
   store?: Store;
   jwt?: string | null;
@@ -16,7 +16,7 @@ interface Options {
 export const api = async (url: string, options?: Options): Promise<ApiHandlerReturn> => {
   try {
       const res = await fetch(url, {
-        method: options?.method || HttpMethod.GET,
+        method: options?.method || HttpMethods.GET,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${options?.jwt || ''}`

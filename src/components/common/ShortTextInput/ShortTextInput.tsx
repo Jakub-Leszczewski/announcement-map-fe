@@ -7,12 +7,13 @@ interface Props {
   required?: boolean;
   minLength?: number;
   maxLength?: number;
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   value?: string;
+  disabled?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function ShortTextInput({
-  placeholder, email, required, minLength, maxLength, onChange, value
+  placeholder, email, required, minLength, maxLength, value, disabled, onChange
 }: Props) {
   return (
     <input
@@ -24,6 +25,7 @@ export function ShortTextInput({
       maxLength={maxLength ?? 255}
       onChange={onChange}
       value={value}
+      disabled={disabled}
     />
   );
 }

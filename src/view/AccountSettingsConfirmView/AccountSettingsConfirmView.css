@@ -1,0 +1,27 @@
+.AccountSettingsConfirmView {
+    border: 1px solid #B1B1B1;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.AccountSettingsConfirmView__avatar {
+    width: fit-content;
+    height: fit-content;
+    margin: 10px auto;
+}
+
+.AccountSettingsConfirmView__form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    margin: 10px;
+}
+
+.AccountSettingsConfirmView__form>.Button {
+    margin: 10px 0 0 0;
+}
+
+.AccountSettingsConfirmView__error {
+    color: red;
+    font-size: 0.7rem;
+}

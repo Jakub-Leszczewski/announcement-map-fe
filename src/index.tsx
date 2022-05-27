@@ -17,3 +17,8 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+//@TODO zmienić style dla UserMenu, przy większych tekstach userMenu się powiększa w niekontrolowany sposób
+//@TODO max-width - vw, wycentrować przyciski w środku(margin auto)
+//@TODO zmienić jwt na prostszy, dane użytkownika są pobierane przez api w komponencie auth, a nie pozyskiwane z tokenu
+//@TODO naprawić ekran, usunąć scroll problem przy userAvatar

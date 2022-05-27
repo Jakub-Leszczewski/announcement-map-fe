@@ -6,13 +6,13 @@ export interface Action {
   payload: string;
 }
 
-export interface UserFormState extends  UserForm{
+export interface UserFormState extends UserForm{
   username: string;
-  password: string;
-  repeatPassword: string;
+  newPassword: string;
+  repeatNewPassword: string;
 }
 
-export const signupFormReducer = (state: UserFormState, action: Action) => {
+export const accountSettingsFormReducer = (state: UserFormState, action: Action) => {
   switch (action.type) {
     case ActionType.CHANGE_FIRST_NAME: {
       return {
@@ -42,17 +42,17 @@ export const signupFormReducer = (state: UserFormState, action: Action) => {
       }
     }
 
-    case ActionType.CHANGE_PASSWORD: {
+    case ActionType.CHANGE_NEW_PASSWORD: {
       return {
         ...state,
-        password: action.payload,
+        newPassword: action.payload,
       }
     }
 
-    case ActionType.CHANGE_REPEAT_PASSWORD: {
+    case ActionType.CHANGE_REPEAT_NEW_PASSWORD: {
       return {
         ...state,
-        repeatPassword: action.payload,
+        repeatNewPassword: action.payload,
       }
     }
   }

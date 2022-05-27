@@ -9,7 +9,8 @@ import { PasswordFields } from '../../components/PasswordFields/PasswordFields'
 import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
-import { HttpMethod } from '../../utils/api/http-method'
+import { HttpMethods } from '../../types/http-methods'
+import { passwordValidation } from '../../utils/validation'
 
 const initialUserFormState: UserFormState = {
   firstName: '',
@@ -22,7 +23,7 @@ const initialUserFormState: UserFormState = {
 
 export function SignupView() {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
   const dispatchStore = useDispatch();
 
@@ -30,14 +31,14 @@ export function SignupView() {
     (async () => {
       if(isSubmit) {
         const data = await api('http://localhost:3001/api/auth/signup', {
-          method: HttpMethod.POST,
+          method: HttpMethods.POST,
           payload: userForm,
         });
 
         if(data.status !== 201 && data.data?.error) {
           setError(data.data.error)
         } else if(data.status === 201) {
-          dispatchStore(openSignIn('Konto zostało pomyślnie utworzone.'));
+          dispatchStore(openSignIn({message: 'Konto zostało pomyślnie utworzone.'}));
         }
 
         setIsSubmit(false);
@@ -59,11 +60,11 @@ export function SignupView() {
   }
 
   return (
-    <section className="Signup">
+    <section className="SignupView">
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
 
-      <form onSubmit={onSubmitHandle} className="Signup__form">
-        {error && <p className="Signup__validation-error">{error}</p>}
+      <form onSubmit={onSubmitHandle} className="SignupView__form">
+        {error && <p className="SignupView__validation-error">{error}</p>}
 
         <ShortTextInput
           placeholder="imie"
@@ -111,8 +112,14 @@ export function SignupView() {
         <PasswordFields
           userForm={userForm}
           changeFormHandle={changeFormHandle}
+          required
         />
-        <Button width="100%" height={30} borderRadius="15px">Zarejestruj</Button>
+        <Button
+          width="100%"
+          height={30}
+          borderRadius="15px"
+          disabled={userForm.password !== userForm.repeatPassword || !passwordValidation(userForm.password)}
+        >Zarejestruj</Button>
       </form>
     </section>
   );
