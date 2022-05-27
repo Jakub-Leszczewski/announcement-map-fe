@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserFormState } from '../../view/AccountSettingsView/account-settings-form-reducer'
+import { UserForm } from '../../types/user-form'
+import { InfoType } from '../../types/info-types'
 
 export enum ActionType {
   OPEN_NONE = 'OPEN_NONE',
@@ -14,11 +15,6 @@ export enum ActionType {
   OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
 }
 
-interface AppStateType {
-  openWindow: ActionType;
-  payload: string | undefined | any;
-}
-
 interface OpenNone {
   payload: undefined;
 }
@@ -28,7 +24,7 @@ interface OpenSignInChoice {
 }
 
 interface OpenSignIn {
-  payload: undefined | string;
+  payload: InfoType | undefined;
 }
 
 interface OpenSignUp {
@@ -52,13 +48,17 @@ interface OpenAddAnnouncement {
 }
 
 interface OpenAccountSettings {
-  payload: string | undefined | any;
+  payload: InfoType | undefined;
 }
 
 interface OpenAccountSettingsConfirm {
-  payload: any;
+  payload: UserForm;
 }
 
+interface AppStateType {
+  openWindow: ActionType;
+  payload: string | UserForm | InfoType | undefined;
+}
 
 const initialState: AppStateType = {
   openWindow: ActionType.OPEN_NONE,

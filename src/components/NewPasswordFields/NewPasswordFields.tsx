@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { PasswordInput } from '../common/PasswordInput/PasswordInput'
-import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
+import { passwordValidation } from '../../utils/validation'
 import { ActionType } from '../../view/AccountSettingsView/action-type'
 import { Action, UserFormState } from '../../view/AccountSettingsView/account-settings-form-reducer'
 
 interface Props {
-  userForm: UserFormState,
-  changeFormHandle: (type: Action) => void;
   disabled?: boolean;
   required?: boolean;
+  userForm: UserFormState;
+  changeFormHandle: (type: Action) => void;
 }
 
-export const NewPasswordFields = ({userForm, changeFormHandle, disabled, required}:Props) => {
+export const NewPasswordFields = ({disabled, required, userForm, changeFormHandle}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
   const [repeatPasswordWasFocus, setRepeatPasswordWasFocus] = useState<boolean>(false);
 
@@ -37,6 +37,8 @@ export const NewPasswordFields = ({userForm, changeFormHandle, disabled, require
       onBlur={onPasswordBlur}
       disabled={disabled}
       required={required}
+      minLength={8}
+      maxLength={36}
       onChange={(e) => {
         changeFormHandle({type: ActionType.CHANGE_NEW_PASSWORD, payload: e.target.value})
       }}

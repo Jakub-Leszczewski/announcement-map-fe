@@ -11,6 +11,7 @@ import { ActionType } from './action-type'
 import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
 import { StoreType } from '../../store'
+import { InfoType } from '../../types/info-types'
 
 const initialSignInFormState: SignInFormState= {
   username: '',
@@ -20,9 +21,9 @@ const initialSignInFormState: SignInFormState= {
 export const SignInView = () => {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [singInForm, dispatch] = useReducer<React.Reducer<SignInFormState, Action>>(signInFormReducer, initialSignInFormState);
+  const [singInForm, dispatchForm] = useReducer<React.Reducer<SignInFormState, Action>>(signInFormReducer, initialSignInFormState);
   const appStore = useSelector((store: StoreType) => store.app);
-  const dispatchStore = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if(isSubmit) {
@@ -32,18 +33,18 @@ export const SignInView = () => {
         setIsSubmit(false);
 
         if(authData.status === 200 && authData.jwt) {
-          dispatchStore(setJwt(authData.jwt as string));
+          dispatch(setJwt(authData.jwt));
         }
       })();
     }
   }, [isSubmit])
 
   const goBackHandler = () => {
-    dispatchStore(openSignInChoice(undefined));
+    dispatch(openSignInChoice(undefined));
   }
 
   const changeFormHandle = (action: Action) => {
-    dispatch(action);
+    dispatchForm(action);
   }
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -58,11 +59,11 @@ export const SignInView = () => {
 
       <form className="SignInView__form" onSubmit={submitHandler}>
         {error && <p className="SignInView__error">{error}</p>}
-        {appStore.payload && <p className="SignInView__info">{appStore.payload}</p>}
+        {(appStore.payload as InfoType).message
+          && <p className="SignInView__message">{(appStore.payload as InfoType).message}</p>
+        }
         <ShortTextInput
           required
-          minLength={3}
-          maxLength={60}
           placeholder="login"
           value={singInForm.username}
           onChange={(e) => {

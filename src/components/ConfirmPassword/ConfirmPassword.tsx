@@ -6,8 +6,8 @@ import { passwordValidation, repeatPasswordCompareWithPassword } from '../../uti
 
 interface Props {
   value?: string,
-  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const ConfirmPassword = ({value, onChange, disabled}:Props) => {
@@ -19,7 +19,7 @@ export const ConfirmPassword = ({value, onChange, disabled}:Props) => {
 
   return <>
     {
-     !passwordWasFocus
+     !passwordWasFocus || value
         ? null
         : <p className="SignupView__validation-error">
           Podaj stare hasło, to pole jest wymagane.

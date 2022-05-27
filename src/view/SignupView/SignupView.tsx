@@ -38,7 +38,7 @@ export function SignupView() {
         if(data.status !== 201 && data.data?.error) {
           setError(data.data.error)
         } else if(data.status === 201) {
-          dispatchStore(openSignIn('Konto zostało pomyślnie utworzone.'));
+          dispatchStore(openSignIn({message: 'Konto zostało pomyślnie utworzone.'}));
         }
 
         setIsSubmit(false);

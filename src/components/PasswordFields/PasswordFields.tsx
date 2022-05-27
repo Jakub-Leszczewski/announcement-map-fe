@@ -5,13 +5,13 @@ import { Action, UserFormState } from '../../view/SignupView/signup-form-reducer
 import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
 
 interface Props {
-  userForm: UserFormState,
-  changeFormHandle: (type: Action) => void;
   disabled?: boolean;
   required?: boolean;
+  userForm: UserFormState;
+  changeFormHandle: (type: Action) => void;
 }
 
-export const PasswordFields = ({userForm, changeFormHandle, disabled, required}:Props) => {
+export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
   const [repeatPasswordWasFocus, setRepeatPasswordWasFocus] = useState<boolean>(false);
 
@@ -35,6 +35,8 @@ export const PasswordFields = ({userForm, changeFormHandle, disabled, required}:
       placeholder="hasło"
       value={userForm.password}
       onBlur={onPasswordBlur}
+      minLength={8}
+      maxLength={36}
       disabled={disabled}
       required={required}
       onChange={(e) => {
@@ -43,7 +45,7 @@ export const PasswordFields = ({userForm, changeFormHandle, disabled, required}:
     />
 
     {
-      repeatPasswordCompareWithPassword(userForm.password, userForm.repeatPassword) || !repeatPasswordWasFocus
+      userForm.password === userForm.repeatPassword || !repeatPasswordWasFocus
         ? null
         : <p className="SignupView__validation-error">
           Hasła muszą być takie same
