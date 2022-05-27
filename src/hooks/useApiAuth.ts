@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { api } from '../utils/api/api'
-import { HttpMethod } from '../utils/api/http-method'
+import { HttpMethods } from '../types/http-methods'
 import { useDispatch, useSelector } from 'react-redux'
 import { setJwt } from '../store/slices/user-slice'
 import { StoreType } from '../store'
 import jwtDecode from 'jwt-decode'
 import { auth } from '../utils/api/auth'
 
-export const useApiAuth = (url: string, method?: HttpMethod, payload?: any) => {
+export const useApiAuth = (url: string, method?: HttpMethods, payload?: any) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<number | null>(null);
   const [data, setData] = useState<any>(undefined);

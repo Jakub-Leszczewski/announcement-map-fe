@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { UserForm } from '../../types/user-form'
+import { InfoType } from '../../types/info-types'
 
 export enum ActionType {
   OPEN_NONE = 'OPEN_NONE',
@@ -10,11 +12,7 @@ export enum ActionType {
   OPEN_ANNOUNCEMENT_VIEW = 'OPEN_ANNOUNCEMENT_VIEW',
   OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
   OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
-}
-
-interface AppStateType {
-  openWindow: ActionType;
-  payload: string | undefined;
+  OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
 }
 
 interface OpenNone {
@@ -26,7 +24,7 @@ interface OpenSignInChoice {
 }
 
 interface OpenSignIn {
-  payload: undefined | string;
+  payload: InfoType | undefined;
 }
 
 interface OpenSignUp {
@@ -50,9 +48,17 @@ interface OpenAddAnnouncement {
 }
 
 interface OpenAccountSettings {
-  payload: undefined;
+  payload: InfoType | undefined;
 }
 
+interface OpenAccountSettingsConfirm {
+  payload: UserForm;
+}
+
+interface AppStateType {
+  openWindow: ActionType;
+  payload: string | UserForm | InfoType | undefined;
+}
 
 const initialState: AppStateType = {
   openWindow: ActionType.OPEN_NONE,
@@ -107,6 +113,11 @@ export const appSlice = createSlice({
       state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS;
       state.payload = action.payload;
     },
+
+    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
+      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS_CONFIRM;
+      state.payload = action.payload;
+    },
   }
 });
 
@@ -119,5 +130,6 @@ export const {
   openAnnouncements,
   openAnnouncementView,
   openAddAnnouncement,
-  openAccountSettings
+  openAccountSettings,
+  openAccountSettingsConfirm,
 } = appSlice.actions;

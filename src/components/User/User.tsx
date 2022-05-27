@@ -10,11 +10,11 @@ export const User = () => {
   const dispatch = useDispatch();
 
   const userLogInHandler = () => {
-    dispatch(openSignInChoice(undefined as never));
+    dispatch(openSignInChoice(undefined));
   }
 
   const userAccount = () => {
-    dispatch(openUser(undefined as never));
+    dispatch(openUser(undefined));
   }
 
   return <>
