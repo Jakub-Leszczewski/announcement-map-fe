@@ -52,7 +52,7 @@ interface OpenAddAnnouncement {
 }
 
 interface OpenAccountSettings {
-  payload: undefined;
+  payload: string | undefined | any;
 }
 
 interface OpenAccountSettingsConfirm {

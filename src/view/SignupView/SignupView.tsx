@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethod } from '../../utils/api/http-method'
+import { passwordValidation } from '../../utils/validation'
 
 const initialUserFormState: UserFormState = {
   firstName: '',
@@ -22,7 +23,7 @@ const initialUserFormState: UserFormState = {
 
 export function SignupView() {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
   const dispatchStore = useDispatch();
 
@@ -113,7 +114,12 @@ export function SignupView() {
           changeFormHandle={changeFormHandle}
           required
         />
-        <Button width="100%" height={30} borderRadius="15px">Zarejestruj</Button>
+        <Button
+          width="100%"
+          height={30}
+          borderRadius="15px"
+          disabled={userForm.password !== userForm.repeatPassword || !passwordValidation(userForm.password)}
+        >Zarejestruj</Button>
       </form>
     </section>
   );

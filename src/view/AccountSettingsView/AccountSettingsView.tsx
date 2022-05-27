@@ -5,13 +5,15 @@ import { ShortTextInput } from '../../components/common/ShortTextInput/ShortText
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { accountSettingsFormReducer, Action, UserFormState } from './account-settings-form-reducer'
 import { ActionType } from './action-type'
-import { useDispatch } from 'react-redux'
-import { openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { useDispatch, useSelector } from 'react-redux'
+import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { AuthContext } from '../../components/Auth/Auth'
 import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
 import { apiAuth } from '../../utils/api/apiAuth'
 import { HttpMethod } from '../../utils/api/http-method'
+import { passwordValidation } from '../../utils/validation'
+import { StoreType } from '../../store'
 
 export function AccountSettingsView() {
   const context = useContext(AuthContext);
@@ -25,8 +27,9 @@ export function AccountSettingsView() {
   }
 
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
+  const appStore = useSelector((store: StoreType) => store.app);
   const dispatchStore = useDispatch();
 
   useEffect(() => {
@@ -37,6 +40,10 @@ export function AccountSettingsView() {
           payload: userForm,
           jwt: context.jwt
         });
+
+        if(data.status !== 200) setError(data.data.error);
+        else setError(undefined);
+
         setIsSubmit(false);
       }
     })();
@@ -70,6 +77,8 @@ export function AccountSettingsView() {
 
       <form onSubmit={onSubmitHandler} className="SignupView__form">
         {error && <p className="SignupView__validation-error">{error}</p>}
+        {appStore.payload?.error && <p className="SignupView__validation-error">{appStore.payload.error}</p>}
+        {appStore.payload?.message && <p className="SignupView__validation-error">{appStore.payload.message}</p>}
 
         <ShortTextInput
           placeholder="imie"
@@ -113,12 +122,9 @@ export function AccountSettingsView() {
           width="100%"
           height={30}
           borderRadius="15px"
+          disabled={!passwordValidation(userForm.newPassword) || userForm.newPassword !== userForm.repeatNewPassword}
         >Zapisz</Button>
       </form>
     </section>
   );
 }
-
-//@TODO dokończyć to
-//@TODO uporządkować kod
-//@TODO wyczyscić wszystkie pliki
