@@ -8,7 +8,7 @@ import { AuthContext } from '../../components/Auth/Auth'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
-import { HttpMethod } from '../../utils/api/http-method'
+import { HttpMethods } from '../../types/http-methods'
 
 export const UserView = () => {
   const [logout, setLogout] = useState<boolean>(false);
@@ -18,7 +18,7 @@ export const UserView = () => {
   useEffect(() => {
     (async () => {
       if(logout) {
-        const logoutData = await api('http://localhost:3001/api/auth/logout', {method: HttpMethod.DELETE});
+        const logoutData = await api('http://localhost:3001/api/auth/logout', {method: HttpMethods.DELETE});
         if(logoutData.status === 200) {
           dispatch(setJwt(null));
           dispatch(openNone(undefined));

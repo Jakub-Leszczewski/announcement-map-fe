@@ -11,7 +11,7 @@ import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { AuthContext } from '../../components/Auth/Auth'
 import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
 import { apiAuth } from '../../utils/api/apiAuth'
-import { HttpMethod } from '../../utils/api/http-method'
+import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 import { StoreType } from '../../store'
 import { auth } from '../../utils/api/auth'
@@ -41,7 +41,7 @@ export const  AccountSettingsView = () => {
     (async () => {
       if(isSubmit) {
         const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
-          method: HttpMethod.PATCH,
+          method: HttpMethods.PATCH,
           payload: userForm,
           jwt: context.jwt
         });

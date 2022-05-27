@@ -1,4 +1,4 @@
-import { HttpMethod } from './http-method'
+import { HttpMethods } from '../../types/http-methods'
 
 interface AuthHandlerOverload {
   (url: string): Promise<AuthHandlerReturn>;
@@ -16,7 +16,7 @@ export const auth:AuthHandlerOverload = async (url, username?, password?) => {
 
   try {
     const res = await fetch(url, {
-      method: isSignIn ? HttpMethod.POST : HttpMethod.GET,
+      method: isSignIn ? HttpMethods.POST : HttpMethods.GET,
       headers: {
         'Content-Type': 'application/json',
       },
