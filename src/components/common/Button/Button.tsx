@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { ReactNode } from 'react'
 import './Button.css'
 
 interface Props {
-  children?: React.ReactNode;
+  children?: ReactNode;
+  disabled?: boolean;
   width?: number | string;
   height?: number | string;
   padding?: number | string;
   borderRadius?: number | string;
   onClick?: () => void;
-  disabled?: boolean;
 }
 
-export function Button({children, width = '100%', height = '34px', padding = '5px', borderRadius = '10px', onClick, disabled}: Props) {
-  return(
+export const Button = ({
+  children, disabled, width = '100%', height = '34px', padding = '5px', borderRadius = '10px', onClick
+}: Props) => (
     <button
       className="Button"
       onClick={onClick}
@@ -27,4 +28,3 @@ export function Button({children, width = '100%', height = '34px', padding = '5p
       {children ?? "click me"}
     </button>
   );
-}

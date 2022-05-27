@@ -35,15 +35,15 @@ export const Auth = ({children}: Props) => {
   const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
-  const dataFromJwt = useMemo(() => {
-    if(userStore.jwt) return jwtDecode(userStore.jwt) as UserJwt;
+  const dataFromJwt = useMemo((): UserJwt => {
+    if(userStore.jwt) return jwtDecode(userStore.jwt);
 
     return {
       ...initialUser,
       exp: 0,
       iat: 0,
       jwt: null,
-    } as UserJwt;
+    };
   }, [userStore]);
 
   useEffect(() => {

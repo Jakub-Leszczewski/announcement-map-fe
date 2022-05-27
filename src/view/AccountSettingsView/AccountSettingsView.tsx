@@ -14,8 +14,11 @@ import { apiAuth } from '../../utils/api/apiAuth'
 import { HttpMethod } from '../../utils/api/http-method'
 import { passwordValidation } from '../../utils/validation'
 import { StoreType } from '../../store'
+import { auth } from '../../utils/api/auth'
+import { setJwt } from '../../store/slices/user-slice'
+import { InfoType } from '../../types/info-types'
 
-export function AccountSettingsView() {
+export const  AccountSettingsView = () => {
   const context = useContext(AuthContext);
   const initialUserFormState: UserFormState = {
     firstName: context.firstName || '',
@@ -24,13 +27,15 @@ export function AccountSettingsView() {
     email: context.email || '',
     newPassword: '',
     repeatNewPassword: '',
-  }
+  };
 
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
+  const [newJwt, setNewJwt] = useState<string | null>(context.jwt);
+  const [userForm, dispatchForm] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
+
   const appStore = useSelector((store: StoreType) => store.app);
-  const dispatchStore = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -42,43 +47,59 @@ export function AccountSettingsView() {
         });
 
         if(data.status !== 200) setError(data.data.error);
-        else setError(undefined);
+        else {
+          const authData = await auth('http://localhost:3001/api/auth/token');
+          setError(undefined);
+          setNewJwt(authData.jwt);
+          dispatch(openAccountSettings({message: 'Pomyślnie zapisano'}));
+        }
 
         setIsSubmit(false);
       }
     })();
   }, [isSubmit]);
 
+  useEffect(()=> {
+    dispatch(setJwt(newJwt));
+  }, [newJwt]);
+
   const goBackHandler = () => {
-    dispatchStore(openUser(undefined));
+    dispatch(openUser(undefined));
   }
 
   const changeFormHandle = (action: Action) => {
-    dispatch(action);
+    dispatchForm(action);
   }
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if(userForm.email !== context.email || userForm.newPassword) {
-      dispatchStore(openAccountSettingsConfirm(userForm));
+      dispatch(openAccountSettingsConfirm(userForm));
     } else {
       setIsSubmit(true);
     }
   }
 
   return (
-    <section className="SignupView">
+    <section className="AccountSettingsView">
       <UserMenuHeader title="Zarządzaj kontem" onClick={goBackHandler}/>
 
-      <div className="UserView__avatar">
+      <div className="AccountSettingsView__avatar">
         <UserAvatarBig/>
       </div>
 
-      <form onSubmit={onSubmitHandler} className="SignupView__form">
-        {error && <p className="SignupView__validation-error">{error}</p>}
-        {appStore.payload?.error && <p className="SignupView__validation-error">{appStore.payload.error}</p>}
-        {appStore.payload?.message && <p className="SignupView__validation-error">{appStore.payload.message}</p>}
+      <form onSubmit={onSubmitHandler} className="AccountSettingsView__form">
+        {error && <p className="AccountSettingsView__validation-error">{error}</p>}
+        {
+          (appStore.payload as InfoType).error
+          && <p className="AccountSettingsView__validation-error">{(appStore.payload as InfoType).error}</p>
+        }
+
+        {
+          (appStore.payload as InfoType).message
+          && <p className="AccountSettingsView__message">{(appStore.payload as InfoType).message}</p>
+        }
 
         <ShortTextInput
           placeholder="imie"
@@ -122,7 +143,7 @@ export function AccountSettingsView() {
           width="100%"
           height={30}
           borderRadius="15px"
-          disabled={!passwordValidation(userForm.newPassword) || userForm.newPassword !== userForm.repeatNewPassword}
+          disabled={!(passwordValidation(userForm.newPassword) || !userForm.newPassword) || userForm.newPassword !== userForm.repeatNewPassword}
         >Zapisz</Button>
       </form>
     </section>

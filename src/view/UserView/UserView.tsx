@@ -11,7 +11,7 @@ import { api } from '../../utils/api/api'
 import { HttpMethod } from '../../utils/api/http-method'
 
 export const UserView = () => {
-  const [logout, setLogout] = useState<boolean>(false)
+  const [logout, setLogout] = useState<boolean>(false);
   const context = useContext(AuthContext);
   const dispatch = useDispatch();
 

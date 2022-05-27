@@ -1,15 +1,13 @@
 import { ActionType } from './action-type'
+import { UserForm } from '../../types/user-form'
 
 export interface Action {
   type: ActionType;
   payload: string;
 }
 
-export interface UserFormState {
-  firstName: string;
-  lastName: string;
+export interface UserFormState extends  UserForm{
   username: string;
-  email: string;
   password: string;
   repeatPassword: string;
 }

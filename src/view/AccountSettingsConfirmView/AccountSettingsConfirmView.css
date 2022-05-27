@@ -1,25 +1,27 @@
-.SignupView {
+.AccountSettingsConfirmView {
     border: 1px solid #B1B1B1;
     border-radius: 10px;
     padding: 5px;
 }
 
-.SignupView__form {
+.AccountSettingsConfirmView__avatar {
+    width: fit-content;
+    height: fit-content;
+    margin: 10px auto;
+}
+
+.AccountSettingsConfirmView__form {
     display: flex;
     flex-direction: column;
     width: 200px;
     margin: 10px;
 }
 
-.SignupView__form>.Button {
+.AccountSettingsConfirmView__form>.Button {
     margin: 10px 0 0 0;
 }
 
-.PasswordInput, .ShortTextInput {
-    margin: 3px 0;
-}
-
-.SignupView__validation-error {
+.AccountSettingsConfirmView__error {
     color: red;
     font-size: 0.7rem;
 }

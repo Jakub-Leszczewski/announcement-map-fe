@@ -6,13 +6,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { AuthContext } from '../../components/Auth/Auth'
-import { PasswordInput } from '../../components/common/PasswordInput/PasswordInput'
 import { StoreType } from '../../store'
 import { apiAuth } from '../../utils/api/apiAuth'
 import { HttpMethod } from '../../utils/api/http-method'
+import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
+import { UserForm } from '../../types/user-form'
 
 
-export function AccountSettingsConfirmView() {
+export const AccountSettingsConfirmView = () => {
   const context = useContext(AuthContext);
   const appStore = useSelector((store: StoreType) => store.app);
 
@@ -26,7 +27,7 @@ export function AccountSettingsConfirmView() {
       if(isSubmit && password) {
         const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
           method: HttpMethod.PATCH,
-          payload: { ...appStore.payload, password },
+          payload: { ...(appStore.payload as UserForm), password },
           jwt: context.jwt
         });
 
@@ -49,18 +50,17 @@ export function AccountSettingsConfirmView() {
   }
 
   return (
-    <section className="SignupView">
+    <section className="AccountSettingsConfirmView">
       <UserMenuHeader title="Weryfikacja" onClick={goBackHandler}/>
 
-      <div className="UserView__avatar">
+      <div className="AccountSettingsConfirmView__avatar">
         <UserAvatarBig/>
       </div>
 
-      <form onSubmit={onSubmitHandler} className="SignupView__form">
-        {error && <p className="SignupView__validation-error">{error}</p>}
+      <form onSubmit={onSubmitHandler} className="AccountSettingsConfirmView__form">
+        {error && <p className="AccountSettingsConfirmView__error">{error}</p>}
 
-       <PasswordInput
-        placeholder="Podaj hasło"
+       <ConfirmPassword
         value={password}
         onChange={(e: ChangeEvent<HTMLInputElement>)=> setPassword(e.target.value)}
        />
