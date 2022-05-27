@@ -8,7 +8,7 @@ import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { AuthContext } from '../../components/Auth/Auth'
 import { StoreType } from '../../store'
 import { apiAuth } from '../../utils/api/apiAuth'
-import { HttpMethod } from '../../utils/api/http-method'
+import { HttpMethods } from '../../types/http-methods'
 import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
 import { UserForm } from '../../types/user-form'
 
@@ -26,7 +26,7 @@ export const AccountSettingsConfirmView = () => {
     (async () => {
       if(isSubmit && password) {
         const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
-          method: HttpMethod.PATCH,
+          method: HttpMethods.PATCH,
           payload: { ...(appStore.payload as UserForm), password },
           jwt: context.jwt
         });

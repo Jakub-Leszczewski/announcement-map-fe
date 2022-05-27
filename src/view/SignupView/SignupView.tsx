@@ -9,7 +9,7 @@ import { PasswordFields } from '../../components/PasswordFields/PasswordFields'
 import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
-import { HttpMethod } from '../../utils/api/http-method'
+import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 
 const initialUserFormState: UserFormState = {
@@ -31,7 +31,7 @@ export function SignupView() {
     (async () => {
       if(isSubmit) {
         const data = await api('http://localhost:3001/api/auth/signup', {
-          method: HttpMethod.POST,
+          method: HttpMethods.POST,
           payload: userForm,
         });
 
