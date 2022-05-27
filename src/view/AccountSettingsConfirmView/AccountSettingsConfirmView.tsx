@@ -1,13 +1,11 @@
 import React, { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react'
 import './AccountSettingsConfirmView.css'
 import { Button } from '../../components/common/Button/Button'
-import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { openAccountSettings, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { AuthContext } from '../../components/Auth/Auth'
-import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
 import { PasswordInput } from '../../components/common/PasswordInput/PasswordInput'
 import { StoreType } from '../../store'
 import { apiAuth } from '../../utils/api/apiAuth'
@@ -20,9 +18,9 @@ export function AccountSettingsConfirmView() {
 
   const [password, setPassword] = useState<string>('');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const dispatchStore = useDispatch();
-  console.log({ ...appStore.payload, password })
+
   useEffect(() => {
     (async () => {
       if(isSubmit && password) {
@@ -31,6 +29,11 @@ export function AccountSettingsConfirmView() {
           payload: { ...appStore.payload, password },
           jwt: context.jwt
         });
+
+        if(data.status === 401) setError(data.data.error);
+        else if(data.status !== 200) dispatchStore(openAccountSettings({ error: data.data.error }));
+        else dispatchStore(openAccountSettings({message: 'Pomyślnie zaktualizowano.'}));
+
         setIsSubmit(false);
       }
     })();
@@ -66,13 +69,9 @@ export function AccountSettingsConfirmView() {
           width="100%"
           height={30}
           borderRadius="15px"
+          disabled={!password}
         >Zapisz</Button>
       </form>
     </section>
   );
 }
-
-//@TODO Dodać komunikaty błedu
-//@TODO Dodać tablice z tłumaczeniami
-//@TODO uporządkować kod
-//@TODO wyczyscić wszystkie pliki
