@@ -59,7 +59,7 @@ export const SignInView = () => {
 
       <form className="SignInView__form" onSubmit={submitHandler}>
         {error && <p className="SignInView__error">{error}</p>}
-        {(appStore.payload as InfoType).message
+        {(appStore.payload as InfoType)?.message
           && <p className="SignInView__message">{(appStore.payload as InfoType).message}</p>
         }
         <ShortTextInput

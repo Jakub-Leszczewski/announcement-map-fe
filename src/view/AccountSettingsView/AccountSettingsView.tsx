@@ -31,7 +31,6 @@ export const  AccountSettingsView = () => {
 
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [newJwt, setNewJwt] = useState<string | null>(context.jwt);
   const [userForm, dispatchForm] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
 
   const appStore = useSelector((store: StoreType) => store.app);
@@ -48,20 +47,15 @@ export const  AccountSettingsView = () => {
 
         if(data.status !== 200) setError(data.data.error);
         else {
-          const authData = await auth('http://localhost:3001/api/auth/token');
           setError(undefined);
-          setNewJwt(authData.jwt);
           dispatch(openAccountSettings({message: 'Pomyślnie zapisano'}));
+          dispatch(setJwt(null));
         }
 
         setIsSubmit(false);
       }
     })();
   }, [isSubmit]);
-
-  useEffect(()=> {
-    dispatch(setJwt(newJwt));
-  }, [newJwt]);
 
   const goBackHandler = () => {
     dispatch(openUser(undefined));
@@ -92,12 +86,12 @@ export const  AccountSettingsView = () => {
       <form onSubmit={onSubmitHandler} className="AccountSettingsView__form">
         {error && <p className="AccountSettingsView__validation-error">{error}</p>}
         {
-          (appStore.payload as InfoType).error
+          (appStore.payload as InfoType)?.error
           && <p className="AccountSettingsView__validation-error">{(appStore.payload as InfoType).error}</p>
         }
 
         {
-          (appStore.payload as InfoType).message
+          (appStore.payload as InfoType)?.message
           && <p className="AccountSettingsView__message">{(appStore.payload as InfoType).message}</p>
         }
 
