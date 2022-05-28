@@ -1,6 +1,7 @@
 .UserAvatar__avatar {
     position: relative;
     cursor: pointer;
+    background: white;
 }
 
 .UserAvatar__avatar {
