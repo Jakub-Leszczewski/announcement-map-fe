@@ -1,0 +1,23 @@
+.Map {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    top: 0;
+    left: 0;
+    border-radius: 0;
+}
+
+.leaflet-container {
+    height: 100%;
+    z-index: 0;
+}
+
+.leaflet-top {
+    position: absolute;
+    top: 35px;
+    border: none;
+}
+
+.leaflet-control-zoom-in, .leaflet-control-zoom-out {
+    border-radius: 4px;
+}
