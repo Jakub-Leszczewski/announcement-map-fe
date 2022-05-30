@@ -11,6 +11,7 @@ import { apiAuth } from '../../utils/api/apiAuth'
 import { HttpMethods } from '../../types/http-methods'
 import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
 import { UserForm } from '../../types/user-form'
+import { setJwt } from '../../store/slices/user-slice'
 
 
 export const AccountSettingsConfirmView = () => {
@@ -20,7 +21,7 @@ export const AccountSettingsConfirmView = () => {
   const [password, setPassword] = useState<string>('');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const dispatchStore = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -32,8 +33,11 @@ export const AccountSettingsConfirmView = () => {
         });
 
         if(data.status === 401) setError(data.data.error);
-        else if(data.status !== 200) dispatchStore(openAccountSettings({ error: data.data.error }));
-        else dispatchStore(openAccountSettings({message: 'Pomyślnie zaktualizowano.'}));
+        else if(data.status !== 200) dispatch(openAccountSettings({ error: data.data.error }));
+        else {
+          dispatch(openAccountSettings({ message: 'Pomyślnie zaktualizowano.' }));
+          dispatch(setJwt(null));
+        }
 
         setIsSubmit(false);
       }
@@ -41,7 +45,7 @@ export const AccountSettingsConfirmView = () => {
   }, [isSubmit])
 
   const goBackHandler = () => {
-    dispatchStore(openUser(undefined));
+    dispatch(openUser(undefined));
   }
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
