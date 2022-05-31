@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { openSignInChoice, openUser } from '../../store/slices/app-slice'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
 import { StoreType } from '../../store'
+import { useIsAuth } from '../../hooks/useIsAuth'
 
 export const User = () => {
-  const userStore = useSelector((store: StoreType) => store.user);
   const dispatch = useDispatch();
+  const isAuth = useIsAuth();
 
   const userLogInHandler = () => {
     dispatch(openSignInChoice(undefined));
@@ -19,7 +20,7 @@ export const User = () => {
 
   return <>
     {
-      userStore.user?.id
+      isAuth
       ? <UserAvatar onClick={userAccount}/>
       : <p className="User__login-text" onClick={userLogInHandler}>zaloguj się</p>
     }

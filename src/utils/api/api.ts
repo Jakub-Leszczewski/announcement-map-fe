@@ -16,6 +16,7 @@ interface Options {
 
 export const api = async (url: string, options?: Options): Promise<ApiHandlerReturn> => {
   const apiCall = async (jwt?: string) => {
+    console.log('asdsa')
     const res = await fetch(url, {
       method: options?.method || HttpMethods.GET,
       headers: {
@@ -57,10 +58,11 @@ export const api = async (url: string, options?: Options): Promise<ApiHandlerRet
   }
 
   try {
-    if(!options?.jwt === undefined) return apiCall();
+    console.log('asdsa')
+    if(options?.jwt === undefined) return apiCall();
 
     const jwtDecoded = decodeJwt(options?.jwt);
-
+    console.log('asdsa')
     if(jwtDecoded && jwtDecoded.exp * 1000 > Date.now() + 5000) return apiCallWithAuthRefresh(options?.jwt as string);
     else {
       const authData = await auth('http://localhost:3001/api/auth/token');

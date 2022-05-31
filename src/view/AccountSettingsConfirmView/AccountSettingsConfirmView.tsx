@@ -11,37 +11,49 @@ import { HttpMethods } from '../../types/http-methods'
 import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
 import { UserForm } from '../../types/user-form'
 import { setJwt } from '../../store/slices/user-slice'
+import { useUserDataAuth } from '../../hooks/useUserDataAuth'
+import { useJwt } from '../../hooks/useJwt'
 
 
 export const AccountSettingsConfirmView = () => {
-  const userStore = useSelector((store: StoreType) => store.user);
-  const appStore = useSelector((store: StoreType) => store.app);
+  const jwt = useJwt();
+  const userData = useUserDataAuth();
+
   const dispatch = useDispatch();
+  const appStore = useSelector((store: StoreType) => store.app);
 
   const [password, setPassword] = useState<string>('');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
+
+  if(!userData) return null;
 
   useEffect(() => {
     (async () => {
       if(isSubmit && password) {
-        const data = await api(`http://localhost:3001/api/users/${userStore.user?.id}`, {
+        const data = await api(`http://localhost:3001/api/users/${userData.id}`, {
           method: HttpMethods.PATCH,
           payload: { ...(appStore.payload as UserForm), password },
-          jwt: userStore.jwt
+          jwt,
         });
 
         if(data.status === 401) setError(data.data.error);
-        else if(data.status !== 200) dispatch(openAccountSettings({ error: data.data.error }));
-        else {
-          dispatch(openAccountSettings({ message: 'Pomyślnie zaktualizowano.' }));
-          dispatch(setJwt(null));
-        }
+        if(data.status === 200) setError(undefined);
+        else setError(data.data.error);
 
+        setSubmitStatus(data.status);
         setIsSubmit(false);
       }
     })();
-  }, [isSubmit])
+
+    if(submitStatus === 200) {
+      dispatch(setJwt(null));
+      dispatch(openAccountSettings({ message: 'Pomyślnie zaktualizowano.' }));
+    } else if (submitStatus && submitStatus !== 401) {
+      dispatch(openAccountSettings({ error }))
+    }
+  }, [isSubmit, submitStatus]);
 
   const goBackHandler = () => {
     dispatch(openUser(undefined));
