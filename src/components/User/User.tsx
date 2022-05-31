@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
 import './User.css'
-import { useDispatch } from 'react-redux'
-import { AuthContext } from '../Auth/Auth'
+import { useDispatch, useSelector } from 'react-redux'
 import { openSignInChoice, openUser } from '../../store/slices/app-slice'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
+import { StoreType } from '../../store'
+import { useIsAuth } from '../../hooks/useIsAuth'
 
 export const User = () => {
-  const context = useContext(AuthContext);
   const dispatch = useDispatch();
+  const isAuth = useIsAuth();
 
   const userLogInHandler = () => {
     dispatch(openSignInChoice(undefined));
@@ -19,7 +20,7 @@ export const User = () => {
 
   return <>
     {
-      context.id
+      isAuth
       ? <UserAvatar onClick={userAccount}/>
       : <p className="User__login-text" onClick={userLogInHandler}>zaloguj się</p>
     }

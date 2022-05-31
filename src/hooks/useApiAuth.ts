@@ -4,50 +4,33 @@ import { HttpMethods } from '../types/http-methods'
 import { useDispatch, useSelector } from 'react-redux'
 import { setJwt } from '../store/slices/user-slice'
 import { StoreType } from '../store'
-import jwtDecode from 'jwt-decode'
-import { auth } from '../utils/api/auth'
 
 export const useApiAuth = (url: string, method?: HttpMethods, payload?: any) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<number | null>(null);
   const [data, setData] = useState<any>(undefined);
-  const [newJwt, setNewJwt] = useState<string | null>(null);
-  const [isRefresh, setIsRefresh] = useState<boolean>(false);
+  const [newJwt, setNewJwt] = useState<string | null | undefined>(undefined);
 
   const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
-  const userJwtDecoded = userStore.jwt ? jwtDecode(userStore.jwt) : null;
-
-  const apiCall = async (jwt: string | null) => {
-    const data = await api(url, {method, payload, jwt})
-    setLoading(false);
-    setStatus(data.status);
-    setData(data.data);
-
-    return data.status;
-  }
-
   useEffect(() => {
     (async () => {
-      if(userJwtDecoded && (userJwtDecoded as any).exp > Date.now() + 10000 && !isRefresh) {
-        const status = await apiCall(userStore.jwt);
+      const data = await api(url, {
+        method,
+        payload,
+        jwt: userStore.jwt,
+      });
 
-        if(status === 401) {
-          setIsRefresh(true);
-        }
-      }
-      else {
-        const authData = await auth('http://localhost:3001/api/auth/token');
-        setNewJwt(authData.jwt);
-
-        await apiCall(authData.jwt || null);
-      }
-    })();
-  }, [isRefresh]);
+      setLoading(false);
+      setStatus(data.status);
+      setData(data.data);
+      data.newJwt !== undefined && setNewJwt(data.newJwt);
+    })()
+  }, [userStore.jwt]);
 
   useEffect(()=> {
-    if(newJwt) dispatch(setJwt(newJwt));
+    if(newJwt !== undefined) dispatch(setJwt(newJwt));
   }, [newJwt]);
 
   return [loading, status, data];

@@ -4,23 +4,21 @@ interface UserStateType {
   jwt: string | null;
 }
 
-interface SetJwt {
-  payload: string | null;
-}
-
-type Action = SetJwt;
-
 const initialState: UserStateType = {
   jwt: null,
+}
+
+interface SetJwt {
+  payload: string | null;
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setJwt: (state, action: Action) => {
+    setJwt: (state, action: SetJwt) => {
       state.jwt = action.payload;
-    }
+    },
   }
 });
 

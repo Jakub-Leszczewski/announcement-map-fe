@@ -1,8 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
 import { PasswordInput } from '../common/PasswordInput/PasswordInput'
-import { ActionType } from '../../view/SignupView/action-type'
-import { Action, UserFormState } from '../../view/SignupView/signup-form-reducer'
-import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
 
 interface Props {
   value?: string,

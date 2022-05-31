@@ -1,74 +1,81 @@
-import React, { FormEvent, useContext, useEffect, useReducer, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './AccountSettingsView.css'
 import { Button } from '../../components/common/Button/Button'
 import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { accountSettingsFormReducer, Action, UserFormState } from './account-settings-form-reducer'
-import { ActionType } from './action-type'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
-import { AuthContext } from '../../components/Auth/Auth'
 import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
-import { apiAuth } from '../../utils/api/apiAuth'
+import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 import { StoreType } from '../../store'
-import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
 import { InfoType } from '../../types/info-types'
+import { UserFormUpdate } from '../../types/user-form'
+import { useUserDataAuth } from '../../hooks/useUserDataAuth'
+import { useJwt } from '../../hooks/useJwt'
 
 export const  AccountSettingsView = () => {
-  const context = useContext(AuthContext);
-  const initialUserFormState: UserFormState = {
-    firstName: context.firstName || '',
-    lastName: context.lastName || '',
-    username: context.username || '',
-    email: context.email || '',
+  const userData = useUserDataAuth();
+  const jwt = useJwt();
+  if(!userData) return null;
+
+  const initialUserFormState: UserFormUpdate = {
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    email: userData.email,
     newPassword: '',
     repeatNewPassword: '',
   };
 
-  const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>(undefined);
-  const [userForm, dispatchForm] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
-
   const appStore = useSelector((store: StoreType) => store.app);
   const dispatch = useDispatch();
+
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [submitStatus, setSubmitStatus] = useState<number | null>(null);
+  const [userForm, setUserForm] = useState<UserFormUpdate>(initialUserFormState);
 
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
+        const data = await api(`http://localhost:3001/api/users/${userData.id}`, {
           method: HttpMethods.PATCH,
           payload: userForm,
-          jwt: context.jwt
+          jwt,
         });
 
         if(data.status !== 200) setError(data.data.error);
-        else {
-          setError(undefined);
-          dispatch(openAccountSettings({message: 'Pomyślnie zapisano'}));
-          dispatch(setJwt(null));
-        }
+        else setError(undefined);
 
+        setSubmitStatus(data.status);
         setIsSubmit(false);
       }
     })();
-  }, [isSubmit]);
+
+    if(submitStatus === 200) {
+      dispatch(openAccountSettings({message: 'Pomyślnie zapisano'}));
+      dispatch(setJwt(null));
+    }
+  }, [isSubmit, submitStatus]);
 
   const goBackHandler = () => {
     dispatch(openUser(undefined));
   }
 
-  const changeFormHandle = (action: Action) => {
-    dispatchForm(action);
-  }
+  const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserForm(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(userForm.email !== context.email || userForm.newPassword) {
+    if(userForm.email !== userData.email || userForm.newPassword) {
       dispatch(openAccountSettingsConfirm(userForm));
     } else {
       setIsSubmit(true);
@@ -97,40 +104,37 @@ export const  AccountSettingsView = () => {
 
         <ShortTextInput
           placeholder="imie"
+          name="firstName"
           maxLength={60}
           minLength={3}
           required
           value={userForm.firstName}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_FIRST_NAME, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
         <ShortTextInput
           placeholder="nazwisko"
+          name="lastName"
           maxLength={60}
           minLength={3}
           required
           value={userForm.lastName}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_LAST_NAME, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
         <ShortTextInput
           placeholder="email"
+          name="email"
           email
           maxLength={255}
           minLength={3}
           required
           value={userForm.email}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_EMAIL, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
 
         <br />
         <NewPasswordFields
           userForm={userForm}
-          changeFormHandle={changeFormHandle}
+          changeFormHandle={changeFormHandler}
         />
 
         <Button
