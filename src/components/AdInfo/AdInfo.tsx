@@ -2,25 +2,41 @@ import React from 'react';
 import './AdInfo.css'
 
 interface Props {
-
+  id: string;
+  name: string;
+  description: string
+  price: number;
+  country: string;
+  city: string;
+  zipCode: string;
+  address: string;
+  date: Date;
+  links: {
+    id: string;
+    name: string;
+    url: string;
+  }[];
 }
 
-export const AdInfo = ({}: Props) => {
+export const AdInfo = ({
+  id, name, description, price, country, city, zipCode, address, date, links
+}: Props) => {
   return (
     <section className="AdInfo">
       <header className="AdInfo__header">
-        <h3>Nazwa Produktu</h3>
-        <p>10.23zł</p>
+        <h3>{name}</h3>
+        <p>{price.toFixed(2)}zł</p>
       </header>
-      <p className="AdInfo__id">id: nakjdnaskn3uioh4892jdsoiamf093j20jdoa</p>
+      <p className="AdInfo__id">id: {id}</p>
 
-      <p className="AdInfo__address">Krosno 38-400 Magurów 3/8</p>
-      <p className="AdInfo__description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur consequuntur deserunt, dolores dolorum id illo, in ipsum iste iusto laudantium nemo neque nobis odit quam soluta temporibus vero. Consequuntur, nesciunt.</p>
+      <p className="AdInfo__address">{country} {zipCode} {city} {address}</p>
+      <p className="AdInfo__description">{description}</p>
       <div className="AdInfo__link-container">
-        <a href="">Allegro</a>
-        <a href="">Olx</a>
+        {links.map((e) => (
+          <a key={e.id} href={e.url}>{e.name}</a>
+        ))}
       </div>
-      <p className="AdInfo__date">05.01.2022</p>
+      <p className="AdInfo__date">{date.toLocaleDateString()}</p>
     </section>
   )
 }

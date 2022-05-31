@@ -1,11 +1,18 @@
 .UserMenu {
     position: absolute;
     right: 0;
-    top: 50px;
-    width: fit-content;
+    top: 85px;
+    width: 30vw;
+    min-width: 250px;
     max-width: 90vw;
     height: fit-content;
-    max-height: 80vw;
+    max-height: 70vh;
     margin: 10px;
-    background: white;
+    overflow-y: auto;
+}
+
+@media only screen and (min-width: 700px) {
+    .UserMenu {
+        top: 45px;
+    }
 }

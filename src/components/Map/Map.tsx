@@ -25,7 +25,26 @@ export const Map = () => {
           </Marker>
 
           <Marker position={[53.095929,18.0150541]}>
-            <Popup><AdPopup/></Popup>
+            <Popup>
+              <AdPopup
+                id={'dsdadadasds3eesadar32r2'}
+                name={'Nazwa Produktu'}
+                description={' jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis  jakiś' +
+                  ' opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i' +
+                  ' długi opis  jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis'}
+                price={20.10}
+                country={'Polska'}
+                city={'Bydgoszcz'}
+                zipCode={'23-234'}
+                address={'Glinki 3/52'}
+                date={new Date()}
+                links={[
+                  {id: 'greherff', name: 'olx', url: ''},
+                  {id: 'sdfelkqldm', name: 'allegro', url: ''},
+                  {id: 'kopr4fkwdl', name: 'aliexpress', url: ''},
+                ]}
+              />
+            </Popup>
           </Marker>
 
         </MapContainer>

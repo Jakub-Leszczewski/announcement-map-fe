@@ -32,22 +32,21 @@
     border-radius: 4px;
 }
 
-.leaflet-popup {
-    max-width: 90vw;
-    max-height: 55vh;
-    overflow-y: auto;
-}
+/*.leaflet-popup {*/
+/*    max-width: 90vw;*/
+/*    max-height: 55vh;*/
+/*}*/
 
 .leaflet-popup-content-wrapper {
     width: 100%;
 }
 
+.leaflet-popup-content {
+    margin: 0;
+}
+
 @media only screen and (min-width: 700px) {
     .leaflet-top {
         top: 35px;
-    }
-
-    .leaflet-popup {
-        overflow-y: initial;
     }
 }
