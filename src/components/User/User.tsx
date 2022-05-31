@@ -1,12 +1,12 @@
 import React, { useContext } from 'react'
 import './User.css'
-import { useDispatch } from 'react-redux'
-import { AuthContext } from '../Auth/Auth'
+import { useDispatch, useSelector } from 'react-redux'
 import { openSignInChoice, openUser } from '../../store/slices/app-slice'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
+import { StoreType } from '../../store'
 
 export const User = () => {
-  const context = useContext(AuthContext);
+  const userStore = useSelector((store: StoreType) => store.user);
   const dispatch = useDispatch();
 
   const userLogInHandler = () => {
@@ -19,7 +19,7 @@ export const User = () => {
 
   return <>
     {
-      context.id
+      userStore.user?.id
       ? <UserAvatar onClick={userAccount}/>
       : <p className="User__login-text" onClick={userLogInHandler}>zaloguj się</p>
     }

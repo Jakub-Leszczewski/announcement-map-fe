@@ -5,9 +5,8 @@ import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
-import { AuthContext } from '../../components/Auth/Auth'
 import { StoreType } from '../../store'
-import { apiAuth } from '../../utils/api/apiAuth'
+import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
 import { UserForm } from '../../types/user-form'
@@ -15,21 +14,21 @@ import { setJwt } from '../../store/slices/user-slice'
 
 
 export const AccountSettingsConfirmView = () => {
-  const context = useContext(AuthContext);
+  const userStore = useSelector((store: StoreType) => store.user);
   const appStore = useSelector((store: StoreType) => store.app);
+  const dispatch = useDispatch();
 
   const [password, setPassword] = useState<string>('');
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
       if(isSubmit && password) {
-        const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
+        const data = await api(`http://localhost:3001/api/users/${userStore.user?.id}`, {
           method: HttpMethods.PATCH,
           payload: { ...(appStore.payload as UserForm), password },
-          jwt: context.jwt
+          jwt: userStore.jwt
         });
 
         if(data.status === 401) setError(data.data.error);

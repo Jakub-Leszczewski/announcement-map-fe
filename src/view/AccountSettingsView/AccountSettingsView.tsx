@@ -8,23 +8,23 @@ import { ActionType } from './action-type'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
-import { AuthContext } from '../../components/Auth/Auth'
 import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
-import { apiAuth } from '../../utils/api/apiAuth'
+import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 import { StoreType } from '../../store'
-import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
 import { InfoType } from '../../types/info-types'
 
 export const  AccountSettingsView = () => {
-  const context = useContext(AuthContext);
+  const appStore = useSelector((store: StoreType) => store.app);
+  const userStore = useSelector((store: StoreType) => store.user);
+  const dispatch = useDispatch();
   const initialUserFormState: UserFormState = {
-    firstName: context.firstName || '',
-    lastName: context.lastName || '',
-    username: context.username || '',
-    email: context.email || '',
+    firstName: userStore.user?.firstName || '',
+    lastName: userStore.user?.lastName || '',
+    username: userStore.user?.username || '',
+    email: userStore.user?.email || '',
     newPassword: '',
     repeatNewPassword: '',
   };
@@ -33,16 +33,13 @@ export const  AccountSettingsView = () => {
   const [error, setError] = useState<string | undefined>(undefined);
   const [userForm, dispatchForm] = useReducer<React.Reducer<UserFormState, Action>>(accountSettingsFormReducer, initialUserFormState);
 
-  const appStore = useSelector((store: StoreType) => store.app);
-  const dispatch = useDispatch();
-
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await apiAuth(`http://localhost:3001/api/users/${context.id}`, {
+        const data = await api(`http://localhost:3001/api/users/${userStore.user?.id}`, {
           method: HttpMethods.PATCH,
           payload: userForm,
-          jwt: context.jwt
+          jwt: userStore.jwt
         });
 
         if(data.status !== 200) setError(data.data.error);
@@ -68,7 +65,7 @@ export const  AccountSettingsView = () => {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(userForm.email !== context.email || userForm.newPassword) {
+    if(userForm.email !== userStore.user?.email || userForm.newPassword) {
       dispatch(openAccountSettingsConfirm(userForm));
     } else {
       setIsSubmit(true);
