@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import { PasswordInput } from '../common/PasswordInput/PasswordInput'
-import { ActionType } from '../../view/SignupView/action-type'
-import { Action, UserFormState } from '../../view/SignupView/signup-form-reducer'
-import { passwordValidation, repeatPasswordCompareWithPassword } from '../../utils/validation'
+import { passwordValidation } from '../../utils/validation'
+import { UserFormSignup } from '../../types/user-form'
 
 interface Props {
   disabled?: boolean;
   required?: boolean;
-  userForm: UserFormState;
-  changeFormHandle: (type: Action) => void;
+  userForm: UserFormSignup;
+  changeFormHandle: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:Props) => {
@@ -33,15 +32,14 @@ export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:
     }
     <PasswordInput
       placeholder="hasło"
+      name="password"
       value={userForm.password}
       onBlur={onPasswordBlur}
       minLength={8}
       maxLength={36}
       disabled={disabled}
       required={required}
-      onChange={(e) => {
-        changeFormHandle({type: ActionType.CHANGE_PASSWORD, payload: e.target.value})
-      }}
+      onChange={changeFormHandle}
     />
 
     {
@@ -54,12 +52,11 @@ export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:
     <PasswordInput
       placeholder="potwierdź hasło"
       value={userForm.repeatPassword}
+      name="repeatPassword"
       onBlur={onRepeatPasswordBlur}
       disabled={disabled}
       required={required}
-      onChange={(e) => {
-        changeFormHandle({type: ActionType.CHANGE_REPEAT_PASSWORD, payload: e.target.value})
-      }}
+      onChange={changeFormHandle}
     />
   </>
 }
