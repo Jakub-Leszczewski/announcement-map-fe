@@ -1,18 +1,17 @@
-import React, { FormEvent, useEffect, useReducer, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useReducer, useState } from 'react'
 import './SignupView.css'
 import { Button } from '../../components/common/Button/Button'
 import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { Action, signupFormReducer, UserFormState } from './signup-form-reducer'
-import { ActionType } from './action-type'
 import { PasswordFields } from '../../components/PasswordFields/PasswordFields'
 import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
+import { UserFormSignup } from '../../types/user-form'
 
-const initialUserFormState: UserFormState = {
+const initialUserFormState: UserFormSignup = {
   firstName: '',
   lastName: '',
   username: '',
@@ -22,10 +21,11 @@ const initialUserFormState: UserFormState = {
 }
 
 export function SignupView() {
+  const dispatch = useDispatch();
+  const [userForm, setUserForm] = useState<UserFormSignup>(initialUserFormState);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [error, setError] = useState<string | undefined>(undefined);
-  const [userForm, dispatch] = useReducer<React.Reducer<UserFormState, Action>>(signupFormReducer, initialUserFormState);
-  const dispatchStore = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -35,26 +35,28 @@ export function SignupView() {
           payload: userForm,
         });
 
-        if(data.status !== 201 && data.data?.error) {
-          setError(data.data.error)
-        } else if(data.status === 201) {
-          dispatchStore(openSignIn({message: 'Konto zostało pomyślnie utworzone.'}));
-        }
+        setSubmitStatus(data.status);
+        setError(data?.data.error);
 
         setIsSubmit(false);
       }
     })();
+
+    if(submitStatus === 201) dispatch(openSignIn({message: 'Konto zostało pomyślnie utworzone.'}));
   }, [isSubmit]);
 
   const goBackHandler = () => {
-    dispatchStore(openSignInChoice(undefined));
+    dispatch(openSignInChoice(undefined));
   }
 
-  const changeFormHandle = (action: Action) => {
-    dispatch(action);
-  }
+  const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserForm(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
-  const onSubmitHandle = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmit(true);
   }
@@ -63,55 +65,51 @@ export function SignupView() {
     <section className="SignupView">
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
 
-      <form onSubmit={onSubmitHandle} className="SignupView__form">
+      <form onSubmit={onSubmitHandler} className="SignupView__form">
         {error && <p className="SignupView__validation-error">{error}</p>}
 
         <ShortTextInput
           placeholder="imie"
+          name="firstName"
           maxLength={60}
           minLength={3}
           required
           value={userForm.firstName}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_FIRST_NAME, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
         <ShortTextInput
           placeholder="nazwisko"
+          name="lastName"
           maxLength={60}
           minLength={3}
           required
           value={userForm.lastName}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_LAST_NAME, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
         <ShortTextInput
           placeholder="login"
+          name="username"
           maxLength={60}
           minLength={3}
           required
           value={userForm.username}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_USERNAME, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
         <ShortTextInput
           placeholder="email"
+          name="email"
           email
           maxLength={255}
           minLength={3}
           required
           value={userForm.email}
-          onChange={(e) => {
-            changeFormHandle({type: ActionType.CHANGE_EMAIL, payload: e.target.value})
-          }}
+          onChange={changeFormHandler}
         />
 
         <br />
         <PasswordFields
           userForm={userForm}
-          changeFormHandle={changeFormHandle}
+          changeFormHandle={changeFormHandler}
           required
         />
         <Button
