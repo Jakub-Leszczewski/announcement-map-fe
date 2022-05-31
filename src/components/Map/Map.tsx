@@ -24,7 +24,7 @@ export const Map = () => {
             <Popup><UserPopup isGeolocation={userLocation.isAllow}/></Popup>
           </Marker>
 
-          <Marker position={[52.2408503,21.0065499]}>
+          <Marker position={[53.095929,18.0150541]}>
             <Popup><AdPopup/></Popup>
           </Marker>
 
