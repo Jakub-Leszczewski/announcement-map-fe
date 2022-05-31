@@ -36,6 +36,12 @@
 
 .AdInfo__link-container a {
     margin: 2px 0;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.AdInfo__link-container a {
+    margin: 2px 0;
 }
 
 .AdInfo__date {
