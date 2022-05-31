@@ -3,6 +3,7 @@ import './PasswordInput.css';
 
 interface Props {
   placeholder: string;
+  name?: string;
   disabled?: boolean;
   required?: boolean;
   value?: string;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 export const PasswordInput = ({
-  placeholder, value, disabled, required, onChange, onFocus, onBlur, maxLength, minLength
+  placeholder, name, value, disabled, required, onChange, onFocus, onBlur, maxLength, minLength
 }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -32,6 +33,7 @@ export const PasswordInput = ({
         className="PasswordInput__input"
         type={visible ? "text" : "password"}
         placeholder={placeholder}
+        name={name}
         required={required}
         minLength={minLength}
         maxLength={maxLength}

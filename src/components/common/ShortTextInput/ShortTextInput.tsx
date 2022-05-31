@@ -3,6 +3,7 @@ import './ShortTextInput.css';
 
 interface Props {
   placeholder: string;
+  name?: string;
   email?: boolean;
   required?: boolean;
   minLength?: number;
@@ -13,11 +14,12 @@ interface Props {
 }
 
 export function ShortTextInput({
-  placeholder, email, required, minLength, maxLength, value, disabled, onChange
+  placeholder, name, email, required, minLength, maxLength, value, disabled, onChange
 }: Props) {
   return (
     <input
       className="ShortTextInput"
+      name={name}
       type={email ? 'email' : 'text'}
       placeholder={placeholder}
       required={required}
