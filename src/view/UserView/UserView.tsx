@@ -2,17 +2,18 @@ import React, { useContext, useEffect, useState } from 'react'
 import './UserView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openNone, openSignup } from '../../store/slices/app-slice'
-import { AuthContext } from '../../components/Auth/Auth'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
+import { StoreType } from '../../store'
 
 export const UserView = () => {
   const [logout, setLogout] = useState<boolean>(false);
-  const context = useContext(AuthContext);
+  const [logoutStatus, setLogoutStatus] = useState<number | null>(null);
+  const userStore = useSelector((store: StoreType) => store.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,13 +21,17 @@ export const UserView = () => {
       if(logout) {
         const logoutData = await api('http://localhost:3001/api/auth/logout', {method: HttpMethods.DELETE});
         if(logoutData.status === 200) {
-          dispatch(setJwt(null));
-          dispatch(openNone(undefined));
+          setLogoutStatus(200);
           setLogout(false);
         }
       }
     })();
-  }, [logout]);
+
+    if(logoutStatus === 200) {
+      dispatch(setJwt(null));
+      dispatch(openNone(undefined));
+    }
+  }, [logout, logoutStatus]);
 
   const goBackHandler = () => {
     dispatch(openNone(undefined));
@@ -47,7 +52,7 @@ export const UserView = () => {
         <UserAvatarBig/>
       </div>
 
-      <h2 className="UserView__name">{context.firstName + ' ' + context.lastName}</h2>
+      <h2 className="UserView__name">{userStore.user?.firstName + ' ' + userStore.user?.lastName}</h2>
 
       <div className="UserView__buttons-container">
         <Button width="100%" height={30} borderRadius="15px" >Twoje ogłoszenia</Button>

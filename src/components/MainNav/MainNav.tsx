@@ -4,6 +4,9 @@ import { Button } from '../common/Button/Button';
 import { Select } from '../common/Select/Select';
 import './MainNav.css';
 import { User } from '../User/User'
+import { useApiAuth } from '../../hooks/useApiAuth'
+import { useDispatch } from 'react-redux'
+import { setJwt } from '../../store/slices/user-slice'
 
 export function MainNav() {
   return (
