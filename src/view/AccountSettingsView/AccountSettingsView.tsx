@@ -16,6 +16,7 @@ import { InfoType } from '../../types/info-types'
 import { UserFormUpdate } from '../../types/user-form'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
+import { ErrorRes, UserEntityRes } from 'types'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
@@ -41,13 +42,13 @@ export const  AccountSettingsView = () => {
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await api(`http://localhost:3001/api/users/${userData.id}`, {
+        const data = await api<UserEntityRes | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
           method: HttpMethods.PATCH,
           payload: userForm,
           jwt,
         });
 
-        if(data.status !== 200) setError(data.data.error);
+        if(data.status !== 200) setError((data.data as ErrorRes).error);
         else setError(undefined);
 
         setSubmitStatus(data.status);

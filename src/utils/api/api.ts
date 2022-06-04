@@ -2,9 +2,9 @@ import { HttpMethods } from '../../types/http-methods'
 import { auth } from './auth'
 import { decodeJwt } from '../decode-jwt'
 
-interface ApiHandlerReturn {
+interface ApiHandlerReturn<T> {
   status: number | null;
-  data: any;
+  data: T | undefined;
   newJwt?: string | null;
 }
 
@@ -14,7 +14,7 @@ interface Options {
   jwt?: string | null;
 }
 
-export const api = async (url: string, options?: Options): Promise<ApiHandlerReturn> => {
+export const api = async <T>(url: string, options?: Options): Promise<ApiHandlerReturn<T>> => {
   const apiCall = async (jwt?: string) => {
     const res = await fetch(url, {
       method: options?.method || HttpMethods.GET,
@@ -30,7 +30,7 @@ export const api = async (url: string, options?: Options): Promise<ApiHandlerRet
 
     return {
       status: res.status || null,
-      data: data || undefined,
+      data: data as T || undefined,
     }
   }
 

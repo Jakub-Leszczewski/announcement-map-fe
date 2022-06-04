@@ -23,7 +23,7 @@ export const useCurrenGeolocation = (initialLocation: [number, number]): UserCur
         setIsAllow(false);
       }
     })();
-  });
+  }, []);
 
   if(!coords) return null;
 

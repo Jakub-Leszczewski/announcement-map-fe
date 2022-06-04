@@ -10,6 +10,7 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 import { UserFormSignup } from '../../types/user-form'
+import { UserEntityRes, ErrorRes } from 'types'
 
 const initialUserFormState: UserFormSignup = {
   firstName: '',
@@ -30,13 +31,14 @@ export function SignupView() {
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await api('http://localhost:3001/api/auth/signup', {
+        const data = await api<UserEntityRes | ErrorRes>('http://localhost:3001/api/auth/signup', {
           method: HttpMethods.POST,
           payload: userForm,
         });
 
+        if(data.status !== 201) setError((data?.data as ErrorRes).error);
+
         setSubmitStatus(data.status);
-        setError(data?.data.error);
 
         setIsSubmit(false);
       }

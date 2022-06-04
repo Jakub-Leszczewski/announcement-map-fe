@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import './Map.css';
@@ -7,9 +7,18 @@ import { useCurrenGeolocation } from '../../hooks/useCurrenGeolocation'
 import { userIcon } from '../../utils/map-icons'
 import { UserPopup } from '../UserPopup/UserPopup'
 import { AdPopup } from '../AdPopup/AdPopup'
+import { useApi } from '../../hooks/useApi'
+import { AnnouncementEntitySimple } from 'types';
+import { groupAnnouncementByCoords } from '../../utils/groupAnnouncementByCoords'
+import { log } from 'util'
 
 export const Map = () => {
-  const userLocation = useCurrenGeolocation([52.2408503,21.0065499])
+  const userLocation = useCurrenGeolocation([52.2408503,21.0065499]);
+  const [loading, status, data] = useApi<AnnouncementEntitySimple[]>('http://localhost:3001/api/announcement');
+
+  const announcementGroups = useMemo(() => (!loading && status === 200 && data
+    ? groupAnnouncementByCoords(data) : []), [data]);
+
   return (
     <div className="Map">
       {
@@ -20,33 +29,18 @@ export const Map = () => {
             attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap & contributors</a>"
           />
 
+          {
+            !loading && status === 200 && announcementGroups ? announcementGroups.map((group) => (
+              <Marker key={group[0].id} position={[group[0].lat, group[0].lon]}>
+                <Popup>
+                  <AdPopup id={group.map((announcement) => announcement.id)}/>
+                </Popup>
+              </Marker>
+            )): null
+          }
           <Marker position={userLocation.coords} icon={userIcon}>
             <Popup><UserPopup isGeolocation={userLocation.isAllow}/></Popup>
           </Marker>
-
-          <Marker position={[53.095929,18.0150541]}>
-            <Popup>
-              <AdPopup
-                id={'dsdadadasds3eesadar32r2'}
-                name={'Nazwa Produktu'}
-                description={' jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis  jakiś' +
-                  ' opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i' +
-                  ' długi opis  jakiś opis bardzo fajny i długi opis  jakiś opis bardzo fajny i długi opis'}
-                price={20.10}
-                country={'Polska'}
-                city={'Bydgoszcz'}
-                zipCode={'23-234'}
-                address={'Glinki 3/52'}
-                date={new Date()}
-                links={[
-                  {id: 'greherff', name: 'olx', url: ''},
-                  {id: 'sdfelkqldm', name: 'allegro', url: ''},
-                  {id: 'kopr4fkwdl', name: 'aliexpress', url: ''},
-                ]}
-              />
-            </Popup>
-          </Marker>
-
         </MapContainer>
       }
     </div>
