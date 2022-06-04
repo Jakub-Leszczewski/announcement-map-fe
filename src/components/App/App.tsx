@@ -5,14 +5,14 @@ import { store } from '../../store'
 import { UserMenu } from '../UserMenu/UserMenu'
 import { MainNav } from '../MainNav/MainNav'
 import { Auth } from '../Auth/Auth'
-// import { Map } from '../Map/Map'
+import { Map } from '../Map/Map'
 
 function App() {
   return (
     <div className="App">
       <Provider store={store}>
         <Auth>
-          {/*<Map/>*/}
+          <Map/>
           <MainNav/>
           <UserMenu/>
         </Auth>

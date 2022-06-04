@@ -14,10 +14,39 @@
 
 .leaflet-top {
     position: absolute;
-    top: 35px;
+    top: 85px;
     border: none;
+}
+
+.leaflet-bottom {
+    position: absolute;
+    top: 100vh;
+    transform: translateY(-20px);
+}
+
+.leaflet-popup-content p {
+    margin: 0;
 }
 
 .leaflet-control-zoom-in, .leaflet-control-zoom-out {
     border-radius: 4px;
+}
+
+/*.leaflet-popup {*/
+/*    max-width: 90vw;*/
+/*    max-height: 55vh;*/
+/*}*/
+
+.leaflet-popup-content-wrapper {
+    width: 100%;
+}
+
+.leaflet-popup-content {
+    margin: 0;
+}
+
+@media only screen and (min-width: 700px) {
+    .leaflet-top {
+        top: 35px;
+    }
 }
