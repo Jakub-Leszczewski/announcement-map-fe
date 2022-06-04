@@ -1,17 +1,17 @@
 import { HttpMethods } from '../../types/http-methods'
 
-interface AuthHandlerOverload {
-  (url: string): Promise<AuthHandlerReturn>;
-  (url: string, username: string, password: string): Promise<AuthHandlerReturn>;
-}
-
 interface AuthHandlerReturn {
   status: number | null;
   jwt: string | null;
   error: string | null;
 }
 
-export const auth:AuthHandlerOverload = async (url, username?, password?) => {
+interface AuthHandlerOverload {
+  (url: string): Promise<AuthHandlerReturn>;
+  (url: string, username: string, password: string): Promise<AuthHandlerReturn>;
+}
+
+export const auth:AuthHandlerOverload = async (url, username?, password?): Promise<AuthHandlerReturn> => {
   const isSignIn = username && password;
 
   try {

@@ -2,7 +2,7 @@
     position: absolute;
     right: 0;
     top: 85px;
-    width: 30vw;
+    width: fit-content;
     min-width: 250px;
     max-width: 90vw;
     height: fit-content;

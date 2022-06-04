@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { UserEntityRes, UserRole } from 'types';
+import { ErrorRes, UserEntityRes, UserRole } from 'types';
 import { useDispatch, useSelector } from 'react-redux'
 import { StoreType } from '../../store';
 import { auth } from '../../utils/api/auth'
@@ -29,18 +29,18 @@ export const Auth = ({children}: Props) => {
   const userStore = useSelector((store: StoreType) => store.user);
 
   const [newJwt, setNewJwt] = useState<string | null | undefined>(undefined);
-  const [userData, setUserData] = useState<UserEntityRes | null>(null);
+  const [userData, setUserData] = useState<UserEntityRes | undefined>(undefined);
 
   const decodedJwt = decodeJwt(userStore.jwt);
   useEffect(() => {
     (async () => {
       if(userStore.jwt) {
         if (decodedJwt !== null) {
-          const data = await api(`http://localhost:3001/api/users/${decodedJwt.id}`, {
+          const data = await api<UserEntityRes | ErrorRes>(`http://localhost:3001/api/users/${decodedJwt.id}`, {
             jwt: userStore.jwt,
           });
 
-          setUserData(data.data);
+          setUserData(!(data.data as ErrorRes)?.error ? (data.data as UserEntityRes) : undefined);
           setNewJwt(data.newJwt);
         }
       } else {
