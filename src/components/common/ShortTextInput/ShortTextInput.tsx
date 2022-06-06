@@ -8,7 +8,7 @@ interface Props {
   type?: HTMLInputTypeAttribute;
   pattern?: string;
   inputMode?: "search" | "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal";
-  placeholder: string;
+  placeholder?: string;
   label?: string;
   name?: string;
   required?: boolean;

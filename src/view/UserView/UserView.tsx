@@ -62,13 +62,13 @@ export const UserView = () => {
       <h2 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h2>
 
       <div className="UserView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" >Twoje ogłoszenia</Button>
-        <Button width="100%" height={30} borderRadius="15px" onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
-        <Button width="100%" height={30} borderRadius="15px" onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
+        <Button >Twoje ogłoszenia</Button>
+        <Button onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
+        <Button onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
       </div>
 
       <div className="UserView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" onClick={logoutHandler}>Wyloguj się</Button>
+        <Button onClick={logoutHandler}>Wyloguj się</Button>
       </div>
     </section>
   );

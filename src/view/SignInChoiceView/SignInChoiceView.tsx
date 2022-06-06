@@ -25,8 +25,8 @@ export const SignInChoiceView = () => {
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
       <div className="SignInChoiceView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" onClick={goSignInHandler}>Zaloguj się</Button>
-        <Button width="100%" height={30} borderRadius="15px" onClick={goSignupHandler}>Zarejestruj się</Button>
+        <Button onClick={goSignInHandler}>Zaloguj się</Button>
+        <Button onClick={goSignupHandler}>Zarejestruj się</Button>
       </div>
     </section>
   );

@@ -2,28 +2,22 @@ import React, { ReactNode } from 'react'
 import './Button.css'
 
 interface Props {
+  type?: 'button' | 'submit' | 'reset';
   children?: ReactNode;
   disabled?: boolean;
-  width?: number | string;
-  height?: number | string;
-  padding?: number | string;
-  borderRadius?: number | string;
   onClick?: () => void;
+  form?: string;
 }
 
 export const Button = ({
-  children, disabled, width = '100%', height = '34px', padding = '5px', borderRadius = '10px', onClick
+  children, disabled, onClick, type, form
 }: Props) => (
     <button
+      type={type}
       className="Button"
       onClick={onClick}
       disabled={disabled}
-      style={{
-        width: (typeof width === 'number') ? `${width}px` : width,
-        height: (typeof height === 'number') ? `${height}px` : height,
-        padding: (typeof padding === 'number') ? `${padding}px` : padding,
-        borderRadius: (typeof borderRadius === 'number') ? `${borderRadius}px` : borderRadius
-      }}
+      form={form}
     >
       {children ?? "click me"}
     </button>

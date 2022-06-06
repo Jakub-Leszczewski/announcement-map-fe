@@ -1,0 +1,25 @@
+.AuctionLink {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 8px 0;
+    height: 15px;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.AuctionLink>i {
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+@media only screen and (min-width: 600px) {
+    .AuctionLink>i {
+        display: none;
+    }
+
+    .AuctionLink:hover>i {
+        display: initial;
+    }
+}

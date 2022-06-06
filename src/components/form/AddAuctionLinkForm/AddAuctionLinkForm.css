@@ -1,0 +1,22 @@
+@media only screen and (min-width: 600px) {
+    .AddAuctionLinkForm {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .AddAuctionLinkForm>label:first-child {
+        width: 100px;
+        margin: 0;
+    }
+
+    .AddAuctionLinkForm>label:nth-child(2) {
+        width: 250px;
+        margin: 0;
+    }
+
+    .AddAuctionLinkForm>button {
+        width: 50px;
+        height: 25px;
+    }
+}

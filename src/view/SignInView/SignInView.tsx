@@ -86,7 +86,7 @@ export const SignInView = () => {
           onChange={changeFormHandler}
         />
 
-        <Button width="100%" height={30} borderRadius="15px">Zaloguj się</Button>
+        <Button>Zaloguj się</Button>
       </form>
     </section>
   );
