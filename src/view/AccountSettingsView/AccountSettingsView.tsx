@@ -6,7 +6,7 @@ import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
-import { NewPasswordFields } from '../../components/NewPasswordFields/NewPasswordFields'
+import { NewPasswordInputFields } from '../../components/form/NewPasswordInputFields/NewPasswordInputFields'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
@@ -17,6 +17,7 @@ import { UserFormUpdate } from '../../types/user-form'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
 import { ErrorRes, UserEntityRes } from 'types'
+import { UserNameInputFields } from '../../components/form/UserNameFields/UserNameInputFields'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
@@ -103,38 +104,25 @@ export const  AccountSettingsView = () => {
           && <p className="AccountSettingsView__message">{(appStore.payload as InfoType).message}</p>
         }
 
-        <ShortTextInput
-          placeholder="imie"
-          name="firstName"
-          maxLength={60}
-          minLength={3}
-          required
-          value={userForm.firstName}
-          onChange={changeFormHandler}
+        <UserNameInputFields
+          userForm={userForm}
+          changeFormHandle={changeFormHandler}
         />
+
         <ShortTextInput
-          placeholder="nazwisko"
-          name="lastName"
-          maxLength={60}
-          minLength={3}
-          required
-          value={userForm.lastName}
-          onChange={changeFormHandler}
-        />
-        <ShortTextInput
+          label="Email:"
           placeholder="email"
           name="email"
-          email
+          type="email"
           maxLength={255}
           minLength={3}
-          required
           value={userForm.email}
           onChange={changeFormHandler}
         />
 
         <br />
-        <NewPasswordFields
-          userForm={userForm}
+        <NewPasswordInputFields
+          form={userForm}
           changeFormHandle={changeFormHandler}
         />
 

@@ -3,7 +3,7 @@ import './UserView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettings, openNone, openSignup } from '../../store/slices/app-slice'
+import { openAccountSettings, openAddAnnouncement, openNone, openSignup } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
@@ -45,6 +45,11 @@ export const UserView = () => {
     dispatch(openAccountSettings(undefined));
   }
 
+  const goAddAnnouncementHandler = () => {
+    dispatch(openAddAnnouncement(undefined));
+  }
+
+
   if (!userData) return null;
 
   return(
@@ -58,7 +63,7 @@ export const UserView = () => {
 
       <div className="UserView__buttons-container">
         <Button width="100%" height={30} borderRadius="15px" >Twoje ogłoszenia</Button>
-        <Button width="100%" height={30} borderRadius="15px" >Dodaj ogłoszenie</Button>
+        <Button width="100%" height={30} borderRadius="15px" onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
         <Button width="100%" height={30} borderRadius="15px" onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
       </div>
 

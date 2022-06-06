@@ -1,9 +1,8 @@
 import React, { ChangeEvent, FormEvent, useEffect, useReducer, useState } from 'react'
 import './SignupView.css'
 import { Button } from '../../components/common/Button/Button'
-import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { PasswordFields } from '../../components/PasswordFields/PasswordFields'
+import { PasswordInputFields } from '../../components/form/PasswordInputFields/PasswordInputFields'
 import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
@@ -11,6 +10,8 @@ import { HttpMethods } from '../../types/http-methods'
 import { passwordValidation } from '../../utils/validation'
 import { UserFormSignup } from '../../types/user-form'
 import { UserEntityRes, ErrorRes } from 'types'
+import { UserNameInputFields } from '../../components/form/UserNameFields/UserNameInputFields'
+import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 
 const initialUserFormState: UserFormSignup = {
   firstName: '',
@@ -70,26 +71,15 @@ export function SignupView() {
       <form onSubmit={onSubmitHandler} className="SignupView__form">
         {error && <p className="SignupView__validation-error">{error}</p>}
 
-        <ShortTextInput
-          placeholder="imie"
-          name="firstName"
-          maxLength={60}
-          minLength={3}
+        <UserNameInputFields
+          userForm={userForm}
+          changeFormHandle={changeFormHandler}
           required
-          value={userForm.firstName}
-          onChange={changeFormHandler}
         />
+
         <ShortTextInput
-          placeholder="nazwisko"
-          name="lastName"
-          maxLength={60}
-          minLength={3}
-          required
-          value={userForm.lastName}
-          onChange={changeFormHandler}
-        />
-        <ShortTextInput
-          placeholder="login"
+          label="Nazwa użytkownika:"
+          placeholder="nazwa użytkownika"
           name="username"
           maxLength={60}
           minLength={3}
@@ -97,10 +87,12 @@ export function SignupView() {
           value={userForm.username}
           onChange={changeFormHandler}
         />
+
         <ShortTextInput
+          label="Email:"
           placeholder="email"
           name="email"
-          email
+          type="email"
           maxLength={255}
           minLength={3}
           required
@@ -109,11 +101,11 @@ export function SignupView() {
         />
 
         <br />
-        <PasswordFields
-          userForm={userForm}
+        <PasswordInputFields
+          form={userForm}
           changeFormHandle={changeFormHandler}
-          required
         />
+
         <Button
           width="100%"
           height={30}

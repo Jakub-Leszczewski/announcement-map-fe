@@ -1,0 +1,19 @@
+@media only screen and (min-width: 600px) {
+    .AddressInputFields__Address {
+        display: flex;
+        justify-content: space-between;
+        width: 410px;
+    }
+
+    .AddressInputFields__Address>label:first-child {
+        width: 250px;
+    }
+
+    .AddressInputFields__Address>label:nth-child(2) {
+        width: 75px;
+    }
+
+    .AddressInputFields__Address>label:last-child {
+        width: 75px;
+    }
+}

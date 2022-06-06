@@ -1,7 +1,7 @@
 .AccountSettingsConfirmView {
     border: 1px solid #B1B1B1;
     border-radius: 10px;
-    padding: 5px;
+    padding: 5px 10px;
     width: 100%;
     background: white;
 }
