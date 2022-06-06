@@ -14,11 +14,8 @@
     margin: 10px auto;
 }
 
-.AddAnnouncementView__form>.Select {
-    /*width: 100%;*/
-    /*box-shadow: none;*/
+.AddAnnouncementView__form>.SelectCategories {
     height: 45px;
-    /*box-shadow: none;*/
 }
 
 .AddAnnouncementView>.Button {

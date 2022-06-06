@@ -17,3 +17,7 @@
 .LongTextInput__input:focus {
     border: 1px solid #757575;
 }
+
+.LongTextInput--required {
+    color: red;
+}

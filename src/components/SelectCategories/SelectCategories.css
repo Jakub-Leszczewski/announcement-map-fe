@@ -1,10 +1,10 @@
-.Select {
+.SelectCategories {
     font-size: .8rem;
     font-weight: bold;
     margin-top: 3px;
 }
 
-.Select__select {
+.SelectCategories__select {
     background-color: #FFFFFF;
     border: 1px solid #B1B1B1;
     outline: none;
@@ -15,10 +15,14 @@
     height: 25px;
 }
 
-.Select__select option {
+.SelectCategories__select>option {
     background-color: rgba(255, 255, 255, 0.35);
 }
 
-.Select__select:focus {
+.SelectCategories__select:focus {
     border: 1px solid #757575;
+}
+
+.SelectCategories--required {
+    color: red;
 }
