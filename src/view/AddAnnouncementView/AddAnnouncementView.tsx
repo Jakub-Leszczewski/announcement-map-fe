@@ -10,7 +10,9 @@ import { LongTextInput } from '../../components/common/LongTextInput/LongTextInp
 import { AddressInputFields } from '../../components/form/AddressInputFields/AddressInputFields'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
 import { AuctionLinkForm } from '../../types/auction-links-form'
-import { Select } from '../../components/common/Select/Select'
+import { SelectCategories } from '../../components/SelectCategories/SelectCategories'
+import { useApi } from '../../hooks/useApi'
+import { CategoryEntity } from 'types'
 
 const initialAnnouncementFormState: AnnouncementForm = {
   title: '',
@@ -69,16 +71,17 @@ export const AddAnnouncementView = () => {
         />
 
         <LongTextInput
+          required
           name="description"
           label="Opis:"
           maxLength={255}
           minLength={3}
         />
 
-        <Select
+        <SelectCategories
           label="Kategoria:"
-          categories={[]}
-          initialCategory={{name: 'Inne', value: 'Inne'}}
+          firstOption={{ name: 'wybierz', value: '' }}
+          required
         />
 
         <AddressInputFields

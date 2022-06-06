@@ -22,6 +22,7 @@ export const LongTextInput = ({onChange, value, label, required, name, maxLength
       onChange={onChange}
       maxLength={maxLength}
       minLength={minLength}
+      required={required}
     />
     </label>
   )
