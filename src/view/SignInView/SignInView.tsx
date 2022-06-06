@@ -67,19 +67,22 @@ export const SignInView = () => {
         {(appStore.payload as InfoType)?.message
           && <p className="SignInView__message">{(appStore.payload as InfoType).message}</p>
         }
+
         <ShortTextInput
-          required
-          name="username"
+          label="Nazwa użytkownika:"
           placeholder="nazwa użytkownika"
+          name="username"
+          maxLength={60}
+          minLength={3}
           value={userForm.username}
           onChange={changeFormHandler}
         />
 
         <PasswordInput
+          label="Hasło:"
           placeholder="hasło"
           name="password"
           value={userForm.password}
-          required
           onChange={changeFormHandler}
         />
 

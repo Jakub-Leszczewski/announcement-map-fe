@@ -1,13 +1,13 @@
 import React, { ChangeEvent, useState } from 'react'
-import { PasswordInput } from '../common/PasswordInput/PasswordInput'
+import { PasswordInput } from '../../common/PasswordInput/PasswordInput'
+import './ConfirmPasswordInput.css'
 
 interface Props {
   value?: string,
-  disabled?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const ConfirmPassword = ({value, onChange, disabled}:Props) => {
+export const ConfirmPasswordInput = ({value, onChange}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
 
   const onPasswordBlur = () => {
@@ -18,15 +18,16 @@ export const ConfirmPassword = ({value, onChange, disabled}:Props) => {
     {
      !passwordWasFocus || value
         ? null
-        : <p className="SignupView__validation-error">
+        : <p className="ConfirmPasswordInput__validation-error">
           Podaj stare hasło, to pole jest wymagane.
         </p>
     }
     <PasswordInput
+      label="Hasło:"
+      required
       placeholder="hasło"
       value={value}
       onBlur={onPasswordBlur}
-      disabled={disabled}
       onChange={onChange}
     />
   </>

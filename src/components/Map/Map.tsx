@@ -10,7 +10,6 @@ import { AdPopup } from '../AdPopup/AdPopup'
 import { useApi } from '../../hooks/useApi'
 import { AnnouncementEntitySimple } from 'types';
 import { groupAnnouncementByCoords } from '../../utils/groupAnnouncementByCoords'
-import { log } from 'util'
 
 export const Map = () => {
   const userLocation = useCurrenGeolocation([52.2408503,21.0065499]);

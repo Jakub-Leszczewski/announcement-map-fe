@@ -1,34 +1,30 @@
-.SignupView {
+.AddAnnouncementView {
     border: 1px solid #B1B1B1;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 5px;
     width: 250px;
     background: white;
-    position: relative;
+    padding: 5px 10px;
 }
 
-.SignupView__form {
+.AddAnnouncementView__form {
     display: flex;
     flex-direction: column;
     width: fit-content;
     margin: 10px auto;
 }
 
-.SignupView__form>.Button {
+.AddAnnouncementView__form>.Button {
     margin: 10px 0 0 0;
 }
 
-.PasswordInput, .ShortTextInput {
-    margin: 3px 0;
-}
-
-.SignupView__validation-error {
+.AddAnnouncementView__validation-error {
     color: red;
     font-size: 0.7rem;
 }
 
 @media only screen and (min-width: 600px) {
-    .SignupView {
+    .AddAnnouncementView {
         width: fit-content;
     }
 }

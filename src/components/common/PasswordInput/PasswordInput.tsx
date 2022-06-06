@@ -3,6 +3,7 @@ import './PasswordInput.css';
 
 interface Props {
   placeholder: string;
+  label?: string
   name?: string;
   disabled?: boolean;
   required?: boolean;
@@ -15,7 +16,7 @@ interface Props {
 }
 
 export const PasswordInput = ({
-  placeholder, name, value, disabled, required, onChange, onFocus, onBlur, maxLength, minLength
+  placeholder, label, name, value, disabled, required, onChange, onFocus, onBlur, maxLength, minLength
 }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
 
@@ -28,29 +29,33 @@ export const PasswordInput = ({
   }
 
   return (
-    <div className="PasswordInput">
-      <input
-        className="PasswordInput__input"
-        type={visible ? "text" : "password"}
-        placeholder={placeholder}
-        name={name}
-        required={required}
-        minLength={minLength}
-        maxLength={maxLength}
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        value={value}
-        disabled={disabled}
-      />
+    <label className="PasswordInput">
+      {label && <span>{label}{required && <span className="PasswordInput--required">*</span>}</span>}
 
-      <div className="PasswordInput__icon" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-        {
-          visible
-            ? <i className="bi bi-eye-slash-fill"/>
-            :<i className="bi bi-eye-fill"/>
-        }
+      <div className="PasswordInput__container">
+        <input
+          className="PasswordInput__input"
+          type={visible ? "text" : "password"}
+          placeholder={placeholder}
+          name={name}
+          required={required}
+          minLength={minLength}
+          maxLength={maxLength}
+          onChange={onChange}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          value={value}
+          disabled={disabled}
+        />
+
+        <div className="PasswordInput__icon" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+          {
+            visible
+              ? <i className="bi bi-eye-slash-fill"/>
+              :<i className="bi bi-eye-fill"/>
+          }
+        </div>
       </div>
-    </div>
+    </label>
   );
 }

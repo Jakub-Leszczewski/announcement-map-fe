@@ -1,16 +1,18 @@
 import React, { ChangeEvent, useState } from 'react'
-import { PasswordInput } from '../common/PasswordInput/PasswordInput'
-import { passwordValidation } from '../../utils/validation'
-import { UserFormSignup } from '../../types/user-form'
+import { PasswordInput } from '../../common/PasswordInput/PasswordInput'
+import { passwordValidation } from '../../../utils/validation'
+import { UserFormSignup } from '../../../types/user-form'
+import './PasswordInputFields.css'
 
 interface Props {
-  disabled?: boolean;
-  required?: boolean;
-  userForm: UserFormSignup;
+  form: {
+    password: string,
+    repeatPassword: string,
+  };
   changeFormHandle: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:Props) => {
+export const PasswordInputFields = ({ form, changeFormHandle}:Props) => {
   const [passwordWasFocus, setPasswordWasFocus] = useState<boolean>(false);
   const [repeatPasswordWasFocus, setRepeatPasswordWasFocus] = useState<boolean>(false);
 
@@ -22,41 +24,41 @@ export const PasswordFields = ({disabled, required, userForm, changeFormHandle}:
     setRepeatPasswordWasFocus(true);
   }
 
-  return <>
+  return <div className="PasswordInputFields">
     {
-      passwordValidation(userForm.password) || !passwordWasFocus
+      passwordValidation(form.password) || !passwordWasFocus
         ? null
-        : <p className="SignupView__validation-error">
+        : <p className="PasswordInputFields__validation-error">
           Hasło powinno zawierać 8-36 znaków, co najmniej jedną literę i cyfrę
         </p>
     }
     <PasswordInput
+      label="Hasło:"
       placeholder="hasło"
       name="password"
-      value={userForm.password}
+      value={form.password}
       onBlur={onPasswordBlur}
       minLength={8}
       maxLength={36}
-      disabled={disabled}
-      required={required}
+      required
       onChange={changeFormHandle}
     />
 
     {
-      userForm.password === userForm.repeatPassword || !repeatPasswordWasFocus
+      form.password === form.repeatPassword || !repeatPasswordWasFocus
         ? null
-        : <p className="SignupView__validation-error">
+        : <p className="PasswordInputFields__validation-error">
           Hasła muszą być takie same
         </p>
     }
     <PasswordInput
-      placeholder="potwierdź hasło"
-      value={userForm.repeatPassword}
+      label="Powtórz hasło"
+      placeholder="powtórz hasło"
+      value={form.repeatPassword}
       name="repeatPassword"
       onBlur={onRepeatPasswordBlur}
-      disabled={disabled}
-      required={required}
+      required
       onChange={changeFormHandle}
     />
-  </>
+  </div>
 }

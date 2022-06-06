@@ -44,7 +44,7 @@ interface OpenAnnouncementView {
 }
 
 interface OpenAddAnnouncement {
-  payload: string;
+  payload: undefined;
 }
 
 interface OpenAccountSettings {

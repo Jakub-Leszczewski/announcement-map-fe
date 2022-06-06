@@ -8,7 +8,7 @@ import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { StoreType } from '../../store'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
-import { ConfirmPassword } from '../../components/ConfirmPassword/ConfirmPassword'
+import { ConfirmPasswordInput } from '../../components/form/ConfirmPasswordInput/ConfirmPasswordInput'
 import { UserForm } from '../../types/user-form'
 import { setJwt } from '../../store/slices/user-slice'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
@@ -76,7 +76,7 @@ export const AccountSettingsConfirmView = () => {
       <form onSubmit={onSubmitHandler} className="AccountSettingsConfirmView__form">
         {error && <p className="AccountSettingsConfirmView__error">{error}</p>}
 
-       <ConfirmPassword
+       <ConfirmPasswordInput
         value={password}
         onChange={(e: ChangeEvent<HTMLInputElement>)=> setPassword(e.target.value)}
        />
