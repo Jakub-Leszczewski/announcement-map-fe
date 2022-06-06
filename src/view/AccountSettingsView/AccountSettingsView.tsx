@@ -127,9 +127,6 @@ export const  AccountSettingsView = () => {
         />
 
         <Button
-          width="100%"
-          height={30}
-          borderRadius="15px"
           disabled={!(passwordValidation(userForm.newPassword) || !userForm.newPassword) || userForm.newPassword !== userForm.repeatNewPassword}
         >Zapisz</Button>
       </form>

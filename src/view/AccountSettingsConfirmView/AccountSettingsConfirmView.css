@@ -21,6 +21,9 @@
 
 .AccountSettingsConfirmView__form>.Button {
     margin: 10px 0 0 0;
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
 }
 
 .AccountSettingsConfirmView__error {

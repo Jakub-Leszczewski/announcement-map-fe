@@ -81,12 +81,7 @@ export const AccountSettingsConfirmView = () => {
         onChange={(e: ChangeEvent<HTMLInputElement>)=> setPassword(e.target.value)}
        />
 
-        <Button
-          width="100%"
-          height={30}
-          borderRadius="15px"
-          disabled={!password}
-        >Zapisz</Button>
+        <Button disabled={!password}>Zapisz</Button>
       </form>
     </section>
   );

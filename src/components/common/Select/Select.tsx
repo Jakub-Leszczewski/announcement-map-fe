@@ -2,22 +2,24 @@ import React from 'react';
 import './Select.css';
 
 interface Props {
-  categories: any[]; //@TODO change type to type from be
-  width?: string;
-  height?: string;
-  padding?: string;
+  label?: string;
+  categories: any[];
+  initialCategory: {
+    name: string,
+    value: string,
+  };
 }
 
-export function Select({ categories, width, height, padding }: Props) {
+export function Select({ categories, initialCategory, label }: Props) {
   return(
-    <select
-      className="Select"
-      style={{width, height, padding}}
-    >
-      <option value="*">wszystko</option>
-      {categories.map((category) => (
-        <option key={category.id} value={category.id}>{category.name}</option>
-      ))}
-    </select>
+    <label className="Select">
+      {label && <p>{label}</p>}
+      <select className="Select__select">
+        <option value={initialCategory.value}>{initialCategory.name}</option>
+        {categories.map((category) => (
+          <option key={category.id} value={category.id}>{category.name}</option>
+        ))}
+      </select>
+    </label>
   );
 }

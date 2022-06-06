@@ -107,9 +107,6 @@ export function SignupView() {
         />
 
         <Button
-          width="100%"
-          height={30}
-          borderRadius="15px"
           disabled={userForm.password !== userForm.repeatPassword || !passwordValidation(userForm.password)}
         >Zarejestruj</Button>
       </form>

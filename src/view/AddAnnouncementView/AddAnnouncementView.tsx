@@ -9,6 +9,8 @@ import { TitlePriceInputFields } from '../../components/form/TitlePriceInputFiel
 import { LongTextInput } from '../../components/common/LongTextInput/LongTextInput'
 import { AddressInputFields } from '../../components/form/AddressInputFields/AddressInputFields'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
+import { AuctionLinkForm } from '../../types/auction-links-form'
+import { Select } from '../../components/common/Select/Select'
 
 const initialAnnouncementFormState: AnnouncementForm = {
   title: '',
@@ -38,11 +40,28 @@ export const AddAnnouncementView = () => {
     }));
   };
 
+  const removeAuctionLinkHandler = (index: number) => {
+    setAnnouncementForm(prev => {
+      const newAuctionLinks = prev.auctionLinks.filter((e, i) => i !== index);
+      return({
+        ...prev,
+        auctionLinks: newAuctionLinks,
+      });
+    });
+  };
+
+  const addAuctionLinkHandler = (link: AuctionLinkForm) => {
+    setAnnouncementForm(prev => ({
+      ...prev,
+      auctionLinks: [...prev.auctionLinks, link],
+    }))
+  }
+
   return (
     <section className="AddAnnouncementView">
       <UserMenuHeader title="Dodaj ogłoszenie" onClick={goBackHandler}/>
 
-      <form className="AddAnnouncementView__form">
+      <form id="announcement-form" className="AddAnnouncementView__form">
         <TitlePriceInputFields
           required
           form={announcementForm}
@@ -56,19 +75,25 @@ export const AddAnnouncementView = () => {
           minLength={3}
         />
 
+        <Select
+          label="Kategoria:"
+          categories={[]}
+          initialCategory={{name: 'Inne', value: 'Inne'}}
+        />
+
         <AddressInputFields
           form={announcementForm}
           changeFormHandle={changeFormHandler}
         />
-
-        <AuctionLinkInput/>
-
-        <Button
-          width="100%"
-          height={30}
-          borderRadius="15px"
-        >Dodaj</Button>
       </form>
+
+      <AuctionLinkInput
+        form={announcementForm}
+        removeAuctionLinkHandler={removeAuctionLinkHandler}
+        addAuctionLinkHandler={addAuctionLinkHandler}
+      />
+
+      <Button type="submit" form="announcement-form">Dodaj</Button>
     </section>
   );
 }

@@ -7,16 +7,21 @@ import { User } from '../User/User'
 import { useApiAuth } from '../../hooks/useApiAuth'
 import { useDispatch } from 'react-redux'
 import { setJwt } from '../../store/slices/user-slice'
+import { openAddAnnouncement } from '../../store/slices/app-slice'
 
 export function MainNav() {
+  const dispatch = useDispatch();
+
+  const goAddAnnouncement = () => {
+    dispatch(openAddAnnouncement(undefined));
+  }
   return (
     <nav className="MainNav">
       <div className="MainNav__left-side">
         <SearchBar />
-        <Button height={'auto'} width="100%" padding="5px">Dodaj ogłoszenie</Button>
+        <Button onClick={goAddAnnouncement}>Dodaj ogłoszenie</Button>
         <Select
-          height="100%"
-          padding="5px"
+          initialCategory={{name: 'wszystko', value: '*'}}
           categories={[
             { id: '1', name: 'Motoryzacja' },
             { id: '2', name: 'Elektronika' },
