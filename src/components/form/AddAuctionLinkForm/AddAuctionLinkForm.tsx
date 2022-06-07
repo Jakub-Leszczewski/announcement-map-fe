@@ -1,11 +1,11 @@
-import React, { ChangeEvent, FormEvent, FormEventHandler } from 'react'
+import React, { ChangeEvent, FormEvent } from 'react'
 import './AddAuctionLinkForm.css'
 import { ShortTextInput } from '../../common/ShortTextInput/ShortTextInput'
 import { Button } from '../../common/Button/Button'
-import { AuctionLinkForm } from '../../../types/auction-links-form'
+import { AuctionLinkEntitySave } from 'types'
 
 interface Props {
-  form: AuctionLinkForm;
+  form: AuctionLinkEntitySave;
   changeFormHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
   disabled?: boolean;
