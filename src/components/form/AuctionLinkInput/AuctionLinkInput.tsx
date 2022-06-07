@@ -1,24 +1,24 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import './AuctionLinkInput.css'
 import { AuctionLink } from '../../AuctionLink/AuctionLink'
-import { AuctionLinkForm } from '../../../types/auction-links-form'
 import { AddAuctionLinkForm } from '../AddAuctionLinkForm/AddAuctionLinkForm'
+import { AuctionLinkEntitySave } from 'types';
 
 interface Props {
   form: {
-    auctionLinks: AuctionLinkForm[],
+    auctionLinks: AuctionLinkEntitySave[],
   };
   removeAuctionLinkHandler: (index: number) => void;
-  addAuctionLinkHandler: (auctionLink: AuctionLinkForm) => void;
+  addAuctionLinkHandler: (auctionLink: AuctionLinkEntitySave) => void;
 }
 
-const initialAuctionLinkForm: AuctionLinkForm = {
+const initialAuctionLinkForm: AuctionLinkEntitySave = {
   name: '',
   url: '',
 }
 
 export const AuctionLinkInput = ({form, removeAuctionLinkHandler, addAuctionLinkHandler}: Props) => {
-  const [linkForm, setLinkForm] = useState<AuctionLinkForm>(initialAuctionLinkForm);
+  const [linkForm, setLinkForm] = useState<AuctionLinkEntitySave>(initialAuctionLinkForm);
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setLinkForm(prev => ({

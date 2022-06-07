@@ -9,10 +9,8 @@ import { TitlePriceInputFields } from '../../components/form/TitlePriceInputFiel
 import { LongTextInput } from '../../components/common/LongTextInput/LongTextInput'
 import { AddressInputFields } from '../../components/form/AddressInputFields/AddressInputFields'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
-import { AuctionLinkForm } from '../../types/auction-links-form'
 import { SelectCategories } from '../../components/SelectCategories/SelectCategories'
-import { useApi } from '../../hooks/useApi'
-import { CategoryEntity } from 'types'
+import { AuctionLinkEntitySave } from 'types'
 
 const initialAnnouncementFormState: AnnouncementForm = {
   title: '',
@@ -20,10 +18,13 @@ const initialAnnouncementFormState: AnnouncementForm = {
   price: 0,
   country: '',
   city: '',
+  lat: 0,
+  lon: 0,
   zipCode: '',
   street: '',
   buildingNumber: '',
   apartamentNumber: '',
+  categoryId: '',
   auctionLinks: [],
 }
 
@@ -52,7 +53,7 @@ export const AddAnnouncementView = () => {
     });
   };
 
-  const addAuctionLinkHandler = (link: AuctionLinkForm) => {
+  const addAuctionLinkHandler = (link: AuctionLinkEntitySave) => {
     setAnnouncementForm(prev => ({
       ...prev,
       auctionLinks: [...prev.auctionLinks, link],

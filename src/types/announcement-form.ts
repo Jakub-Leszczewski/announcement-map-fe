@@ -1,6 +1,5 @@
-import { AnnouncementEntity } from "types";
-import { AuctionLinkForm } from './auction-links-form'
+import { AnnouncementEntitySave, AuctionLinkEntitySave } from "types";
 
-export type AnnouncementForm = Omit<AnnouncementEntity, 'id' | 'createdAt' | 'createdBy' | 'lat' | 'lon'> & {
-  auctionLinks: AuctionLinkForm[]
+export type AnnouncementForm = AnnouncementEntitySave & {
+  auctionLinks: AuctionLinkEntitySave[]
 }
