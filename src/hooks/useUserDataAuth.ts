@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import { UserEntityRes } from 'types';
+import { UserEntityResponse } from 'types';
 import { AuthContext } from '../components/Auth/Auth'
 
-export const useUserDataAuth = (): UserEntityRes | null => {
+export const useUserDataAuth = (): UserEntityResponse | null => {
   const authContext = useContext(AuthContext);
 
   if (authContext && authContext.id && authContext.exp * 1000 > Date.now()) {

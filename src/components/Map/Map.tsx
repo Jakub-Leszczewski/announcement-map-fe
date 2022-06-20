@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import './Map.css';
@@ -8,12 +8,12 @@ import { userIcon } from '../../utils/map-icons'
 import { UserPopup } from '../UserPopup/UserPopup'
 import { AdPopup } from '../AdPopup/AdPopup'
 import { useApi } from '../../hooks/useApi'
-import { AnnouncementEntitySimple } from 'types';
-import { groupAnnouncementByCoords } from '../../utils/groupAnnouncementByCoords'
+import { AnnouncementEntitySimpleResponse } from 'types';
+import { groupAnnouncementByCoords } from '../../utils/group-announcement-by-coords'
 
 export const Map = () => {
   const userLocation = useCurrenGeolocation([52.2408503,21.0065499]);
-  const [loading, status, data] = useApi<AnnouncementEntitySimple[]>('http://localhost:3001/api/announcement');
+  const [loading, status, data] = useApi<AnnouncementEntitySimpleResponse[]>('http://localhost:3001/api/announcement');
 
   const announcementGroups = useMemo(() => (!loading && status === 200 && data
     ? groupAnnouncementByCoords(data) : []), [data]);

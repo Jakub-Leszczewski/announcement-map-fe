@@ -1,29 +1,24 @@
-import React from 'react';
+import React, { Fragment } from 'react'
 import './AdPopup.css'
-import { AdInfo } from '../AdInfo/AdInfo'
+import { AnnouncementInfo } from '../AnnouncementInfo/AnnouncementInfo'
 
 interface Props {
   id: string[];
 }
 
 export const AdPopup = ({ id }: Props) => {
-  console.log(id);
   return (
     <section className="AdPopup">
       {
         id.map((id) => (
-          <AdInfo
-            id={id}
-            name={'name'}
-            description={'description'}
-            price={12}
-            country={'country'}
-            city={'city'}
-            zipCode={'zipCode'}
-            address={'address'}
-            date={new Date()}
-            links={[]}
-          />
+          <Fragment key={id}>
+            <AnnouncementInfo
+              id={id}
+              fetchData={true}
+            />
+            <hr/>
+          </Fragment>
+
         ))
       }
     </section>

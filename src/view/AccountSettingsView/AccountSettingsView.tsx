@@ -9,14 +9,14 @@ import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { NewPasswordInputFields } from '../../components/form/NewPasswordInputFields/NewPasswordInputFields'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
-import { passwordValidation } from '../../utils/validation'
+import { Validation } from '../../utils/validation'
 import { StoreType } from '../../store'
 import { setJwt } from '../../store/slices/user-slice'
 import { InfoType } from '../../types/info-types'
 import { UserFormUpdate } from '../../types/user-form'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorRes, UserEntityRes } from 'types'
+import { ErrorRes, UserEntityResponse } from 'types'
 import { UserNameInputFields } from '../../components/form/UserNameFields/UserNameInputFields'
 
 export const  AccountSettingsView = () => {
@@ -43,7 +43,7 @@ export const  AccountSettingsView = () => {
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await api<UserEntityRes | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
+        const data = await api<UserEntityResponse | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
           method: HttpMethods.PATCH,
           payload: userForm,
           jwt,
@@ -127,7 +127,10 @@ export const  AccountSettingsView = () => {
         />
 
         <Button
-          disabled={!(passwordValidation(userForm.newPassword) || !userForm.newPassword) || userForm.newPassword !== userForm.repeatNewPassword}
+          disabled={
+            !(Validation.passwordValidation(userForm.newPassword) || !userForm.newPassword)
+            || userForm.newPassword !== userForm.repeatNewPassword
+          }
         >Zapisz</Button>
       </form>
     </section>

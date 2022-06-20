@@ -13,7 +13,7 @@ import { UserForm } from '../../types/user-form'
 import { setJwt } from '../../store/slices/user-slice'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorRes, UserEntityRes } from 'types'
+import { ErrorRes, UserEntityResponse } from 'types'
 
 
 export const AccountSettingsConfirmView = () => {
@@ -33,7 +33,7 @@ export const AccountSettingsConfirmView = () => {
   useEffect(() => {
     (async () => {
       if(isSubmit && password) {
-        const data = await api<UserEntityRes | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
+        const data = await api<UserEntityResponse | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
           method: HttpMethods.PATCH,
           payload: { ...(appStore.payload as UserForm), password },
           jwt,

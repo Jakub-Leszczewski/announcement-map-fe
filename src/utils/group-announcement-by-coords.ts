@@ -1,7 +1,7 @@
-import { AnnouncementEntitySimple } from "types";
+import { AnnouncementEntitySimpleResponse } from "types";
 
-export const groupAnnouncementByCoords = (announcementEntity: AnnouncementEntitySimple[]) => {
-  let announcementGroups: AnnouncementEntitySimple[][] = [];
+export const groupAnnouncementByCoords = (announcementEntity: AnnouncementEntitySimpleResponse[]) => {
+  let announcementGroups: AnnouncementEntitySimpleResponse[][] = [];
   announcementEntity.forEach((announcement) => {
     const lat = announcement.lat;
     const lon = announcement.lon;

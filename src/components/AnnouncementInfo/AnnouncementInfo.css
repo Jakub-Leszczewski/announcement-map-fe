@@ -1,50 +1,44 @@
-.AdInfo {
+.AnnouncementInfo {
     width: 100%;
 }
 
-.AdInfo__header {
+.AnnouncementInfo__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.AdInfo__header h3, .AdInfo__header p {
+.AnnouncementInfo__header h3, .AnnouncementInfo__header p {
     font-size: 1.2rem;
     font-weight: bolder;
 }
 
-.AdInfo__id {
+.AnnouncementInfo__id {
     font-size: .7rem;
 }
 
-.AdInfo__address {
+.AnnouncementInfo__address {
     font-size: .9rem;
     font-weight: bold;
     margin: 10px 0 !important;
 }
 
-.AdInfo__description {
+.AnnouncementInfo__description {
     text-align: justify;
     font-size: .8rem;
 }
 
-.AdInfo__link-container {
-    margin: 7px 0;
+.AnnouncementInfo__link-container {
+    margin: 15px 0;
     display: flex;
     flex-direction: column;
 }
 
-.AdInfo__link-container a {
-    margin: 2px 0;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.AdInfo__link-container a {
-    margin: 2px 0;
-}
-
-.AdInfo__date {
+.AnnouncementInfo__date {
     font-size: .7rem;
+}
+
+.AnnouncementInfo__link-container .AuctionLink {
+    margin: 3px;
 }
 

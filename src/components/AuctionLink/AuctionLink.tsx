@@ -9,7 +9,6 @@ interface Props {
 }
 
 export const AuctionLink = ({name, url, removeAuctionLinkHandler}: Props) => {
-  console.log(url);
   return (
     <div className="AuctionLink" onClick={removeAuctionLinkHandler}>
       {
