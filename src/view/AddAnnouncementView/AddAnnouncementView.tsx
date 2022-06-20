@@ -1,18 +1,21 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import './AddAnnouncementView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
 import { openUser } from '../../store/slices/app-slice'
-import { AnnouncementForm } from '../../types/announcement-form'
 import { TitlePriceInputFields } from '../../components/form/TitlePriceInputFields/TitlePriceInputFields'
 import { LongTextInput } from '../../components/common/LongTextInput/LongTextInput'
 import { AddressInputFields } from '../../components/form/AddressInputFields/AddressInputFields'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
 import { SelectCategories } from '../../components/SelectCategories/SelectCategories'
-import { AuctionLinkEntitySave } from 'types'
+import { CreateAnnouncementDto, CreateAuctionLinkDto } from 'types'
+import { checkAddressCoords } from '../../utils/check-address-coords'
+import { api } from '../../utils/api/api'
+import { HttpMethods } from '../../types/http-methods'
+import { useJwt } from '../../hooks/useJwt'
 
-const initialAnnouncementFormState: AnnouncementForm = {
+const initialAnnouncementFormState: CreateAnnouncementDto = {
   title: '',
   description: '',
   price: 0,
@@ -30,13 +33,15 @@ const initialAnnouncementFormState: AnnouncementForm = {
 
 export const AddAnnouncementView = () => {
   const dispatch = useDispatch();
-  const [announcementForm, setAnnouncementForm] = useState<AnnouncementForm>(initialAnnouncementFormState);
+  const jwt = useJwt();
+  const [announcementForm, setAnnouncementForm] = useState<CreateAnnouncementDto>(initialAnnouncementFormState);
+  const [findAddress, setFindAddress] = useState<undefined | Awaited<ReturnType<typeof checkAddressCoords>>>(undefined);
 
   const goBackHandler = () => {
     dispatch(openUser(undefined));
   }
 
-  const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeFormHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setAnnouncementForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -53,18 +58,40 @@ export const AddAnnouncementView = () => {
     });
   };
 
-  const addAuctionLinkHandler = (link: AuctionLinkEntitySave) => {
-    setAnnouncementForm(prev => ({
+  const addAuctionLinkHandler = (link: CreateAuctionLinkDto) => {
+    setAnnouncementForm((prev) => ({
       ...prev,
       auctionLinks: [...prev.auctionLinks, link],
     }))
+  }
+
+  const onSubmitHandler = async (e: FormEvent) => {
+    e.preventDefault();
+    const geoData = await checkAddressCoords({
+      country: announcementForm.country,
+      city: announcementForm.city,
+      zipCode: announcementForm.zipCode,
+      street: announcementForm.street || undefined,
+      buildingNumber: announcementForm.buildingNumber || undefined,
+    });
+
+    if(geoData && geoData.all) {
+      const data = await api('http://localhost:3001/api/announcement/', {
+        method: HttpMethods.POST,
+        jwt: jwt,
+        payload: { ...announcementForm, lat: geoData.lat, lon: geoData.lon },
+      });
+    } else if (geoData && !geoData.all){
+      console.log(geoData)
+    }
+    setFindAddress(geoData);
   }
 
   return (
     <section className="AddAnnouncementView">
       <UserMenuHeader title="Dodaj ogłoszenie" onClick={goBackHandler}/>
 
-      <form id="announcement-form" className="AddAnnouncementView__form">
+      <form onSubmit={onSubmitHandler} id="announcement-form" className="AddAnnouncementView__form">
         <TitlePriceInputFields
           required
           form={announcementForm}
@@ -77,14 +104,30 @@ export const AddAnnouncementView = () => {
           label="Opis:"
           maxLength={255}
           minLength={3}
+          onChange={changeFormHandler}
         />
 
         <SelectCategories
           label="Kategoria:"
           firstOption={{ name: 'wybierz', value: '' }}
+          name="categoryId"
+          onChange={changeFormHandler}
           required
         />
 
+        {findAddress === null ? <p className="AddAnnouncementView__error">Podany adres jest błędny</p> : null}
+        {
+          findAddress && !findAddress.all
+            ? <p className="AddAnnouncementView__info">
+                Nie znaleziono dokładnego adresu. Najbliższy adres wyświetlany na mapie to:
+                <strong>
+                  {` ${announcementForm.country} ${announcementForm.city} ${announcementForm.zipCode} ${findAddress.street || ''}`}
+                </strong>.
+                <br/>
+                W treści ogłoszenia będzie widoczny adres wpisany przez ciebie. Zaakceptuj klikając Dodaj lub zmień adres.
+              </p>
+            : null
+        }
         <AddressInputFields
           form={announcementForm}
           changeFormHandle={changeFormHandler}

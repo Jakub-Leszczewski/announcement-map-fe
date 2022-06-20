@@ -1,9 +1,6 @@
 .AddAnnouncementView {
-    border: 1px solid #B1B1B1;
     border-radius: 10px;
-    padding: 5px;
     width: 250px;
-    background: white;
     padding: 5px 10px;
 }
 
@@ -25,10 +22,22 @@
     border-radius: 15px;
 }
 
-.AddAnnouncementView__validation-error {
+.AddAnnouncementView__error {
     color: red;
     font-size: 0.7rem;
 }
+
+.AddAnnouncementView__info>strong {
+    color: green;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+.AddAnnouncementView__info {
+    color: green;
+    font-size: 0.7rem;
+}
+
 
 @media only screen and (min-width: 600px) {
     .AddAnnouncementView {

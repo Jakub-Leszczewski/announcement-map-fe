@@ -7,9 +7,9 @@ import { useDispatch } from 'react-redux'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
-import { passwordValidation } from '../../utils/validation'
+import { Validation } from '../../utils/validation'
 import { UserFormSignup } from '../../types/user-form'
-import { UserEntityRes, ErrorRes } from 'types'
+import { UserEntityResponse, ErrorRes } from 'types'
 import { UserNameInputFields } from '../../components/form/UserNameFields/UserNameInputFields'
 import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 
@@ -32,7 +32,7 @@ export function SignupView() {
   useEffect(() => {
     (async () => {
       if(isSubmit) {
-        const data = await api<UserEntityRes | ErrorRes>('http://localhost:3001/api/auth/signup', {
+        const data = await api<UserEntityResponse | ErrorRes>('http://localhost:3001/api/user/', {
           method: HttpMethods.POST,
           payload: userForm,
         });
@@ -107,7 +107,7 @@ export function SignupView() {
         />
 
         <Button
-          disabled={userForm.password !== userForm.repeatPassword || !passwordValidation(userForm.password)}
+          disabled={userForm.password !== userForm.repeatPassword || !Validation.passwordValidation(userForm.password)}
         >Zarejestruj</Button>
       </form>
     </section>

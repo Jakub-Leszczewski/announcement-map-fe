@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './SignInChoiceView.css';
 import { Button } from '../../components/common/Button/Button';
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
