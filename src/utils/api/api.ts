@@ -1,11 +1,12 @@
 import { HttpMethods } from '../../types/http-methods'
 import { auth } from './auth'
 import { decodeJwt } from '../decode-jwt'
+import { ErrorResponse } from 'types';
 
 interface ApiHandlerReturn<T> {
   status: number | null;
-  data: T | undefined;
-  newJwt?: string | null;
+  data: T | ErrorResponse | null;
+  newJwt: string | null;
 }
 
 interface Options {
@@ -15,7 +16,7 @@ interface Options {
 }
 
 export const api = async <T>(url: string, options?: Options): Promise<ApiHandlerReturn<T>> => {
-  const apiCall = async (jwt?: string) => {
+  const apiCall = async (jwt?: string): Promise<ApiHandlerReturn<T>> => {
     const res = await fetch(url, {
       method: options?.method || HttpMethods.GET,
       headers: {
@@ -29,12 +30,13 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     const data = await res.json();
 
     return {
-      status: res.status || null,
-      data: data as T || undefined,
+      status: res.status,
+      data: data as T,
+      newJwt: null,
     }
   }
 
-  const apiCallWithAuthRefresh = async (jwt: string) => {
+  const apiCallWithAuthRefresh = async (jwt: string): Promise<ApiHandlerReturn<T>> => {
     const data = await apiCall(jwt || '');
     if(data.status === 401) {
       const authData = await auth('http://localhost:3001/api/auth/token');
@@ -53,6 +55,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     return {
       status: data.status,
       data: data.data,
+      newJwt: null
     }
   }
 
@@ -63,11 +66,18 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     if(decodedJwt && decodedJwt.exp * 1000 > Date.now() + 5000) return apiCallWithAuthRefresh(options?.jwt as string);
     else {
       const authData = await auth('http://localhost:3001/api/auth/token');
-      if(authData.status === 200) return apiCallWithAuthRefresh(authData.jwt || '');
+      if(authData.status === 200) {
+        const data = await apiCallWithAuthRefresh(authData.jwt || '');
+        return {
+          status: data.status,
+          data: data.data,
+          newJwt: data.newJwt || authData.jwt,
+        }
+      }
 
       return {
         status: authData.status,
-        data: undefined,
+        data: authData.error ? { error: authData.error } : null,
         newJwt: null,
       }
     }
@@ -76,7 +86,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
 
     return {
       status: null,
-      data: undefined,
+      data: null,
       newJwt: null,
     }
   }

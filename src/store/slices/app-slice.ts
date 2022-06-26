@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserForm } from '../../types/user-form'
+import { Forms } from '../../types/user-form'
 import { InfoType } from '../../types/info-types'
 
-export enum ActionType {
+export enum Window {
   OPEN_NONE = 'OPEN_NONE',
   OPEN_SIGN_IN_CHOICE = 'OPEN_LOGIN_CHOICE',
   OPEN_SIGN_IN = 'OPEN_SIGN_IN',
@@ -15,121 +15,46 @@ export enum ActionType {
   OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
 }
 
-interface OpenNone {
-  payload: undefined;
+interface OpenWindowDataInfoType {
+  openWindow: Window.OPEN_SIGN_IN | Window.OPEN_ACCOUNT_SETTINGS
+  data: InfoType | undefined;
 }
 
-interface OpenSignInChoice {
-  payload: undefined;
+interface OpenWindowDataForms {
+  openWindow: Window.OPEN_ACCOUNT_SETTINGS_CONFIRM
+  data: Forms;
 }
 
-interface OpenSignIn {
-  payload: InfoType | undefined;
+interface OpenWindowDataUndefined {
+  openWindow: Window.OPEN_NONE | Window.OPEN_SIGN_IN_CHOICE | Window.OPEN_SIGNUP | Window.OPEN_USER | Window.OPEN_ANNOUNCEMENTS | Window.OPEN_ANNOUNCEMENT_VIEW | Window.OPEN_ADD_ANNOUNCEMENT;
+  data: undefined;
 }
 
-interface OpenSignUp {
-  payload: undefined;
-}
-
-interface OpenUser {
-  payload: undefined;
-}
-
-interface OpenAnnouncements {
-  payload: undefined;
-}
-
-interface OpenAnnouncementView {
-  payload: string;
-}
-
-interface OpenAddAnnouncement {
-  payload: undefined;
-}
-
-interface OpenAccountSettings {
-  payload: InfoType | undefined;
-}
-
-interface OpenAccountSettingsConfirm {
-  payload: UserForm;
+interface OpenWindow {
+  payload: OpenWindowDataInfoType | OpenWindowDataForms | OpenWindowDataUndefined;
 }
 
 interface AppStateType {
-  openWindow: ActionType;
-  payload: string | UserForm | InfoType | undefined;
+  openWindow: Window;
+  data: InfoType | Forms | undefined;
 }
 
 const initialState: AppStateType = {
-  openWindow: ActionType.OPEN_NONE,
-  payload: undefined,
+  openWindow: Window.OPEN_NONE,
+  data: undefined,
 }
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    openNone: (state, action: OpenNone) => {
-      state.openWindow = ActionType.OPEN_NONE;
-      state.payload = action.payload;
-    },
-
-    openSignInChoice: (state, action: OpenSignInChoice) => {
-      state.openWindow = ActionType.OPEN_SIGN_IN_CHOICE;
-      state.payload = action.payload;
-    },
-
-    openSignIn: (state, action: OpenSignIn) => {
-      state.openWindow = ActionType.OPEN_SIGN_IN;
-      state.payload = action.payload;
-    },
-
-    openSignup: (state, action: OpenSignUp) => {
-      state.openWindow = ActionType.OPEN_SIGNUP;
-      state.payload = action.payload;
-    },
-
-    openUser: (state, action: OpenUser) => {
-      state.openWindow = ActionType.OPEN_USER;
-      state.payload = action.payload;
-    },
-
-    openAnnouncements: (state, action: OpenAnnouncements) => {
-      state.openWindow = ActionType.OPEN_ANNOUNCEMENTS;
-      state.payload = action.payload;
-    },
-
-    openAnnouncementView: (state, action: OpenAnnouncementView) => {
-      state.openWindow = ActionType.OPEN_ANNOUNCEMENT_VIEW;
-      state.payload = action.payload;
-    },
-
-    openAddAnnouncement: (state, action: OpenAddAnnouncement) => {
-      state.openWindow = ActionType.OPEN_ADD_ANNOUNCEMENT;
-      state.payload = action.payload;
-    },
-
-    openAccountSettings: (state, action: OpenAccountSettings) => {
-      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS;
-      state.payload = action.payload;
-    },
-
-    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
-      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS_CONFIRM;
-      state.payload = action.payload;
+    openWindow: (state, action: OpenWindow) => {
+      state.openWindow = action.payload.openWindow;
+      state.data = action.payload.data;
     },
   }
 });
 
 export const {
-  openNone,
-  openSignInChoice,
-  openSignIn,
-  openSignup,
-  openUser,
-  openAnnouncements,
-  openAnnouncementView,
-  openAddAnnouncement,
-  openAccountSettings,
-  openAccountSettingsConfirm,
+  openWindow,
 } = appSlice.actions;

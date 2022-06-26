@@ -3,21 +3,30 @@ import './SignInChoiceView.css';
 import { Button } from '../../components/common/Button/Button';
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
-import { openNone, openSignIn, openSignup } from '../../store/slices/app-slice'
+import { openWindow, Window } from '../../store/slices/app-slice'
 
 export const SignInChoiceView = () => {
   const dispatch = useDispatch();
 
   const goBackHandler = () => {
-    dispatch(openNone(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_NONE,
+      data: undefined,
+    }));
   }
 
   const goSignInHandler = () => {
-    dispatch(openSignIn(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_SIGN_IN,
+      data: undefined,
+    }));
   }
 
   const goSignupHandler = () => {
-    dispatch(openSignup(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_SIGNUP,
+      data: undefined,
+    }));
   }
 
   return(

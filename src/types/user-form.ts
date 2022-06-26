@@ -1,14 +1,3 @@
-export interface UserForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username?: string;
-  password?: string;
-  repeatPassword?: string;
-  newPassword?: string;
-  repeatNewPassword?: string;
-}
-
 export interface UserFormSignup {
   firstName: string;
   lastName: string;
@@ -30,3 +19,5 @@ export interface UserFormUpdate {
   newPassword: string;
   repeatNewPassword: string;
 }
+
+export type Forms = UserFormSignup | UserFormSignIn | UserFormUpdate;

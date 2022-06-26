@@ -1,9 +1,8 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './User.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { openSignInChoice, openUser } from '../../store/slices/app-slice'
+import { useDispatch } from 'react-redux'
+import { openWindow, Window } from '../../store/slices/app-slice'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
-import { StoreType } from '../../store'
 import { useIsAuth } from '../../hooks/useIsAuth'
 
 export const User = () => {
@@ -11,11 +10,17 @@ export const User = () => {
   const isAuth = useIsAuth();
 
   const userLogInHandler = () => {
-    dispatch(openSignInChoice(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_SIGN_IN_CHOICE,
+      data: undefined,
+    }));
   }
 
   const userAccount = () => {
-    dispatch(openUser(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_USER,
+      data: undefined,
+    }));
   }
 
   return <>

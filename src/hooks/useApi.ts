@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { api } from '../utils/api/api'
 import { HttpMethods } from '../types/http-methods'
+import { ErrorResponse } from 'types';
 
 export const useApi = <T>(url: string, method?: HttpMethods, payload?: any): [boolean, number | null, T | undefined] => {
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState<number | null>(null);
-  const [data, setData] = useState<T | undefined>(undefined);
+  const [data, setData] = useState<T | ErrorResponse | null>(null);
 
   useEffect(() => {
     (async () => {

@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './UserView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettings, openAddAnnouncement, openNone, openSignup } from '../../store/slices/app-slice'
+import { useDispatch } from 'react-redux'
+import { openWindow, Window } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
@@ -29,12 +29,18 @@ export const UserView = () => {
 
     if(logoutStatus === 200) {
       dispatch(setJwt(null));
-      dispatch(openNone(undefined));
+      dispatch(openWindow({
+        openWindow: Window.OPEN_NONE,
+        data: undefined,
+      }));
     }
   }, [logout, logoutStatus]);
 
   const goBackHandler = () => {
-    dispatch(openNone(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_NONE,
+      data: undefined,
+    }));
   }
 
   const logoutHandler = () => {
@@ -42,11 +48,17 @@ export const UserView = () => {
   }
 
   const goAccountSettingsHandler = () => {
-    dispatch(openAccountSettings(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_ACCOUNT_SETTINGS,
+      data: undefined,
+    }));
   }
 
   const goAddAnnouncementHandler = () => {
-    dispatch(openAddAnnouncement(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_ADD_ANNOUNCEMENT,
+      data: undefined,
+    }));
   }
 
 

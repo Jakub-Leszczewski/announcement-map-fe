@@ -1,68 +1,79 @@
-import React, { ChangeEvent, FormEvent, useContext, useEffect, useReducer, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './AccountSettingsConfirmView.css'
-import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettings, openUser } from '../../store/slices/app-slice'
+import { openWindow, Window } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { StoreType } from '../../store'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
-import { ConfirmPasswordInput } from '../../components/form/ConfirmPasswordInput/ConfirmPasswordInput'
-import { UserForm } from '../../types/user-form'
 import { setJwt } from '../../store/slices/user-slice'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorRes, UserEntityResponse } from 'types'
+import { ErrorResponse, UserEntityResponse } from 'types'
+import { UserFormUpdate } from '../../types/user-form'
+import { useRefreshUser } from '../../hooks/useRefreshUser'
+import { AccountSettingsConfirmForm } from '../../components/form/AccountSettingsConfirmForm/AccountSettingsConfirmForm'
 
 
 export const AccountSettingsConfirmView = () => {
   const jwt = useJwt();
   const userData = useUserDataAuth();
+  const refreshUser = useRefreshUser();
+
+  if(!userData || !refreshUser) return null;
 
   const dispatch = useDispatch();
   const appStore = useSelector((store: StoreType) => store.app);
-
   const [password, setPassword] = useState<string>('');
-  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
-  const [error, setError] = useState<string | undefined>(undefined);
 
-  if(!userData) return null;
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
-      if(isSubmit && password) {
-        const data = await api<UserEntityResponse | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
-          method: HttpMethods.PATCH,
-          payload: { ...(appStore.payload as UserForm), password },
-          jwt,
-        });
-
-        if(data.status === 401) setError((data.data as ErrorRes).error);
-        if(data.status === 200) setError(undefined);
-        else setError((data.data as ErrorRes).error);
-
-        setSubmitStatus(data.status);
-        setIsSubmit(false);
-      }
-    })();
-
     if(submitStatus === 200) {
-      dispatch(setJwt(null));
-      dispatch(openAccountSettings({ message: 'Pomyślnie zaktualizowano.' }));
+      dispatch(openWindow({
+        openWindow: Window.OPEN_ACCOUNT_SETTINGS,
+        data: { message: 'Pomyślnie zaktualizowano.', error: null },
+      }));
     } else if (submitStatus && submitStatus !== 401) {
-      dispatch(openAccountSettings({ error }))
+      dispatch(openWindow({
+        openWindow: Window.OPEN_ACCOUNT_SETTINGS,
+        data: {message: null, error: error },
+      }));
     }
-  }, [isSubmit, submitStatus]);
+  }, [submitStatus]);
 
   const goBackHandler = () => {
-    dispatch(openUser(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_USER,
+      data: undefined,
+    }));
   }
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setError(null);
+    setPassword(e.target.value);
+  }
+
+  const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmit(true);
+
+    if(password) {
+      const data = await api<UserEntityResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
+        method: HttpMethods.PATCH,
+        payload: { ...(appStore.data as UserFormUpdate), password },
+        jwt,
+      });
+
+      if(data.status === 200) {
+        await refreshUser()
+        setError(null)
+      }
+      else setError((data.data as ErrorResponse)?.error || null);
+
+      setSubmitStatus(data.status);
+    }
   }
 
   return (
@@ -73,16 +84,13 @@ export const AccountSettingsConfirmView = () => {
         <UserAvatarBig/>
       </div>
 
-      <form onSubmit={onSubmitHandler} className="AccountSettingsConfirmView__form">
-        {error && <p className="AccountSettingsConfirmView__error">{error}</p>}
+      {error && <p className="AccountSettingsConfirmView__error">{error}</p>}
 
-       <ConfirmPasswordInput
-        value={password}
-        onChange={(e: ChangeEvent<HTMLInputElement>)=> setPassword(e.target.value)}
-       />
-
-        <Button disabled={!password}>Zapisz</Button>
-      </form>
+      <AccountSettingsConfirmForm
+        form={password}
+        changeFormHandler={changeFormHandler}
+        onSubmitHandler={onSubmitHandler}
+      />
     </section>
   );
 }

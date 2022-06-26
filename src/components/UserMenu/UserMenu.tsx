@@ -3,7 +3,7 @@ import './UserMenu.css'
 import { SignupView } from '../../view/SignupView/SignupView'
 import { useSelector } from 'react-redux'
 import { StoreType } from '../../store'
-import { ActionType } from '../../store/slices/app-slice'
+import { Window } from '../../store/slices/app-slice'
 import { SignInChoiceView } from '../../view/SignInChoiceView/SignInChoiceView'
 import { SignInView } from '../../view/SignInView/SignInView'
 import { UserView } from '../../view/UserView/UserView'
@@ -17,17 +17,17 @@ export const UserMenu = () => {
   const userStore = useSelector((store: StoreType) => store.user);
   const isAuth = useIsAuth();
 
-  if(appStore.openWindow === ActionType.OPEN_NONE) return null;
+  if(appStore.openWindow === Window.OPEN_NONE) return null;
 
   return(
     <section className="UserMenu">
-      {appStore.openWindow === ActionType.OPEN_SIGN_IN_CHOICE && !isAuth && <SignInChoiceView/>}
-      {appStore.openWindow === ActionType.OPEN_SIGN_IN && !isAuth && <SignInView/>}
-      {appStore.openWindow === ActionType.OPEN_SIGNUP && !isAuth && <SignupView/>}
-      {appStore.openWindow === ActionType.OPEN_USER && isAuth && <UserView/>}
-      {appStore.openWindow === ActionType.OPEN_ACCOUNT_SETTINGS && isAuth && <AccountSettingsView/>}
-      {appStore.openWindow === ActionType.OPEN_ACCOUNT_SETTINGS_CONFIRM && isAuth && <AccountSettingsConfirmView/>}
-      {appStore.openWindow === ActionType.OPEN_ADD_ANNOUNCEMENT && isAuth && <AddAnnouncementView/>}
+      {appStore.openWindow === Window.OPEN_SIGN_IN_CHOICE && !isAuth && <SignInChoiceView/>}
+      {appStore.openWindow === Window.OPEN_SIGN_IN && !isAuth && <SignInView/>}
+      {appStore.openWindow === Window.OPEN_SIGNUP && !isAuth && <SignupView/>}
+      {appStore.openWindow === Window.OPEN_USER && isAuth && <UserView/>}
+      {appStore.openWindow === Window.OPEN_ACCOUNT_SETTINGS && isAuth && <AccountSettingsView/>}
+      {appStore.openWindow === Window.OPEN_ACCOUNT_SETTINGS_CONFIRM && isAuth && <AccountSettingsConfirmView/>}
+      {appStore.openWindow === Window.OPEN_ADD_ANNOUNCEMENT && isAuth && <AddAnnouncementView/>}
     </section>
   );
 }

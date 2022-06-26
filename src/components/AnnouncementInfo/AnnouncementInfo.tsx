@@ -32,7 +32,7 @@ export const AnnouncementInfo = ({
     (async () => {
       if(fetchData) {
         const data = await api<AnnouncementEntity & {auctionLinks: AuctionLinkEntity[]}>(`http://localhost:3001/api/announcement/${id}`, { jwt });
-        if(data.data && data.status === 200) setAnnouncementData(data.data);
+        if(data.data && data.status === 200) setAnnouncementData(data.data as AnnouncementEntity & {auctionLinks: AuctionLinkEntity[]});
         else setAnnouncementData(null);
       }
     })();

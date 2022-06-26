@@ -4,14 +4,14 @@ import './UserNameInputFields.css'
 
 interface Props {
   required?: boolean;
-  userForm: {
+  form: {
     firstName: string,
     lastName: string,
   };
   changeFormHandle: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const UserNameInputFields = ({required, userForm, changeFormHandle}: Props) => {
+export const UserNameInputFields = ({required, form, changeFormHandle}: Props) => {
   return (
     <div className="UserNameInputFields">
       <ShortTextInput
@@ -21,7 +21,7 @@ export const UserNameInputFields = ({required, userForm, changeFormHandle}: Prop
         maxLength={60}
         minLength={3}
         required={required}
-        value={userForm.firstName}
+        value={form.firstName}
         onChange={changeFormHandle}
       />
 
@@ -32,7 +32,7 @@ export const UserNameInputFields = ({required, userForm, changeFormHandle}: Prop
         maxLength={60}
         minLength={3}
         required={required}
-        value={userForm.lastName}
+        value={form.lastName}
         onChange={changeFormHandle}
       />
     </div>
