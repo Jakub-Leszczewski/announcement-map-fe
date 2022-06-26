@@ -12,28 +12,31 @@ import { ErrorResponse, UserEntityResponse } from 'types'
 import { useRefreshUser } from '../../hooks/useRefreshUser'
 import { AccountSettingsConfirmForm } from '../../components/form/AccountSettingsConfirmForm/AccountSettingsConfirmForm'
 import { openAccountSettings, openUser } from '../../store/slices/app-slice'
+import { useSetJwt } from '../../hooks/useSetJwt'
 
 
 export const AccountSettingsConfirmView = () => {
   const jwt = useJwt();
+  const setJwt = useSetJwt();
   const userData = useUserDataAuth();
   const refreshUser = useRefreshUser();
 
-  if(!userData || !refreshUser) return null;
+  if(!userData || !refreshUser || !setJwt) return null;
 
   const dispatch = useDispatch();
   const appStore = useSelector((store: StoreType) => store.app);
   const [password, setPassword] = useState<string>('');
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
+  const [newJwt, setNewJwt] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if(submitStatus === 200) {
+      if(newJwt) setJwt(newJwt);
       dispatch(openAccountSettings({
         message: 'Pomyślnie zaktualizowano.',
         error: null
       }));
-
     } else if (submitStatus && submitStatus !== 401) {
       dispatch(openAccountSettings({
         message: null,
@@ -50,6 +53,7 @@ export const AccountSettingsConfirmView = () => {
     setError(null);
     setSubmitStatus(null);
     setPassword(e.target.value);
+    setNewJwt(null);
   }
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -61,6 +65,8 @@ export const AccountSettingsConfirmView = () => {
         payload: { ...appStore.accountSettingsConfirmPayload, password },
         jwt,
       });
+
+      if(data.newJwt) setNewJwt(data.newJwt)
 
       if(data.status === 200) {
         await refreshUser()

@@ -3,11 +3,11 @@ import './SignInView.css'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
 import { auth } from '../../utils/api/auth'
-import { setJwt } from '../../store/slices/user-slice'
 import { StoreType } from '../../store'
 import { UserFormSignIn } from '../../types/user-form'
 import { SignInForm } from '../../components/form/SignInForm/SignInForm'
 import { openNone, openSignInChoice } from '../../store/slices/app-slice'
+import { useSetJwt } from '../../hooks/useSetJwt'
 
 const initialSignInFormState: UserFormSignIn= {
   username: '',
@@ -15,6 +15,10 @@ const initialSignInFormState: UserFormSignIn= {
 }
 
 export const SignInView = () => {
+  const setJwt = useSetJwt();
+
+  if(!setJwt) return null;
+
   const appStore = useSelector((store: StoreType) => store.app);
   const dispatch = useDispatch();
 
@@ -23,8 +27,8 @@ export const SignInView = () => {
   const [newJwt, setNewJwt] = useState<string | null>(null);
 
   useEffect(() => {
-    if(newJwt !== null) {
-      dispatch(setJwt(newJwt));
+    if(newJwt) {
+      setJwt(newJwt);
       dispatch(openNone());
     }
   }, [newJwt])
@@ -35,6 +39,7 @@ export const SignInView = () => {
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setError(null);
+    setNewJwt(null);
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
