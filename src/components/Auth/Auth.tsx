@@ -21,9 +21,14 @@ interface UserJwt {
 interface AuthContext extends UserEntityResponse, UserJwt{
   jwt: string | null;
   refreshUserHandler: () => Promise<void>;
+  setJwtFromCode: (jwt: string) => void;
 }
 
-export const AuthContext = createContext<AuthContext | null>(null);
+interface NotAuthContext{
+  setJwtFromCode: (jwt: string) => void;
+}
+
+export const AuthContext = createContext<AuthContext | NotAuthContext | null>(null);
 
 export const Auth = ({children}: Props) => {
   const dispatch = useDispatch();
@@ -57,6 +62,11 @@ export const Auth = ({children}: Props) => {
     }
   }
 
+  const setJwtFromCode = (jwt: string) => {
+    if(!decodedJwt || (decodedJwt && decodedJwt.exp * 1000 <= Date.now()))
+    setNewJwt(jwt);
+  }
+
   useEffect(() => {
     (async () => {
       await refreshUserHandler();
@@ -67,8 +77,16 @@ export const Auth = ({children}: Props) => {
     <AuthContext.Provider
       value={
         (userData && decodedJwt && userStore.jwt)
-          ? {...userData, ...decodedJwt, jwt: userStore.jwt, refreshUserHandler} as AuthContext
-          : null
+          ? {
+          ...userData,
+            ...decodedJwt,
+            jwt: userStore.jwt,
+            refreshUserHandler,
+            setJwtFromCode
+        } as AuthContext
+          : {
+            setJwtFromCode
+          }
       }
     >
       {children}

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './AccountSettingsView.css'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,13 +13,15 @@ import { ErrorResponse, UserEntityResponse } from 'types'
 import { AccountSettingsForm } from '../../components/form/AccountSettingsForm/AccountSettingsForm'
 import { useRefreshUser } from '../../hooks/useRefreshUser'
 import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { useSetJwt } from '../../hooks/useSetJwt'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
   const refreshUser = useRefreshUser();
+  const setJwt = useSetJwt();
   const jwt = useJwt();
 
-  if(!userData || !refreshUser) return null;
+  if(!userData || !refreshUser || !setJwt) return null;
 
   const initialUserFormState: UserFormUpdate = {
     firstName: userData.firstName,
@@ -32,9 +34,14 @@ export const  AccountSettingsView = () => {
   const appStore = useSelector((store: StoreType) => store.app);
   const dispatch = useDispatch();
 
+  const [form, setForm] = useState<UserFormUpdate>(initialUserFormState);
   const [error, setError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
-  const [form, setForm] = useState<UserFormUpdate>(initialUserFormState);
+  const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  useEffect(() => {
+    if(newJwt) setJwt(newJwt);
+  }, [newJwt])
 
   const goBackHandler = () => {
     dispatch(openUser());
@@ -48,6 +55,7 @@ export const  AccountSettingsView = () => {
     setSubmitStatus(null);
     setError(null);
     setSubmitStatus(null);
+    setNewJwt(null);
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -65,6 +73,8 @@ export const  AccountSettingsView = () => {
         payload: form,
         jwt,
       });
+
+      if(data.newJwt) setNewJwt(data.newJwt);
 
       if(data.status !== 200) setError((data.data as ErrorResponse)?.error || null);
       else {

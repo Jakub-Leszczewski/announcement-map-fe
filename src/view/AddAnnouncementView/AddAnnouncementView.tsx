@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './AddAnnouncementView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
@@ -11,6 +11,7 @@ import { HttpMethods } from '../../types/http-methods'
 import { useJwt } from '../../hooks/useJwt'
 import { AnnouncementForm } from '../../components/form/AnnouncementForm/AnnouncementForm'
 import { openUser } from '../../store/slices/app-slice'
+import { useSetJwt } from '../../hooks/useSetJwt'
 
 const initialAnnouncementFormState: AnnouncementDto = {
   title: '',
@@ -30,11 +31,20 @@ const initialAnnouncementFormState: AnnouncementDto = {
 
 export const AddAnnouncementView = () => {
   const jwt = useJwt();
+  const setJwt = useSetJwt();
+
+  if(!setJwt) return null;
+
   const dispatch = useDispatch();
   const [form, setForm] = useState<AnnouncementDto>(initialAnnouncementFormState);
   const [findAddress, setFindAddress] = useState<undefined | Awaited<ReturnType<typeof checkAddressCoords>>>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
+  const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  useEffect(() => {
+    if(newJwt) setJwt(newJwt);
+  }, [newJwt])
 
   const goBackHandler = () => {
     dispatch(openUser());
@@ -44,6 +54,7 @@ export const AddAnnouncementView = () => {
     setError(null);
     setMessage(null);
     setFindAddress(undefined);
+    setNewJwt(null);
 
     setForm(prev => ({
       ...prev,
@@ -78,6 +89,8 @@ export const AddAnnouncementView = () => {
       jwt: jwt,
       payload: { ...form, lat, lon: lon },
     });
+
+    if(data.newJwt) setNewJwt(data.newJwt);
 
     if(data.status === 201) {
       setForm(initialAnnouncementFormState);
