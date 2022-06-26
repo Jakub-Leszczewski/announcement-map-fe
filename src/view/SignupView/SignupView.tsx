@@ -2,12 +2,12 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './SignupView.css'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
-import { openWindow, Window } from '../../store/slices/app-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { UserFormSignup } from '../../types/user-form'
 import { UserEntityResponse, ErrorResponse } from 'types'
 import { SignupForm } from '../../components/form/SignupForm/SignupForm'
+import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 
 const initialUserFormState: UserFormSignup = {
   firstName: '',
@@ -25,13 +25,11 @@ export function SignupView() {
   const [error, setError] = useState<string | null>(null);
 
   const goBackHandler = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_SIGN_IN_CHOICE,
-      data: undefined,
-    }));
+    dispatch(openSignInChoice());
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -53,9 +51,9 @@ export function SignupView() {
   }
 
   useEffect(() => {
-    if(submitStatus === 201) dispatch(openWindow({
-      openWindow: Window.OPEN_SIGN_IN,
-      data: {message: 'Konto zostało pomyślnie utworzone.', error: null},
+    if(submitStatus === 201) dispatch(openSignIn({
+      message: 'Konto zostało pomyślnie utworzone.',
+      error: null
     }));
   }, [submitStatus])
 

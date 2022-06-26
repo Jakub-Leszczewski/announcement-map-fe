@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { ErrorResponse, UserEntityResponse, UserRole } from 'types';
+import { UserEntityResponse, UserRole } from 'types';
 import { useDispatch, useSelector } from 'react-redux'
 import { StoreType } from '../../store';
 import { auth } from '../../utils/api/auth'

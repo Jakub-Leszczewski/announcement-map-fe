@@ -5,19 +5,13 @@ import { SelectCategories } from '../SelectCategories/SelectCategories';
 import './MainNav.css';
 import { User } from '../User/User'
 import { useDispatch } from 'react-redux'
-import { openWindow, Window } from '../../store/slices/app-slice'
-import { useApi } from '../../hooks/useApi'
-import { CategoryEntity } from 'types';
+import { openAddAnnouncement } from '../../store/slices/app-slice'
 
 export function MainNav() {
-  const [loading, status, categories] = useApi<CategoryEntity[]>('http://localhost:3001/api/category');
   const dispatch = useDispatch();
 
   const goAddAnnouncement = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_ADD_ANNOUNCEMENT,
-      data: undefined,
-    }));
+    dispatch(openAddAnnouncement());
   }
   return (
     <nav className="MainNav">

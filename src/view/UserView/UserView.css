@@ -37,3 +37,8 @@
     border-radius: 15px;
 }
 
+.UserView__error {
+    color: red;
+    font-size: 0.7rem;
+}
+

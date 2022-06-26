@@ -3,7 +3,6 @@ import './AddAnnouncementView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
-import { openWindow, Window } from '../../store/slices/app-slice'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
 import { AnnouncementDto, AnnouncementEntityResponse, CreateAuctionLinkDto, ErrorResponse } from 'types'
 import { checkAddressCoords } from '../../utils/check-address-coords'
@@ -11,6 +10,7 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useJwt } from '../../hooks/useJwt'
 import { AnnouncementForm } from '../../components/form/AnnouncementForm/AnnouncementForm'
+import { openUser } from '../../store/slices/app-slice'
 
 const initialAnnouncementFormState: AnnouncementDto = {
   title: '',
@@ -33,17 +33,18 @@ export const AddAnnouncementView = () => {
   const dispatch = useDispatch();
   const [form, setForm] = useState<AnnouncementDto>(initialAnnouncementFormState);
   const [findAddress, setFindAddress] = useState<undefined | Awaited<ReturnType<typeof checkAddressCoords>>>(undefined);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
   const goBackHandler = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_USER,
-      data: undefined,
-    }));
+    dispatch(openUser());
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setError(null);
+    setMessage(null);
+    setFindAddress(undefined);
+
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -82,7 +83,7 @@ export const AddAnnouncementView = () => {
       setForm(initialAnnouncementFormState);
       setMessage('Pomyślnie dodano ogłoszenie')
     }
-    else if(data.data && 'error' in data.data) setError(data?.data.error);
+    else setError((data.data as ErrorResponse)?.error || null);
   }
 
   const onSubmitHandler = async (e: FormEvent) => {

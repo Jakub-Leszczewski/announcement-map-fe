@@ -4,17 +4,6 @@
     padding: 5px 10px;
 }
 
-.AddAnnouncementView__form {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    margin: 10px auto;
-}
-
-.AddAnnouncementView__form>.SelectCategories {
-    height: 45px;
-}
-
 .AddAnnouncementView>.Button {
     margin: 10px 0 0 0;
     width: 100%;

@@ -18,7 +18,7 @@ interface Props {
 
 export const AnnouncementForm = ({form, findAddress, resetFindAddressHandler, id, changeFormHandler, onSubmitHandler}: Props) => {
   return(
-    <form onSubmit={onSubmitHandler} id={id} className="AddAnnouncementView__form">
+    <form onSubmit={onSubmitHandler} id={id} className="AnnouncementForm">
       <TitlePriceInputFields
         required
         form={form}

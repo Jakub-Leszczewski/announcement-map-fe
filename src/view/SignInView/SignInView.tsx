@@ -2,12 +2,12 @@ import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './SignInView.css'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { openWindow, Window } from '../../store/slices/app-slice'
 import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
 import { StoreType } from '../../store'
 import { UserFormSignIn } from '../../types/user-form'
 import { SignInForm } from '../../components/form/SignInForm/SignInForm'
+import { openNone, openSignInChoice } from '../../store/slices/app-slice'
 
 const initialSignInFormState: UserFormSignIn= {
   username: '',
@@ -25,21 +25,16 @@ export const SignInView = () => {
   useEffect(() => {
     if(newJwt !== null) {
       dispatch(setJwt(newJwt));
-      dispatch(openWindow({
-        openWindow: Window.OPEN_NONE,
-        data: undefined,
-      }));
+      dispatch(openNone());
     }
   }, [newJwt])
 
   const goBackHandler = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_SIGN_IN_CHOICE,
-      data: undefined,
-    }));
+    dispatch(openSignInChoice());
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setError(null);
     setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
@@ -65,8 +60,8 @@ export const SignInView = () => {
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
       {
-        (appStore.data && 'message' in appStore.data)
-        && <p className="SignInView__message">{appStore.data.message}</p>
+        appStore.signInPayload.message &&
+        <p className="SignInView__message">{appStore.signInPayload.message}</p>
       }
 
       {

@@ -1,26 +1,20 @@
 import React from 'react'
 import './User.css'
 import { useDispatch } from 'react-redux'
-import { openWindow, Window } from '../../store/slices/app-slice'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
 import { useIsAuth } from '../../hooks/useIsAuth'
+import { openSignInChoice, openUser } from '../../store/slices/app-slice'
 
 export const User = () => {
   const dispatch = useDispatch();
   const isAuth = useIsAuth();
 
   const userLogInHandler = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_SIGN_IN_CHOICE,
-      data: undefined,
-    }));
+    dispatch(openSignInChoice());
   }
 
   const userAccount = () => {
-    dispatch(openWindow({
-      openWindow: Window.OPEN_USER,
-      data: undefined,
-    }));
+    dispatch(openUser());
   }
 
   return <>
