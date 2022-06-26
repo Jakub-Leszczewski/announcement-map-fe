@@ -1,60 +1,105 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { Forms } from '../../types/user-form'
+import { UserFormUpdate } from '../../types/user-form'
 import { InfoType } from '../../types/info-types'
+import { Window} from '../types/app-slice-types'
+import {
+  AppStateType,
+  OpenAccountSettings, OpenAccountSettingsConfirm,
+  OpenAddAnnouncement,
+  OpenAnnouncement,
+  OpenAnnouncements,
+  OpenNone,
+  OpenSignIn,
+  OpenSignInChoice,
+  OpenSignup,
+  OpenUser,
+} from '../types/app-slice-types'
 
-export enum Window {
-  OPEN_NONE = 'OPEN_NONE',
-  OPEN_SIGN_IN_CHOICE = 'OPEN_LOGIN_CHOICE',
-  OPEN_SIGN_IN = 'OPEN_SIGN_IN',
-  OPEN_SIGNUP = 'OPEN_SIGNUP',
-  OPEN_USER = 'OPEN_USER',
-  OPEN_ANNOUNCEMENTS = 'OPEN_ANNOUNCEMENTS',
-  OPEN_ANNOUNCEMENT_VIEW = 'OPEN_ANNOUNCEMENT_VIEW',
-  OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
-  OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
-  OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
+const initialInfoType: InfoType = {
+  error: null,
+  message: null,
 }
 
-interface OpenWindowDataInfoType {
-  openWindow: Window.OPEN_SIGN_IN | Window.OPEN_ACCOUNT_SETTINGS
-  data: InfoType | undefined;
-}
-
-interface OpenWindowDataForms {
-  openWindow: Window.OPEN_ACCOUNT_SETTINGS_CONFIRM
-  data: Forms;
-}
-
-interface OpenWindowDataUndefined {
-  openWindow: Window.OPEN_NONE | Window.OPEN_SIGN_IN_CHOICE | Window.OPEN_SIGNUP | Window.OPEN_USER | Window.OPEN_ANNOUNCEMENTS | Window.OPEN_ANNOUNCEMENT_VIEW | Window.OPEN_ADD_ANNOUNCEMENT;
-  data: undefined;
-}
-
-interface OpenWindow {
-  payload: OpenWindowDataInfoType | OpenWindowDataForms | OpenWindowDataUndefined;
-}
-
-interface AppStateType {
-  openWindow: Window;
-  data: InfoType | Forms | undefined;
+const initialUserFormUpdate: UserFormUpdate = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  newPassword: '',
+  repeatNewPassword: ''
 }
 
 const initialState: AppStateType = {
   openWindow: Window.OPEN_NONE,
-  data: undefined,
+  accountSettingsPayload: initialInfoType,
+  signInPayload: initialInfoType,
+  accountSettingsConfirmPayload: initialUserFormUpdate,
 }
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    openWindow: (state, action: OpenWindow) => {
-      state.openWindow = action.payload.openWindow;
-      state.data = action.payload.data;
+    openNone: (state, action: OpenNone) => {
+      state.openWindow = Window.OPEN_NONE;
     },
+
+    openSignInChoice: (state, action: OpenSignInChoice) => {
+      state.openWindow = Window.OPEN_SIGN_IN_CHOICE;
+    },
+
+    openSignup: (state, action: OpenSignup) => {
+      state.openWindow = Window.OPEN_SIGNUP;
+    },
+
+    openSignIn: (state, action: OpenSignIn) => {
+      state.openWindow = Window.OPEN_SIGN_IN;
+
+      if(action.payload === null) state.signInPayload = initialInfoType;
+      else state.signInPayload = action.payload;
+    },
+
+    openUser: (state, action: OpenUser) => {
+      state.openWindow = Window.OPEN_USER;
+    },
+
+    openAnnouncements: (state, action: OpenAnnouncements) => {
+      state.openWindow = Window.OPEN_ANNOUNCEMENTS;
+    },
+
+    openAnnouncement: (state, action: OpenAnnouncement) => {
+      state.openWindow = Window.OPEN_ANNOUNCEMENT;
+    },
+
+    openAddAnnouncement: (state, action: OpenAddAnnouncement) => {
+      state.openWindow = Window.OPEN_ADD_ANNOUNCEMENT;
+    },
+
+    openAccountSettings: (state, action: OpenAccountSettings) => {
+      state.openWindow = Window.OPEN_ACCOUNT_SETTINGS;
+
+      if(action.payload === null) state.accountSettingsPayload = initialInfoType;
+      else state.accountSettingsPayload = action.payload;
+    },
+
+    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
+      state.openWindow = Window.OPEN_ACCOUNT_SETTINGS_CONFIRM;
+
+      if(action.payload === null) state.accountSettingsConfirmPayload = initialUserFormUpdate;
+      else state.accountSettingsConfirmPayload = action.payload;
+    },
+
   }
 });
 
 export const {
-  openWindow,
+  openNone,
+  openSignInChoice,
+  openSignIn,
+  openSignup,
+  openAccountSettings,
+  openAccountSettingsConfirm,
+  openUser,
+  openAnnouncements,
+  openAddAnnouncement,
+  openAnnouncement,
 } = appSlice.actions;

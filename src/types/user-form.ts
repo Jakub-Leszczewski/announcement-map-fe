@@ -20,4 +20,3 @@ export interface UserFormUpdate {
   repeatNewPassword: string;
 }
 
-export type Forms = UserFormSignup | UserFormSignIn | UserFormUpdate;

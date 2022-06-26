@@ -27,13 +27,13 @@ export const AddressInputFields = ({form, changeFormHandle, findAddress}: Props)
       {
         findAddress && !findAddress.all
           ? <p className="AddAnnouncementView__message">
-            Nie znaleziono dokładnego adresu. Najbliższy adres wyświetlany na mapie to:
-            <strong>
-              {` ${findAddress.country} ${findAddress.city} ${findAddress.zipCode} ${findAddress.street || ''}`}
-            </strong>.
-            <br/>
-            W treści ogłoszenia będzie widoczny adres wpisany przez ciebie. Zaakceptuj klikając Dodaj lub zmień adres.
-          </p>
+              Nie znaleziono dokładnego adresu. Najbliższy adres wyświetlany na mapie to:
+              <strong>
+                {` ${findAddress.country} ${findAddress.city} ${findAddress.zipCode} ${findAddress.street || ''}`}
+              </strong>.
+              <br/>
+              W treści ogłoszenia będzie widoczny adres wpisany przez ciebie. Zaakceptuj klikając Dodaj lub zmień adres.
+            </p>
           : null
       }
 
