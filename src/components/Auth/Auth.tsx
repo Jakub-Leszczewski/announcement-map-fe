@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { ErrorRes, UserEntityResponse, UserRole } from 'types';
+import { ErrorResponse, UserEntityResponse, UserRole } from 'types';
 import { useDispatch, useSelector } from 'react-redux'
 import { StoreType } from '../../store';
 import { auth } from '../../utils/api/auth'
@@ -18,49 +18,58 @@ interface UserJwt {
   iat: number;
 }
 
-interface UserAuthData extends UserEntityResponse, UserJwt{
+interface AuthContext extends UserEntityResponse, UserJwt{
   jwt: string | null;
+  refreshUserHandler: () => Promise<void>;
 }
 
-export const AuthContext = createContext<UserAuthData | null>(null);
+export const AuthContext = createContext<AuthContext | null>(null);
 
 export const Auth = ({children}: Props) => {
   const dispatch = useDispatch();
   const userStore = useSelector((store: StoreType) => store.user);
 
   const [newJwt, setNewJwt] = useState<string | null | undefined>(undefined);
-  const [userData, setUserData] = useState<UserEntityResponse | undefined>(undefined);
-
-  const decodedJwt = decodeJwt(userStore.jwt);
-  useEffect(() => {
-    (async () => {
-      if(userStore.jwt) {
-        if (decodedJwt !== null) {
-          const data = await api<UserEntityResponse | ErrorRes>(`http://localhost:3001/api/user/${decodedJwt.id}`, {
-            jwt: userStore.jwt,
-          });
-
-          setUserData(!(data.data as ErrorRes)?.error ? (data.data as UserEntityResponse) : undefined);
-          setNewJwt(data.newJwt);
-        }
-      } else {
-        const authData = await auth('http://localhost:3001/api/auth/token');
-
-        if(authData.status === 200) setNewJwt(authData.jwt);
-        else setNewJwt(null);
-      }
-    })();
-  }, [userStore]);
+  const [userData, setUserData] = useState<UserEntityResponse | null>(null);
 
   useEffect(() => {
     if(newJwt !== undefined) dispatch(setJwt(newJwt));
   }, [newJwt]);
 
+  const decodedJwt = decodeJwt(userStore.jwt);
+
+  const refreshUserHandler = async () => {
+    if(userStore.jwt) {
+      if (decodedJwt !== null) {
+        const data = await api<UserEntityResponse>(`http://localhost:3001/api/user/${decodedJwt.id}`, {
+          jwt: userStore.jwt,
+        });
+
+        if(data.status === 200 && data.newJwt) setNewJwt(data.newJwt);
+        if(data.status === 200) setUserData(data.data as UserEntityResponse)
+        else setUserData(null)
+      }
+    } else {
+      const authData = await auth('http://localhost:3001/api/auth/token');
+
+      if(authData.status === 200) setNewJwt(authData.jwt);
+      else setNewJwt(null);
+    }
+  }
+
+  useEffect(() => {
+    (async () => {
+      await refreshUserHandler();
+    })();
+  }, [userStore]);
+
   return(
-    <AuthContext.Provider value={
-      !(userData && decodedJwt && userStore.jwt)
-        ? null
-        : {...userData, ...decodedJwt, jwt: userStore.jwt} as UserAuthData}
+    <AuthContext.Provider
+      value={
+        (userData && decodedJwt && userStore.jwt)
+          ? {...userData, ...decodedJwt, jwt: userStore.jwt, refreshUserHandler} as AuthContext
+          : null
+      }
     >
       {children}
     </AuthContext.Provider>

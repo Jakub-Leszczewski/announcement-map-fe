@@ -5,7 +5,7 @@ import { SelectCategories } from '../SelectCategories/SelectCategories';
 import './MainNav.css';
 import { User } from '../User/User'
 import { useDispatch } from 'react-redux'
-import { openAddAnnouncement } from '../../store/slices/app-slice'
+import { openWindow, Window } from '../../store/slices/app-slice'
 import { useApi } from '../../hooks/useApi'
 import { CategoryEntity } from 'types';
 
@@ -14,7 +14,10 @@ export function MainNav() {
   const dispatch = useDispatch();
 
   const goAddAnnouncement = () => {
-    dispatch(openAddAnnouncement(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_ADD_ANNOUNCEMENT,
+      data: undefined,
+    }));
   }
   return (
     <nav className="MainNav">

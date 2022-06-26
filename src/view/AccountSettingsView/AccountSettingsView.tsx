@@ -1,28 +1,24 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import './AccountSettingsView.css'
-import { Button } from '../../components/common/Button/Button'
-import { ShortTextInput } from '../../components/common/ShortTextInput/ShortTextInput'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
+import { openWindow, Window } from '../../store/slices/app-slice'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
-import { NewPasswordInputFields } from '../../components/form/NewPasswordInputFields/NewPasswordInputFields'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
-import { Validation } from '../../utils/validation'
 import { StoreType } from '../../store'
-import { setJwt } from '../../store/slices/user-slice'
-import { InfoType } from '../../types/info-types'
 import { UserFormUpdate } from '../../types/user-form'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorRes, UserEntityResponse } from 'types'
-import { UserNameInputFields } from '../../components/form/UserNameFields/UserNameInputFields'
+import { ErrorResponse, UserEntityResponse } from 'types'
+import { AccountSettingsForm } from '../../components/form/AccountSettingsForm/AccountSettingsForm'
+import { useRefreshUser } from '../../hooks/useRefreshUser'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
+  const refreshUser = useRefreshUser();
   const jwt = useJwt();
-  if(!userData) return null;
+  if(!userData || !refreshUser) return null;
 
   const initialUserFormState: UserFormUpdate = {
     firstName: userData.firstName,
@@ -35,52 +31,46 @@ export const  AccountSettingsView = () => {
   const appStore = useSelector((store: StoreType) => store.app);
   const dispatch = useDispatch();
 
-  const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [error, setError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
-  const [userForm, setUserForm] = useState<UserFormUpdate>(initialUserFormState);
-
-  useEffect(() => {
-    (async () => {
-      if(isSubmit) {
-        const data = await api<UserEntityResponse | ErrorRes>(`http://localhost:3001/api/users/${userData.id}`, {
-          method: HttpMethods.PATCH,
-          payload: userForm,
-          jwt,
-        });
-
-        if(data.status !== 200) setError((data.data as ErrorRes).error);
-        else setError(undefined);
-
-        setSubmitStatus(data.status);
-        setIsSubmit(false);
-      }
-    })();
-
-    if(submitStatus === 200) {
-      dispatch(openAccountSettings({message: 'Pomyślnie zapisano'}));
-      dispatch(setJwt(null));
-    }
-  }, [isSubmit, submitStatus]);
+  const [form, setForm] = useState<UserFormUpdate>(initialUserFormState);
 
   const goBackHandler = () => {
-    dispatch(openUser(undefined));
+    dispatch(openWindow({
+      openWindow: Window.OPEN_USER,
+      data: undefined,
+    }));
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserForm(prev => ({
+    setSubmitStatus(null);
+    setForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
 
-  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(userForm.email !== userData.email || userForm.newPassword) {
-      dispatch(openAccountSettingsConfirm(userForm));
+    if(form.email !== userData.email || form.newPassword) {
+      dispatch(openWindow({
+        openWindow: Window.OPEN_ACCOUNT_SETTINGS_CONFIRM,
+        data: form,
+      }));
     } else {
-      setIsSubmit(true);
+      const data = await api<UserEntityResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
+        method: HttpMethods.PATCH,
+        payload: form,
+        jwt,
+      });
+
+      if(data.status !== 200) setError((data.data as ErrorResponse)?.error || null);
+      else {
+        await refreshUser();
+        setError(null);
+      }
+      setSubmitStatus(data.status);
     }
   }
 
@@ -92,47 +82,23 @@ export const  AccountSettingsView = () => {
         <UserAvatarBig/>
       </div>
 
-      <form onSubmit={onSubmitHandler} className="AccountSettingsView__form">
-        {error && <p className="AccountSettingsView__validation-error">{error}</p>}
-        {
-          (appStore.payload as InfoType)?.error
-          && <p className="AccountSettingsView__validation-error">{(appStore.payload as InfoType).error}</p>
-        }
+      {submitStatus === 200 && <p className="AccountSettingsView__message">Pomyślnie zapisano</p>}
+      {
+        (appStore.data && 'message' in appStore.data)
+        && <p className="AccountSettingsView__message">{appStore.data.message}</p>
+      }
 
-        {
-          (appStore.payload as InfoType)?.message
-          && <p className="AccountSettingsView__message">{(appStore.payload as InfoType).message}</p>
-        }
+      {error && <p className="AccountSettingsView__error">{error}</p>}
+      {
+        (appStore.data && 'error' in appStore.data)
+        && <p className="AccountSettingsView__error">{appStore.data.error}</p>
+      }
 
-        <UserNameInputFields
-          userForm={userForm}
-          changeFormHandle={changeFormHandler}
-        />
-
-        <ShortTextInput
-          label="Email:"
-          placeholder="email"
-          name="email"
-          type="email"
-          maxLength={255}
-          minLength={3}
-          value={userForm.email}
-          onChange={changeFormHandler}
-        />
-
-        <br />
-        <NewPasswordInputFields
-          form={userForm}
-          changeFormHandle={changeFormHandler}
-        />
-
-        <Button
-          disabled={
-            !(Validation.passwordValidation(userForm.newPassword) || !userForm.newPassword)
-            || userForm.newPassword !== userForm.repeatNewPassword
-          }
-        >Zapisz</Button>
-      </form>
+      <AccountSettingsForm
+        form={form}
+        changeFormHandler={changeFormHandler}
+        onSubmitHandler={onSubmitHandler}
+      />
     </section>
   );
 }

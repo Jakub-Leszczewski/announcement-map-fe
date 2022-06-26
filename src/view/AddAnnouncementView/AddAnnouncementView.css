@@ -27,13 +27,13 @@
     font-size: 0.7rem;
 }
 
-.AddAnnouncementView__info>strong {
+.AddAnnouncementView__message>strong {
     color: green;
     font-size: 0.7rem;
     font-weight: bold;
 }
 
-.AddAnnouncementView__info {
+.AddAnnouncementView__message {
     color: green;
     font-size: 0.7rem;
 }

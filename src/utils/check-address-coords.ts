@@ -4,13 +4,18 @@ interface Address{
   zipCode: string;
   street?: string;
   buildingNumber?: string;
+  apartamentNumber?:string;
 }
 
 interface ReturnType {
   lat: number,
   lon: number,
-  street: string | undefined;
-  buildingNumber: string | undefined;
+  country: string,
+  city: string,
+  zipCode: string,
+  street?: string;
+  buildingNumber?: string;
+  apartamentNumber?: string;
   all: boolean;
 }
 
@@ -34,10 +39,13 @@ export async function checkAddressCoords ({
       const data = await res.json();
 
       if(data.length > 0 && data[0].class !== 'building') all = false;
-      if (data.length > 0) console.log(data);
+
       if (data.length > 0) return {
         lat: data[0].lat,
         lon: data[0].lon,
+        country,
+        city,
+        zipCode,
         street: findStreet,
         buildingNumber: findBuildingNumber,
         all,
