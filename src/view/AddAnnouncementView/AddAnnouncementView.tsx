@@ -4,7 +4,7 @@ import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch } from 'react-redux'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
-import { AnnouncementDto, AnnouncementEntityResponse, CreateAuctionLinkDto, ErrorResponse } from 'types'
+import { AnnouncementDto, CreateAnnouncementResponse, CreateAuctionLinkDto, ErrorResponse } from 'types'
 import { checkAddressCoords } from '../../utils/check-address-coords'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
@@ -30,17 +30,17 @@ const initialAnnouncementFormState: AnnouncementDto = {
 }
 
 export const AddAnnouncementView = () => {
-  const jwt = useJwt();
-  const setJwt = useSetJwt();
-
-  if(!setJwt) return null;
-
   const dispatch = useDispatch();
   const [form, setForm] = useState<AnnouncementDto>(initialAnnouncementFormState);
   const [findAddress, setFindAddress] = useState<undefined | Awaited<ReturnType<typeof checkAddressCoords>>>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  const jwt = useJwt();
+  const setJwt = useSetJwt();
+
+  if(!setJwt) return null;
 
   useEffect(() => {
     if(newJwt) setJwt(newJwt);
@@ -84,7 +84,7 @@ export const AddAnnouncementView = () => {
   }
 
   const addAnnouncementApiCall = async (lat: number, lon: number) => {
-    const data = await api<AnnouncementEntityResponse | ErrorResponse>('http://localhost:3001/api/announcement/', {
+    const data = await api<CreateAnnouncementResponse | ErrorResponse>('http://localhost:3001/api/announcement/', {
       method: HttpMethods.POST,
       jwt: jwt,
       payload: { ...form, lat, lon: lon },

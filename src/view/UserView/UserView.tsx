@@ -8,14 +8,22 @@ import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
-import { openAccountSettings, openAddAnnouncement, openNone } from '../../store/slices/app-slice'
+import {
+  openAccountSettings,
+  openAddAnnouncement,
+  openAnnouncements,
+  openNone,
+} from '../../store/slices/app-slice'
 import { ErrorResponse, UserLogoutResponse } from 'types';
 
 export const UserView = () => {
-  const dispatch = useDispatch();
-  const userData = useUserDataAuth();
   const [error, setError] = useState<string | null>(null);
   const [logoutStatus, setLogoutStatus] = useState<number | null>(null);
+
+  const dispatch = useDispatch();
+  const userData = useUserDataAuth();
+
+  if (!userData) return null;
 
   useEffect(() => {
     if(logoutStatus === 200) {
@@ -45,8 +53,9 @@ export const UserView = () => {
     dispatch(openAddAnnouncement());
   }
 
-
-  if (!userData) return null;
+  const goAnnouncementHandler = () => {
+    dispatch(openAnnouncements());
+  }
 
   return(
     <section className="UserView">
@@ -59,7 +68,7 @@ export const UserView = () => {
 
       {error && <p className="UserView__error">{error}</p>}
       <div className="UserView__buttons-container">
-        <Button >Twoje ogłoszenia</Button>
+        <Button onClick={goAnnouncementHandler}>Twoje ogłoszenia</Button>
         <Button onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
         <Button onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
       </div>

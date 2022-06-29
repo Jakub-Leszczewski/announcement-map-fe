@@ -19,6 +19,8 @@ export interface AppStateType {
   signInPayload: InfoType;
   accountSettingsPayload: InfoType;
   accountSettingsConfirmPayload: UserFormUpdate;
+  search: string;
+  categoryId: string;
 }
 
 export interface OpenNone {
@@ -59,4 +61,12 @@ export interface OpenAccountSettings {
 
 export interface OpenAccountSettingsConfirm {
   payload: UserFormUpdate | null;
+}
+
+export interface ChangeCategoryId {
+  payload: string;
+}
+
+export interface ChangeSearch {
+  payload: string;
 }

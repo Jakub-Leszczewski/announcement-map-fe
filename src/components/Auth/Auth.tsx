@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState } from 'react'
-import { UserEntityResponse, UserRole } from 'types';
+import { GetUserResponse, UserRole } from 'types';
 import { useDispatch, useSelector } from 'react-redux'
 import { StoreType } from '../../store';
 import { auth } from '../../utils/api/auth'
@@ -18,7 +18,7 @@ interface UserJwt {
   iat: number;
 }
 
-interface AuthContext extends UserEntityResponse, UserJwt{
+interface AuthContext extends GetUserResponse, UserJwt{
   jwt: string | null;
   refreshUserHandler: () => Promise<void>;
   setJwtFromCode: (jwt: string) => void;
@@ -35,7 +35,7 @@ export const Auth = ({children}: Props) => {
   const userStore = useSelector((store: StoreType) => store.user);
 
   const [newJwt, setNewJwt] = useState<string | null | undefined>(undefined);
-  const [userData, setUserData] = useState<UserEntityResponse | null>(null);
+  const [userData, setUserData] = useState<GetUserResponse | null>(null);
 
   useEffect(() => {
     if(newJwt !== undefined) dispatch(setJwt(newJwt));
@@ -46,12 +46,12 @@ export const Auth = ({children}: Props) => {
   const refreshUserHandler = async () => {
     if(userStore.jwt) {
       if (decodedJwt !== null) {
-        const data = await api<UserEntityResponse>(`http://localhost:3001/api/user/${decodedJwt.id}`, {
+        const data = await api<GetUserResponse>(`http://localhost:3001/api/user/${decodedJwt.id}`, {
           jwt: userStore.jwt,
         });
 
         if(data.status === 200 && data.newJwt) setNewJwt(data.newJwt);
-        if(data.status === 200) setUserData(data.data as UserEntityResponse)
+        if(data.status === 200) setUserData(data.data as GetUserResponse)
         else setUserData(null)
       }
     } else {

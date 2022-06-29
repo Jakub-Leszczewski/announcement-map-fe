@@ -9,7 +9,7 @@ import { StoreType } from '../../store'
 import { UserFormUpdate } from '../../types/user-form'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorResponse, UserEntityResponse } from 'types'
+import { ErrorResponse, UpdateUserResponse } from 'types'
 import { AccountSettingsForm } from '../../components/form/AccountSettingsForm/AccountSettingsForm'
 import { useRefreshUser } from '../../hooks/useRefreshUser'
 import { openAccountSettings, openAccountSettingsConfirm, openUser } from '../../store/slices/app-slice'
@@ -17,11 +17,7 @@ import { useSetJwt } from '../../hooks/useSetJwt'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
-  const refreshUser = useRefreshUser();
-  const setJwt = useSetJwt();
-  const jwt = useJwt();
-
-  if(!userData || !refreshUser || !setJwt) return null;
+  if(!userData) return null;
 
   const initialUserFormState: UserFormUpdate = {
     firstName: userData.firstName,
@@ -31,13 +27,18 @@ export const  AccountSettingsView = () => {
     repeatNewPassword: '',
   };
 
-  const appStore = useSelector((store: StoreType) => store.app);
-  const dispatch = useDispatch();
-
   const [form, setForm] = useState<UserFormUpdate>(initialUserFormState);
   const [error, setError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  const appStore = useSelector((store: StoreType) => store.app);
+  const dispatch = useDispatch();
+  const refreshUser = useRefreshUser();
+  const setJwt = useSetJwt();
+  const jwt = useJwt();
+
+  if(!refreshUser || !setJwt) return null;
 
   useEffect(() => {
     if(newJwt) setJwt(newJwt);
@@ -68,7 +69,7 @@ export const  AccountSettingsView = () => {
     if(form.email !== userData.email || form.newPassword) {
       dispatch(openAccountSettingsConfirm(form));
     } else {
-      const data = await api<UserEntityResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
+      const data = await api<UpdateUserResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
         method: HttpMethods.PATCH,
         payload: form,
         jwt,

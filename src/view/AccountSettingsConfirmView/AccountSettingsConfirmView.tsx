@@ -8,7 +8,7 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { useJwt } from '../../hooks/useJwt'
-import { ErrorResponse, UserEntityResponse } from 'types'
+import { ErrorResponse, UpdateUserResponse } from 'types'
 import { useRefreshUser } from '../../hooks/useRefreshUser'
 import { AccountSettingsConfirmForm } from '../../components/form/AccountSettingsConfirmForm/AccountSettingsConfirmForm'
 import { openAccountSettings, openUser } from '../../store/slices/app-slice'
@@ -16,19 +16,19 @@ import { useSetJwt } from '../../hooks/useSetJwt'
 
 
 export const AccountSettingsConfirmView = () => {
+  const [password, setPassword] = useState<string>('');
+  const [submitStatus, setSubmitStatus] = useState<number | null>(null);
+  const [newJwt, setNewJwt] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
+  const appStore = useSelector((store: StoreType) => store.app);
   const jwt = useJwt();
   const setJwt = useSetJwt();
   const userData = useUserDataAuth();
   const refreshUser = useRefreshUser();
 
   if(!userData || !refreshUser || !setJwt) return null;
-
-  const dispatch = useDispatch();
-  const appStore = useSelector((store: StoreType) => store.app);
-  const [password, setPassword] = useState<string>('');
-  const [submitStatus, setSubmitStatus] = useState<number | null>(null);
-  const [newJwt, setNewJwt] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if(submitStatus === 200) {
@@ -60,7 +60,7 @@ export const AccountSettingsConfirmView = () => {
     e.preventDefault();
 
     if(password) {
-      const data = await api<UserEntityResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
+      const data = await api<UpdateUserResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
         method: HttpMethods.PATCH,
         payload: { ...appStore.accountSettingsConfirmPayload, password },
         jwt,

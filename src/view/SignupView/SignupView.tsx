@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { UserFormSignup } from '../../types/user-form'
-import { UserEntityResponse, ErrorResponse } from 'types'
+import { CreateUserResponse, ErrorResponse } from 'types'
 import { SignupForm } from '../../components/form/SignupForm/SignupForm'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 
@@ -19,10 +19,18 @@ const initialUserFormState: UserFormSignup = {
 }
 
 export function SignupView() {
-  const dispatch = useDispatch();
   const [form, setForm] = useState<UserFormSignup>(initialUserFormState);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(submitStatus === 201) dispatch(openSignIn({
+      message: 'Konto zostało pomyślnie utworzone.',
+      error: null
+    }));
+  }, [submitStatus])
 
   const goBackHandler = () => {
     dispatch(openSignInChoice());
@@ -39,7 +47,7 @@ export function SignupView() {
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = await api<UserEntityResponse | ErrorResponse>('http://localhost:3001/api/user/', {
+    const data = await api<CreateUserResponse | ErrorResponse>('http://localhost:3001/api/user/', {
       method: HttpMethods.POST,
       payload: form,
     });
@@ -49,13 +57,6 @@ export function SignupView() {
 
     setSubmitStatus(data.status);
   }
-
-  useEffect(() => {
-    if(submitStatus === 201) dispatch(openSignIn({
-      message: 'Konto zostało pomyślnie utworzone.',
-      error: null
-    }));
-  }, [submitStatus])
 
   return (
     <section className="SignupView">

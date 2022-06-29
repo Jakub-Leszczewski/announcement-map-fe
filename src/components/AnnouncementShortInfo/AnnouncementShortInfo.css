@@ -1,0 +1,30 @@
+.AnnouncementShortInfo {
+    border: 1px solid #B1B1B1;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.AnnouncementShortInfo__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AnnouncementShortInfo__header h3, .AnnouncementShortInfo__header p {
+    font-size: 1.1rem;
+    font-weight: bolder;
+}
+
+.AnnouncementShortInfo__id {
+    font-size: .7rem;
+}
+
+.AnnouncementShortInfo__address {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 10px 0 !important;
+}
+
+.AnnouncementShortInfo__date {
+    font-size: .7rem;
+}
