@@ -52,8 +52,8 @@ export function SignupView() {
       payload: form,
     });
 
-    if(data.status !== 201 && data.data && 'error' in data.data) setError(data.data.error);
-    else setError(null);
+
+    if(data.status !== 201) setError((data.data as ErrorResponse)?.error || null);
 
     setSubmitStatus(data.status);
   }
