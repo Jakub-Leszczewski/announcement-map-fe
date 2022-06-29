@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { UserFormUpdate } from '../../types/user-form'
 import { InfoType } from '../../types/info-types'
-import { Window} from '../types/app-slice-types'
+import { ChangeCategoryId, ChangeSearch, Window } from '../types/app-slice-types'
 import {
   AppStateType,
   OpenAccountSettings, OpenAccountSettingsConfirm,
@@ -33,6 +33,8 @@ const initialState: AppStateType = {
   accountSettingsPayload: initialInfoType,
   signInPayload: initialInfoType,
   accountSettingsConfirmPayload: initialUserFormUpdate,
+  search: '',
+  categoryId: '',
 }
 
 export const appSlice = createSlice({
@@ -88,6 +90,14 @@ export const appSlice = createSlice({
       else state.accountSettingsConfirmPayload = action.payload;
     },
 
+    changeCategoryId: (state, action: ChangeCategoryId) => {
+      state.categoryId = action.payload;
+    },
+
+    changeSearch: (state, action: ChangeSearch) => {
+      state.search = action.payload;
+    }
+
   }
 });
 
@@ -102,4 +112,6 @@ export const {
   openAnnouncements,
   openAddAnnouncement,
   openAnnouncement,
+  changeCategoryId,
+  changeSearch
 } = appSlice.actions;

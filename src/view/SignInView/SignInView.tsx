@@ -15,16 +15,15 @@ const initialSignInFormState: UserFormSignIn= {
 }
 
 export const SignInView = () => {
-  const setJwt = useSetJwt();
-
-  if(!setJwt) return null;
-
-  const appStore = useSelector((store: StoreType) => store.app);
-  const dispatch = useDispatch();
-
   const [form, setForm] = useState<UserFormSignIn>(initialSignInFormState);
   const [error, setError] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  const setJwt = useSetJwt();
+  const appStore = useSelector((store: StoreType) => store.app);
+  const dispatch = useDispatch();
+
+  if(!setJwt) return null;
 
   useEffect(() => {
     if(newJwt) {

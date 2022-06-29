@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { UserEntityResponse } from 'types';
 import { AuthContext } from '../components/Auth/Auth'
 
 export const useRefreshUser = () => {

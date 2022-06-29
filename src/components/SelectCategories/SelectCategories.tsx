@@ -27,9 +27,13 @@ export function SelectCategories({ label, firstOption, required, name, onChange 
         required={required}
       >
         {firstOption && <option value={firstOption.value}>{firstOption.name}</option>}
-        {!loading && status===200 && categories ? categories.map((category) => (
-          <option key={category.id} value={category.id}>{category.name}</option>
-        )) : null}
+        {
+          !loading && status===200 && categories
+            ? (categories as CategoryEntity[])?.map((category) => (
+              <option key={category.id} value={category.id}>{category.name}</option>
+            ))
+            : null
+        }
       </select>
     </label>
   );

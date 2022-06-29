@@ -6,7 +6,7 @@ import { ErrorResponse } from 'types';
 interface ApiHandlerReturn<T> {
   status: number | null;
   data: T | ErrorResponse | null;
-  newJwt: string | null;
+  newJwt: string | null | undefined;
 }
 
 interface Options {
@@ -32,7 +32,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     return {
       status: res.status,
       data: data as T,
-      newJwt: null,
+      newJwt: undefined,
     }
   }
 
@@ -55,7 +55,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     return {
       status: data.status,
       data: data.data,
-      newJwt: null
+      newJwt: undefined
     }
   }
 
@@ -67,11 +67,11 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     else {
       const authData = await auth('http://localhost:3001/api/auth/token');
       if(authData.status === 200) {
-        const data = await apiCallWithAuthRefresh(authData.jwt || '');
+        const data = await apiCall(authData.jwt as string);
         return {
           status: data.status,
           data: data.data,
-          newJwt: data.newJwt || authData.jwt,
+          newJwt: authData.jwt,
         }
       }
 
@@ -87,7 +87,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     return {
       status: null,
       data: null,
-      newJwt: null,
+      newJwt: undefined,
     }
   }
 }

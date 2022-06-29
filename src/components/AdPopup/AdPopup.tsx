@@ -12,10 +12,7 @@ export const AdPopup = ({ id }: Props) => {
       {
         id.map((id) => (
           <Fragment key={id}>
-            <AnnouncementInfo
-              id={id}
-              fetchData={true}
-            />
+            <AnnouncementInfo id={id}/>
             <hr/>
           </Fragment>
 
