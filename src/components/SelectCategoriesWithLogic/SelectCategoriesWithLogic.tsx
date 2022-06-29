@@ -12,11 +12,10 @@ export function SelectCategoriesWithLogic() {
   useEffect(() => {
     dispatch(changeCategoryId(category));
   }, [category])
+
   const onChangeInput = (e: ChangeEvent<HTMLSelectElement>) => {
     setCategory(e.target.value);
-
   }
-
 
   return(
     <SelectCategories
