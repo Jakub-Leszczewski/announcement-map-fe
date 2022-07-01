@@ -1,5 +1,7 @@
 import React from 'react';
 import './AnnouncementShortInfo.css'
+import { useDispatch } from 'react-redux'
+import { openAnnouncement, openUser } from '../../store/slices/app-slice'
 
 interface Props {
   id: string
@@ -17,8 +19,14 @@ interface Props {
 export const AnnouncementShortInfo = ({
   id, title, price, country, city, zipCode, street, buildingNumber, apartamentNumber, createdAt
 }: Props) => {
+  const dispatch = useDispatch();
+
+  const goAnnouncementHandler = () => {
+    dispatch(openAnnouncement(id));
+  }
+
   return (
-    <section className="AnnouncementShortInfo">
+    <section onClick={goAnnouncementHandler} className="AnnouncementShortInfo">
       <header className="AnnouncementShortInfo__header">
         <h3>{title ?? ''}</h3>
         <p>{Number(price ?? 0).toFixed(2)} zł</p>

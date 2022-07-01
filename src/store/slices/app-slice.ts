@@ -33,6 +33,7 @@ const initialState: AppStateType = {
   accountSettingsPayload: initialInfoType,
   signInPayload: initialInfoType,
   accountSettingsConfirmPayload: initialUserFormUpdate,
+  announcementPayload: '',
   search: '',
   categoryId: '',
 }
@@ -70,6 +71,7 @@ export const appSlice = createSlice({
 
     openAnnouncement: (state, action: OpenAnnouncement) => {
       state.openWindow = Window.OPEN_ANNOUNCEMENT;
+      state.announcementPayload = action.payload;
     },
 
     openAddAnnouncement: (state, action: OpenAddAnnouncement) => {

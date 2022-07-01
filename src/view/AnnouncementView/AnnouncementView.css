@@ -1,0 +1,28 @@
+.AnnouncementView {
+    padding: 10px 10px 0 10px;
+    min-height: 40vh;
+    max-width: 500px;
+    width: 80vw;
+    overflow: hidden;
+
+}
+
+.AnnouncementView__container {
+    padding: 10px;
+    overflow: hidden;
+}
+
+.AnnouncementsView__button-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    max-width: 100%;
+    position: relative;
+    left: 100%;
+    transform: translateX(-100%);
+    margin-top: 20px;
+}
+
+.AnnouncementsView__button-container>button {
+    margin-left: 10px;
+}
