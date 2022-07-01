@@ -10,9 +10,9 @@ import { AnnouncementShortInfo } from '../../components/AnnouncementShortInfo/An
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 
 export const AnnouncementsView = () => {
+  const dispatch = useDispatch();
   const jwt = useJwt();
   const user = useUserDataAuth();
-  const dispatch = useDispatch();
 
   if(!jwt || !user) return null;
 

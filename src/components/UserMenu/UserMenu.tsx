@@ -12,6 +12,7 @@ import { AccountSettingsConfirmView } from '../../view/AccountSettingsConfirmVie
 import { useIsAuth } from '../../hooks/useIsAuth'
 import { AddAnnouncementView } from '../../view/AddAnnouncementView/AddAnnouncementView'
 import { AnnouncementsView } from '../../view/AnnouncementsView/AnnouncementsView'
+import { AnnouncementView } from '../../view/AnnouncementView/AnnouncementView'
 
 export const UserMenu = () => {
   const appStore = useSelector((store: StoreType) => store.app);
@@ -29,6 +30,7 @@ export const UserMenu = () => {
       {appStore.openWindow === Window.OPEN_ACCOUNT_SETTINGS_CONFIRM && isAuth && <AccountSettingsConfirmView/>}
       {appStore.openWindow === Window.OPEN_ADD_ANNOUNCEMENT && isAuth && <AddAnnouncementView/>}
       {appStore.openWindow === Window.OPEN_ANNOUNCEMENTS && isAuth && <AnnouncementsView/>}
+      {appStore.openWindow === Window.OPEN_ANNOUNCEMENT && isAuth && <AnnouncementView/>}
     </section>
   );
 }

@@ -19,6 +19,7 @@ export interface AppStateType {
   signInPayload: InfoType;
   accountSettingsPayload: InfoType;
   accountSettingsConfirmPayload: UserFormUpdate;
+  announcementPayload: string;
   search: string;
   categoryId: string;
 }
@@ -48,7 +49,7 @@ export interface OpenAnnouncements {
 }
 
 export interface OpenAnnouncement {
-  payload: undefined;
+  payload: string;
 }
 
 export interface OpenAddAnnouncement {
