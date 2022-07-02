@@ -1,26 +1,33 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
-import './AddAnnouncementView.css'
+import './UpdateAnnouncementView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { AuctionLinkInput } from '../../components/form/AuctionLinkInput/AuctionLinkInput'
-import { AnnouncementDto, CreateAnnouncementResponse, CreateAuctionLinkDto, ErrorResponse } from 'types'
+import { AnnouncementDto, CreateAnnouncementResponse, CreateAuctionLinkDto, ErrorResponse, GetAnnouncementResponse } from 'types'
 import { checkAddressCoords } from '../../utils/check-address-coords'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useJwt } from '../../hooks/useJwt'
 import { AnnouncementForm } from '../../components/form/AnnouncementForm/AnnouncementForm'
-import { openUser } from '../../store/slices/app-slice'
+import { openAnnouncement } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
+import { StoreType } from '../../store'
+import { useApiAuth } from '../../hooks/useApiAuth'
 import { initialAnnouncementForm } from '../../components/form/AnnouncementForm/announcement-form-initial'
 
-export const AddAnnouncementView = () => {
+export const UpdateAnnouncementView = () => {
   const dispatch = useDispatch();
+  const announcementId = useSelector((store: StoreType) => store.app.announcementUpdatePayload);
   const [form, setForm] = useState<AnnouncementDto>(initialAnnouncementForm);
   const [findAddress, setFindAddress] = useState<undefined | Awaited<ReturnType<typeof checkAddressCoords>>>(undefined);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+
+  const [loading, status, data] = useApiAuth<GetAnnouncementResponse>(
+    `http://localhost:3001/api/announcement/${announcementId}`
+  );
 
   const jwt = useJwt();
   const setJwt = useSetJwt();
@@ -31,8 +38,14 @@ export const AddAnnouncementView = () => {
     if(newJwt) setJwt(newJwt);
   }, [newJwt]);
 
+  useEffect(() => {
+    if(!loading && status === 200 && data) {
+      setForm(data as GetAnnouncementResponse);
+    }
+  }, [loading])
+
   const goBackHandler = () => {
-    dispatch(openUser());
+    dispatch(openAnnouncement(announcementId));
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -69,18 +82,18 @@ export const AddAnnouncementView = () => {
   }
 
   const addAnnouncementApiCall = async (lat: number, lon: number) => {
-    const data = await api<CreateAnnouncementResponse | ErrorResponse>('http://localhost:3001/api/announcement/', {
-      method: HttpMethods.POST,
-      jwt: jwt,
-      payload: { ...form, lat, lon: lon },
-    });
+    const data = await api<CreateAnnouncementResponse | ErrorResponse>(
+      `http://localhost:3001/api/announcement/${announcementId}`,
+      {
+        method: HttpMethods.PATCH,
+        jwt: jwt,
+        payload: { ...form, lat, lon: lon },
+      }
+    );
 
     if(data.newJwt) setNewJwt(data.newJwt);
 
-    if(data.status === 201) {
-      setForm(initialAnnouncementForm);
-      setMessage('Pomyślnie dodano ogłoszenie')
-    }
+    if(data.status === 200) setMessage('Pomyślnie dodano ogłoszenie');
     else setError((data.data as ErrorResponse)?.error || null);
   }
 
@@ -104,7 +117,7 @@ export const AddAnnouncementView = () => {
 
   return (
     <section className="AddAnnouncementView">
-      <UserMenuHeader title="Dodaj ogłoszenie" onClick={goBackHandler}/>
+      <UserMenuHeader title="Aktualizuj ogłoszenie" onClick={goBackHandler}/>
 
       {error && <p className="AddAnnouncementView__error">{error}</p>}
       {message && <p className="AddAnnouncementView__message">{message}</p>}

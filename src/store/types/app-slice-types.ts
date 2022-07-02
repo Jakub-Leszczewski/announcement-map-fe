@@ -10,6 +10,7 @@ export enum Window {
   OPEN_ANNOUNCEMENTS = 'OPEN_ANNOUNCEMENTS',
   OPEN_ANNOUNCEMENT = 'OPEN_ANNOUNCEMENT',
   OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
+  OPEN_UPDATE_ANNOUNCEMENT = 'OPEN_UPDATE_ANNOUNCEMENT',
   OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
 }
 
@@ -19,6 +20,7 @@ export interface AppStateType {
   accountSettingsPayload: InfoType;
   announcementsPayload: InfoType,
   announcementPayload: string;
+  announcementUpdatePayload: string;
   search: string;
   categoryId: string;
 }
@@ -48,6 +50,10 @@ export interface OpenAnnouncements {
 }
 
 export interface OpenAnnouncement {
+  payload: string;
+}
+
+export interface OpenAnnouncementUpdate {
   payload: string;
 }
 

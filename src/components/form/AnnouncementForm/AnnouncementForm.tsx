@@ -26,14 +26,16 @@ export const AnnouncementForm = ({form, findAddress, resetFindAddressHandler, id
       />
 
       <LongTextInput
+        value={form.description}
         name="description"
         label="Opis:"
         maxLength={255}
-        minLength={0}
+        minLength={3}
         onChange={changeFormHandler}
       />
 
       <SelectCategories
+        value={form.categoryId}
         label="Kategoria:"
         firstOption={{ name: 'wybierz', value: '' }}
         name="categoryId"

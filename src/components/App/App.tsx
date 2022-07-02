@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css';
 import { Provider } from 'react-redux'
 import { store } from '../../store'
@@ -8,6 +8,11 @@ import { Auth } from '../Auth/Auth'
 import { Map } from '../Map/Map'
 
 function App() {
+  useEffect(() => {
+    document.documentElement.lang = 'pl-PL';
+    document.title = 'Mapa ogłoszeń'
+  }, [])
+
   return (
     <div className="App">
       <Provider store={store}>

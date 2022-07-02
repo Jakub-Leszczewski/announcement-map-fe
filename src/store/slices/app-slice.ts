@@ -20,21 +20,13 @@ const initialInfoType: InfoType = {
   message: null,
 }
 
-const initialUserFormUpdate: UserFormUpdate = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  newPassword: '',
-  repeatNewPassword: '',
-  password: '',
-}
-
 const initialState: AppStateType = {
   openWindow: Window.OPEN_NONE,
   accountSettingsPayload: initialInfoType,
   signInPayload: initialInfoType,
   announcementsPayload: initialInfoType,
   announcementPayload: '',
+  announcementUpdatePayload: '',
   search: '',
   categoryId: '',
 }
@@ -78,6 +70,11 @@ export const appSlice = createSlice({
       state.announcementPayload = action.payload;
     },
 
+    openAnnouncementUpdate: (state, action: OpenAnnouncement) => {
+      state.openWindow = Window.OPEN_UPDATE_ANNOUNCEMENT;
+      state.announcementUpdatePayload = action.payload;
+    },
+
     openAddAnnouncement: (state, action: OpenAddAnnouncement) => {
       state.openWindow = Window.OPEN_ADD_ANNOUNCEMENT;
     },
@@ -110,6 +107,7 @@ export const {
   openAnnouncements,
   openAddAnnouncement,
   openAnnouncement,
+  openAnnouncementUpdate,
   changeCategoryId,
   changeSearch
 } = appSlice.actions;

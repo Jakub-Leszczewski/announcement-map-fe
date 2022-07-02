@@ -4,6 +4,7 @@ import { useApi } from '../../hooks/useApi'
 import { CategoryEntity } from 'types';
 
 interface Props {
+  value?: string;
   required?: boolean;
   label?: string;
   name?: string;
@@ -14,7 +15,7 @@ interface Props {
   }
 }
 
-export function SelectCategories({ label, firstOption, required, name, onChange }: Props) {
+export function SelectCategories({ value, label, firstOption, required, name, onChange }: Props) {
   const [loading, status, categories] = useApi<CategoryEntity[]>('http://localhost:3001/api/category');
 
   return(
@@ -25,6 +26,7 @@ export function SelectCategories({ label, firstOption, required, name, onChange 
         name={name}
         onChange={onChange}
         required={required}
+        value={value}
       >
         {firstOption && <option value={firstOption.value}>{firstOption.name}</option>}
         {
