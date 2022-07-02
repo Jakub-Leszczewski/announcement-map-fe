@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { openAnnouncements } from '../../store/slices/app-slice'
+import { openAnnouncements, openAnnouncementUpdate } from '../../store/slices/app-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useJwt } from '../../hooks/useJwt'
 import './AnnouncementView.css'
@@ -57,8 +57,13 @@ export const AnnouncementView = () => {
     dispatch(openAnnouncements(null));
   }
 
-  const removeAnnouncementHandler = async () => {
+  const removeAnnouncementHandler = () => {
     setConfirm(true);
+  }
+
+  const updateAnnouncementHandler = () => {
+    dispatch(openAnnouncementUpdate(appStore.announcementPayload));
+    console.log(appStore)
   }
 
   return(
@@ -69,7 +74,7 @@ export const AnnouncementView = () => {
 
         <AnnouncementInfo id={appStore.announcementPayload}/>
         <div className="AnnouncementsView__button-container">
-          <TextButton onClick={() => {}}>edytuj</TextButton>
+          <TextButton onClick={updateAnnouncementHandler}>edytuj</TextButton>
           <TextButton onClick={removeAnnouncementHandler}>usuń</TextButton>
         </div>
 

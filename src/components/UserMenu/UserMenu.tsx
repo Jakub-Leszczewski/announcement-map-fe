@@ -12,6 +12,7 @@ import { useIsAuth } from '../../hooks/useIsAuth'
 import { AddAnnouncementView } from '../../view/AddAnnouncementView/AddAnnouncementView'
 import { AnnouncementsView } from '../../view/AnnouncementsView/AnnouncementsView'
 import { AnnouncementView } from '../../view/AnnouncementView/AnnouncementView'
+import { UpdateAnnouncementView } from '../../view/UpdateAnnouncementView/UpdateAnnouncementView'
 
 export const UserMenu = () => {
   const appStore = useSelector((store: StoreType) => store.app);
@@ -29,6 +30,7 @@ export const UserMenu = () => {
       {appStore.openWindow === Window.OPEN_ADD_ANNOUNCEMENT && isAuth && <AddAnnouncementView/>}
       {appStore.openWindow === Window.OPEN_ANNOUNCEMENTS && isAuth && <AnnouncementsView/>}
       {appStore.openWindow === Window.OPEN_ANNOUNCEMENT && isAuth && <AnnouncementView/>}
+      {appStore.openWindow === Window.OPEN_UPDATE_ANNOUNCEMENT && isAuth && <UpdateAnnouncementView/>}
     </section>
   );
 }

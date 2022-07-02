@@ -15,27 +15,19 @@ import { useRefreshUser } from '../../hooks/useRefreshUser'
 import { openAccountSettings, openUser } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { PasswordConfirm } from '../../components/PasswordConfirm/PasswordConfirm'
+import { initialUserForm } from '../../components/form/AccountSettingsForm/account-settings-form-initial'
 
 export const  AccountSettingsView = () => {
   const userData = useUserDataAuth();
   if(!userData) return null;
 
-  const initialUserFormState: UserFormUpdate = {
-    firstName: userData.firstName,
-    lastName: userData.lastName,
-    email: userData.email,
-    newPassword: '',
-    repeatNewPassword: '',
-    password: '',
-  };
-
-  const [form, setForm] = useState<UserFormUpdate>(initialUserFormState);
+  const [form, setForm] = useState<UserFormUpdate>(initialUserForm);
   const [error, setError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<boolean>(false);
 
-  const appStore = useSelector((store: StoreType) => store.app);
+  const accountSettingsInfo = useSelector((store: StoreType) => store.app.accountSettingsPayload);
   const dispatch = useDispatch();
   const refreshUser = useRefreshUser();
   const setJwt = useSetJwt();
@@ -52,7 +44,7 @@ export const  AccountSettingsView = () => {
   }
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    if(appStore.accountSettingsPayload.message || appStore.accountSettingsPayload.error) {
+    if(accountSettingsInfo.message || accountSettingsInfo.error) {
       dispatch(openAccountSettings(null));
     }
 
@@ -117,15 +109,15 @@ export const  AccountSettingsView = () => {
 
         {submitStatus === 200 && <p className="AccountSettingsView__message">Pomyślnie zapisano</p>}
         {
-          appStore.accountSettingsPayload.message &&
-          <p className="AccountSettingsView__message">{appStore.accountSettingsPayload.message}</p>
+          accountSettingsInfo.message &&
+          <p className="AccountSettingsView__message">{accountSettingsInfo.message}</p>
         }
 
         {error && <p className="AccountSettingsView__error">{error}</p>}
 
         {
-          appStore.accountSettingsPayload.error &&
-          <p className="AccountSettingsView__error">{appStore.accountSettingsPayload.error}</p>
+          accountSettingsInfo.error &&
+          <p className="AccountSettingsView__error">{accountSettingsInfo.error}</p>
         }
 
         <AccountSettingsForm

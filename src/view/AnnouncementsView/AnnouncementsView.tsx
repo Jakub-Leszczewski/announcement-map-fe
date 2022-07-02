@@ -20,6 +20,7 @@ export const AnnouncementsView = () => {
 
   const [loading, status, data] = useApiAuth<GetUserAnnouncementsResponse>(`http://localhost:3001/api/user/${user.id}/announcement`)
 
+
   const goBackHandler = () => {
     dispatch(openUser());
   }
@@ -28,7 +29,6 @@ export const AnnouncementsView = () => {
   if(status !== 200 || data === null || (data && 'error' in data))
     return <section className="AnnouncementInfo">{data && 'error' in data ? data.error : 'błąd'}</section>
 
-  console.log(appStore)
   return(
     <section className="AnnouncementsView">
       <UserMenuHeader title="Twoje ogłoszenia" onClick={goBackHandler}/>
