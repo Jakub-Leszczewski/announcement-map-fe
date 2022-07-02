@@ -1,15 +1,17 @@
 @media only screen and (min-width: 600px) {
     .TitlePriceInputFields {
         display: flex;
-        width: 410px;
+        width: 100%;
         justify-content: space-between;
     }
 
     .TitlePriceInputFields label:first-child {
-        width: 300px;
+        width: 75%;
+        margin-right: 3px;
     }
 
     .TitlePriceInputFields label:last-child {
-        width: 100px;
+        width: 25%;
+        margin-left: 3px;
     }
 }

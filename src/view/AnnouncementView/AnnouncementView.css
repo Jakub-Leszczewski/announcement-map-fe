@@ -1,8 +1,7 @@
 .AnnouncementView {
     padding: 10px 10px 0 10px;
     min-height: 40vh;
-    max-width: 500px;
-    width: 80vw;
+    width: 250px;
     overflow: hidden;
 
 }
@@ -25,4 +24,10 @@
 
 .AnnouncementsView__button-container>button {
     margin-left: 10px;
+}
+
+@media only screen and (min-width: 400px) {
+    .AnnouncementView {
+        width: 350px;
+    }
 }

@@ -12,3 +12,9 @@
     margin: 10px auto;
 }
 
+@media only screen and (min-width: 400px) {
+    .AccountSettingsConfirmView {
+        width: 350px;
+    }
+}
+

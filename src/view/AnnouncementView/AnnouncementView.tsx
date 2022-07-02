@@ -25,6 +25,10 @@ export const AnnouncementView = () => {
     dispatch(openAnnouncements());
   }
 
+  const removeAnnouncementHandler = () => {
+
+  }
+
   if(loading) return <section className="AnnouncementView">loading...</section>
   if(status !== 200 || data === null || (data && 'error' in data))
     return <section className="AnnouncementInfo">{data && 'error' in data ? data.error : 'błąd'}</section>

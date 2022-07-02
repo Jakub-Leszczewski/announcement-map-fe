@@ -2,7 +2,7 @@
     border: 1px solid #B1B1B1;
     border-radius: 10px;
     padding: 5px;
-    width: 100%;
+    width: 250px;
     background: white;
 }
 
@@ -22,9 +22,9 @@
 .UserView__buttons-container {
     display: flex;
     flex-direction: column;
-    width: 250px;
-    max-width: 80%;
-    margin: 30px auto 10px auto;
+    width: 100%;
+    padding: 0 10px;
+    margin: 30px auto 5px auto;
 }
 
 .UserView__buttons-container>.Button {
@@ -40,5 +40,11 @@
 .UserView__error {
     color: red;
     font-size: 0.7rem;
+}
+
+@media only screen and (min-width: 400px) {
+    .UserView {
+        width: 350px;
+    }
 }
 
