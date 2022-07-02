@@ -44,7 +44,7 @@ export const AddAnnouncementView = () => {
 
   useEffect(() => {
     if(newJwt) setJwt(newJwt);
-  }, [newJwt])
+  }, [newJwt]);
 
   const goBackHandler = () => {
     dispatch(openUser());

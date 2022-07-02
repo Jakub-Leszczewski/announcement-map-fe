@@ -1,15 +1,17 @@
 import React from 'react';
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { openUser } from '../../store/slices/app-slice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useJwt } from '../../hooks/useJwt'
 import './AnnouncementsView.css'
 import { useApiAuth } from '../../hooks/useApiAuth'
 import { GetUserAnnouncementsResponse } from 'types';
 import { AnnouncementShortInfo } from '../../components/AnnouncementShortInfo/AnnouncementShortInfo'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
+import { StoreType } from '../../store'
 
 export const AnnouncementsView = () => {
+  const appStore = useSelector((store: StoreType) => store.app);
   const dispatch = useDispatch();
   const jwt = useJwt();
   const user = useUserDataAuth();
@@ -26,9 +28,14 @@ export const AnnouncementsView = () => {
   if(status !== 200 || data === null || (data && 'error' in data))
     return <section className="AnnouncementInfo">{data && 'error' in data ? data.error : 'błąd'}</section>
 
+  console.log(appStore)
   return(
     <section className="AnnouncementsView">
       <UserMenuHeader title="Twoje ogłoszenia" onClick={goBackHandler}/>
+      {
+        appStore.announcementsPayload.message &&
+        <p className="AnnouncementsView__message">{appStore.announcementsPayload.message}</p>
+      }
       <div className="AnnouncementsView__announcement-container">
         {
           data.length > 0

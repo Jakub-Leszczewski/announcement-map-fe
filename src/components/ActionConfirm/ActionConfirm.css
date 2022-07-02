@@ -1,0 +1,32 @@
+.ActionConfirm {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    top: 0;
+    left: 0;
+    margin: auto;
+
+}
+
+.ActionConfirm__container {
+    margin: 40px auto 0 auto;
+}
+
+.ActionConfirm__message {
+    font-weight: bold;
+    font-size: .9rem;
+    text-align: center;
+}
+
+.ActionConfirm__button-container {
+    display: flex;
+    margin: 20px auto;
+    width: fit-content;
+}
+
+.ActionConfirm__button-container>.Button {
+    width: 100px;
+    height: 25px;
+    margin: 10px;
+}

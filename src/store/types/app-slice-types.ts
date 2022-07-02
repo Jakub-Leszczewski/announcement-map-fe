@@ -11,14 +11,13 @@ export enum Window {
   OPEN_ANNOUNCEMENT = 'OPEN_ANNOUNCEMENT',
   OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
   OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
-  OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
 }
 
 export interface AppStateType {
   openWindow: Window;
   signInPayload: InfoType;
   accountSettingsPayload: InfoType;
-  accountSettingsConfirmPayload: UserFormUpdate;
+  announcementsPayload: InfoType,
   announcementPayload: string;
   search: string;
   categoryId: string;
@@ -45,7 +44,7 @@ export interface OpenUser {
 }
 
 export interface OpenAnnouncements {
-  payload: undefined;
+  payload: InfoType | null;
 }
 
 export interface OpenAnnouncement {
@@ -58,10 +57,6 @@ export interface OpenAddAnnouncement {
 
 export interface OpenAccountSettings {
   payload: InfoType | null;
-}
-
-export interface OpenAccountSettingsConfirm {
-  payload: UserFormUpdate | null;
 }
 
 export interface ChangeCategoryId {

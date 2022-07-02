@@ -19,13 +19,14 @@ export const ConfirmPasswordInput = ({value, onChange}:Props) => {
      !passwordWasFocus || value
         ? null
         : <p className="ConfirmPasswordInput__validation-error">
-          Podaj stare hasło, to pole jest wymagane.
+          Podaj hasło, to pole jest wymagane.
         </p>
     }
     <PasswordInput
       label="Hasło:"
       required
       placeholder="hasło"
+      name="password"
       value={value}
       onBlur={onPasswordBlur}
       onChange={onChange}

@@ -54,7 +54,7 @@ export const UserView = () => {
   }
 
   const goAnnouncementHandler = () => {
-    dispatch(openAnnouncements());
+    dispatch(openAnnouncements(null));
   }
 
   return(
