@@ -8,7 +8,6 @@ import { SignInChoiceView } from '../../view/SignInChoiceView/SignInChoiceView'
 import { SignInView } from '../../view/SignInView/SignInView'
 import { UserView } from '../../view/UserView/UserView'
 import { AccountSettingsView } from '../../view/AccountSettingsView/AccountSettingsView'
-import { AccountSettingsConfirmView } from '../../view/AccountSettingsConfirmView/AccountSettingsConfirmView'
 import { useIsAuth } from '../../hooks/useIsAuth'
 import { AddAnnouncementView } from '../../view/AddAnnouncementView/AddAnnouncementView'
 import { AnnouncementsView } from '../../view/AnnouncementsView/AnnouncementsView'
@@ -27,7 +26,6 @@ export const UserMenu = () => {
       {appStore.openWindow === Window.OPEN_SIGNUP && !isAuth && <SignupView/>}
       {appStore.openWindow === Window.OPEN_USER && isAuth && <UserView/>}
       {appStore.openWindow === Window.OPEN_ACCOUNT_SETTINGS && isAuth && <AccountSettingsView/>}
-      {appStore.openWindow === Window.OPEN_ACCOUNT_SETTINGS_CONFIRM && isAuth && <AccountSettingsConfirmView/>}
       {appStore.openWindow === Window.OPEN_ADD_ANNOUNCEMENT && isAuth && <AddAnnouncementView/>}
       {appStore.openWindow === Window.OPEN_ANNOUNCEMENTS && isAuth && <AnnouncementsView/>}
       {appStore.openWindow === Window.OPEN_ANNOUNCEMENT && isAuth && <AnnouncementView/>}

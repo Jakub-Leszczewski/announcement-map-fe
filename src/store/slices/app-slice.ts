@@ -4,7 +4,7 @@ import { InfoType } from '../../types/info-types'
 import { ChangeCategoryId, ChangeSearch, Window } from '../types/app-slice-types'
 import {
   AppStateType,
-  OpenAccountSettings, OpenAccountSettingsConfirm,
+  OpenAccountSettings,
   OpenAddAnnouncement,
   OpenAnnouncement,
   OpenAnnouncements,
@@ -25,14 +25,15 @@ const initialUserFormUpdate: UserFormUpdate = {
   lastName: '',
   email: '',
   newPassword: '',
-  repeatNewPassword: ''
+  repeatNewPassword: '',
+  password: '',
 }
 
 const initialState: AppStateType = {
   openWindow: Window.OPEN_NONE,
   accountSettingsPayload: initialInfoType,
   signInPayload: initialInfoType,
-  accountSettingsConfirmPayload: initialUserFormUpdate,
+  announcementsPayload: initialInfoType,
   announcementPayload: '',
   search: '',
   categoryId: '',
@@ -67,6 +68,9 @@ export const appSlice = createSlice({
 
     openAnnouncements: (state, action: OpenAnnouncements) => {
       state.openWindow = Window.OPEN_ANNOUNCEMENTS;
+
+      if(action.payload === null) state.announcementsPayload = initialInfoType;
+      else state.announcementsPayload = action.payload;
     },
 
     openAnnouncement: (state, action: OpenAnnouncement) => {
@@ -83,13 +87,6 @@ export const appSlice = createSlice({
 
       if(action.payload === null) state.accountSettingsPayload = initialInfoType;
       else state.accountSettingsPayload = action.payload;
-    },
-
-    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
-      state.openWindow = Window.OPEN_ACCOUNT_SETTINGS_CONFIRM;
-
-      if(action.payload === null) state.accountSettingsConfirmPayload = initialUserFormUpdate;
-      else state.accountSettingsConfirmPayload = action.payload;
     },
 
     changeCategoryId: (state, action: ChangeCategoryId) => {
@@ -109,7 +106,6 @@ export const {
   openSignIn,
   openSignup,
   openAccountSettings,
-  openAccountSettingsConfirm,
   openUser,
   openAnnouncements,
   openAddAnnouncement,

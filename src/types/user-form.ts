@@ -18,5 +18,6 @@ export interface UserFormUpdate {
   email: string;
   newPassword: string;
   repeatNewPassword: string;
+  password: string;
 }
 
