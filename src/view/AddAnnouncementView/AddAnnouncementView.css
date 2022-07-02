@@ -28,8 +28,8 @@
 }
 
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 400px) {
     .AddAnnouncementView {
-        width: fit-content;
+        width: 350px;
     }
 }

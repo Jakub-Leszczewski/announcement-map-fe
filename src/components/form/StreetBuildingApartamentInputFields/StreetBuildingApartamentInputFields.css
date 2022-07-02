@@ -2,18 +2,21 @@
     .AddressInputFields__Address {
         display: flex;
         justify-content: space-between;
-        width: 410px;
+        width: 100%;
     }
 
     .AddressInputFields__Address>label:first-child {
-        width: 250px;
+        width: 50%;
+        margin: 0 3px 0 0;
     }
 
     .AddressInputFields__Address>label:nth-child(2) {
-        width: 75px;
+        width: 25%;
+        margin: 0 3px;
     }
 
     .AddressInputFields__Address>label:last-child {
-        width: 75px;
+        width: 25%;
+        margin: 0 0 0 3px;
     }
 }

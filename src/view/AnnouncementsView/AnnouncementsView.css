@@ -1,4 +1,12 @@
 .AnnouncementsView {
     padding: 10px 10px 0 10px;
     min-height: 40vh;
+    width: 250px;
+}
+
+
+@media only screen and (min-width: 400px) {
+    .AnnouncementsView {
+        width: 350px;
+    }
 }

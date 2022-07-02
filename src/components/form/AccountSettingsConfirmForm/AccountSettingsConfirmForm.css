@@ -1,7 +1,7 @@
 .AccountSettingsConfirmForm {
     display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 100%;
     margin: 10px auto;
 }
 

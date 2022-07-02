@@ -1,11 +1,20 @@
 @media only screen and (min-width: 600px) {
     .UserNameInputFields {
         display: flex;
-        width: 410px;
+        width: 100%;
         justify-content: space-between;
     }
 
     .UserNameInputFields>.ShortTextInput {
-        width: 200px;
+        width: 100%;
+    }
+
+    .UserNameInputFields>.ShortTextInput:first-child {
+        margin-right: 5px;
+    }
+
+    .UserNameInputFields>.ShortTextInput:last-child {
+        margin-left: 5px;
+
     }
 }

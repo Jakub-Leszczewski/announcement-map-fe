@@ -139,7 +139,7 @@ export const AddAnnouncementView = () => {
         addAuctionLinkHandler={addAuctionLinkHandler}
       />
 
-      <Button type="submit" form="announcement-form">Dodaj</Button>
+      <Button type="submit" form="announcement-form">Dodaj ogłoszenie</Button>
     </section>
   );
 }
