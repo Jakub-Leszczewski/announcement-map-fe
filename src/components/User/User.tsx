@@ -1,21 +1,20 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './User.css'
-import { useDispatch, useSelector } from 'react-redux'
-import { openSignInChoice, openUser } from '../../store/slices/app-slice'
+import { useDispatch } from 'react-redux'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
-import { StoreType } from '../../store'
 import { useIsAuth } from '../../hooks/useIsAuth'
+import { openSignInChoice, openUser } from '../../store/slices/app-slice'
 
 export const User = () => {
   const dispatch = useDispatch();
   const isAuth = useIsAuth();
 
   const userLogInHandler = () => {
-    dispatch(openSignInChoice(undefined));
+    dispatch(openSignInChoice());
   }
 
   const userAccount = () => {
-    dispatch(openUser(undefined));
+    dispatch(openUser());
   }
 
   return <>

@@ -8,11 +8,11 @@ interface AuthHandlerReturn {
 
 interface AuthHandlerOverload {
   (url: string): Promise<AuthHandlerReturn>;
-  (url: string, username: string, password: string): Promise<AuthHandlerReturn>;
+  (url: string, payload: any): Promise<AuthHandlerReturn>;
 }
 
-export const auth:AuthHandlerOverload = async (url, username?, password?): Promise<AuthHandlerReturn> => {
-  const isSignIn = username && password;
+export const auth:AuthHandlerOverload = async (url, payload?): Promise<AuthHandlerReturn> => {
+  const isSignIn = !!payload;
 
   try {
     const res = await fetch(url, {
@@ -20,10 +20,7 @@ export const auth:AuthHandlerOverload = async (url, username?, password?): Promi
       headers: {
         'Content-Type': 'application/json',
       },
-      body: isSignIn ? JSON.stringify({
-        username,
-        password,
-      }) : undefined,
+      body: isSignIn ? JSON.stringify(payload) : undefined,
       credentials: 'include',
     });
 
@@ -31,8 +28,8 @@ export const auth:AuthHandlerOverload = async (url, username?, password?): Promi
 
     return {
       status: res.status,
-      jwt: data.token || null,
-      error: data.error || null,
+      jwt: data?.token || null,
+      error: data?.error || null,
     }
   } catch (err) {
     console.log(err);

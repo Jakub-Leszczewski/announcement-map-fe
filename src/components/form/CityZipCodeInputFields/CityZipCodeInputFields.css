@@ -1,0 +1,17 @@
+@media only screen and (min-width: 600px) {
+    .CityZipCodeInputFields{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .CityZipCodeInputFields>label:first-child{
+        width: 75%;
+        margin: 0 3px 0 0;
+    }
+
+    .CityZipCodeInputFields>label:last-child{
+        width: 25%;
+        margin: 0 0 0 3px;
+    }
+}

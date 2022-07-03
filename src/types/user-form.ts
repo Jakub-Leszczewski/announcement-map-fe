@@ -1,32 +1,8 @@
-export interface UserForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username?: string;
-  password?: string;
-  repeatPassword?: string;
-  newPassword?: string;
-  repeatNewPassword?: string;
-}
+import { CreateUserDto, SignInDto, UpdateUserDto } from "types";
 
-export interface UserFormSignup {
-  firstName: string;
-  lastName: string;
-  email: string;
-  username: string;
-  password: string;
-  repeatPassword: string;
-}
+export type UserFormSignup = CreateUserDto & {repeatPassword: string};
 
-export interface UserFormSignIn {
-  username: string;
-  password: string;
-}
+export type UserFormUpdate = UpdateUserDto & {repeatNewPassword: string};
 
-export interface UserFormUpdate {
-  firstName: string;
-  lastName: string;
-  email: string;
-  newPassword: string;
-  repeatNewPassword: string;
-}
+export type UserFormSignIn = SignInDto;
+

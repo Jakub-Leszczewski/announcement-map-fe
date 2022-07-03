@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import './UserMenuHeader.css';
 import { ArrowButton } from '../common/ArrowButton/ArrowButton'
 
