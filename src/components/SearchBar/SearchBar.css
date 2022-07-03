@@ -1,0 +1,30 @@
+.SearchBar {
+    width: auto;
+    height: 100%;
+}
+
+.SearchBar>input {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #B1B1B1;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.14);
+    padding: 0 10px;
+    outline: none;
+    font-size: 1rem;
+
+}
+
+.SearchButton {
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translate(-140%, -50%);
+}
+
+.SearchBar>input:focus {
+    border: 1px solid #757575;
+}
+
+.SearchBar>input::placeholder {
+    font-size: .9rem;
+}

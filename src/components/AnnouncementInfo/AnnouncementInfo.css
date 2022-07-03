@@ -1,0 +1,81 @@
+.AnnouncementInfo {
+    width: 100%;
+}
+
+.AnnouncementInfo__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.AnnouncementInfo__header h3 {
+    font-size: 1.2rem;
+    margin-right: 10px;
+}
+
+.AnnouncementInfo__header p {
+    font-size: 1rem;
+}
+
+.AnnouncementInfo__header h3, .AnnouncementInfo__header p {
+    font-weight: bolder;
+}
+
+.AnnouncementInfo__id {
+    font-size: .7rem;
+}
+
+.AnnouncementInfo__address {
+    font-size: .9rem;
+    font-weight: bold;
+    margin: 10px 0 !important;
+}
+
+.AnnouncementInfo__description {
+    text-align: justify;
+    font-size: .8rem;
+}
+
+.AnnouncementInfo__link-container {
+    margin: 15px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.AnnouncementInfo__date {
+    font-size: .7rem;
+}
+
+.AnnouncementInfo__link-container .AuctionLink {
+    margin: 3px;
+}
+
+.AnnouncementInfo__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AnnouncementInfo__views-container {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.AnnouncementInfo__views-container i {
+    font-size: .7rem;
+    margin-right: 4px;
+}
+
+.AnnouncementInfo__views-container p {
+    font-weight: bold;
+    font-size: .7rem;
+}
+
+@media only screen and (min-width: 400px) {
+    .AnnouncementInfo__header h3, .AnnouncementInfo__header p {
+        font-size: 1.2rem;
+    }
+}
+

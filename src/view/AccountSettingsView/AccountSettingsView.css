@@ -1,9 +1,10 @@
 .AccountSettingsView {
     border: 1px solid #B1B1B1;
     border-radius: 10px;
-    padding: 5px;
-    width: 100%;
+    padding: 5px 10px;
+    width: 250px;
     background: white;
+    position: relative;
 }
 
 .AccountSettingsView__avatar {
@@ -12,18 +13,7 @@
     margin: 10px auto;
 }
 
-.AccountSettingsView__form {
-    display: flex;
-    flex-direction: column;
-    width: 200px;
-    margin: 10px auto;
-}
-
-.AccountSettingsView__form>.Button {
-    margin: 10px 0 0 0;
-}
-
-.AccountSettingsView__validation-error {
+.AccountSettingsView__error {
     color: red;
     font-size: 0.7rem;
 }
@@ -31,4 +21,10 @@
 .AccountSettingsView__message {
     color: green;
     font-size: 0.7rem;
+}
+
+@media only screen and (min-width: 400px) {
+    .AccountSettingsView {
+        width: 350px;
+    }
 }

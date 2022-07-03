@@ -1,68 +1,34 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { UserForm } from '../../types/user-form'
+import { UserFormUpdate } from '../../types/user-form'
 import { InfoType } from '../../types/info-types'
+import { ChangeCategoryId, ChangeSearch, Window } from '../types/app-slice-types'
+import {
+  AppStateType,
+  OpenAccountSettings,
+  OpenAddAnnouncement,
+  OpenAnnouncement,
+  OpenAnnouncements,
+  OpenNone,
+  OpenSignIn,
+  OpenSignInChoice,
+  OpenSignup,
+  OpenUser,
+} from '../types/app-slice-types'
 
-export enum ActionType {
-  OPEN_NONE = 'OPEN_NONE',
-  OPEN_SIGN_IN_CHOICE = 'OPEN_LOGIN_CHOICE',
-  OPEN_SIGN_IN = 'OPEN_SIGN_IN',
-  OPEN_SIGNUP = 'OPEN_SIGNUP',
-  OPEN_USER = 'OPEN_USER',
-  OPEN_ANNOUNCEMENTS = 'OPEN_ANNOUNCEMENTS',
-  OPEN_ANNOUNCEMENT_VIEW = 'OPEN_ANNOUNCEMENT_VIEW',
-  OPEN_ADD_ANNOUNCEMENT = 'OPEN_ADD_ANNOUNCEMENT',
-  OPEN_ACCOUNT_SETTINGS = 'OPEN_ACCOUNT_SETTINGS',
-  OPEN_ACCOUNT_SETTINGS_CONFIRM = 'OPEN_ACCOUNT_SETTINGS_CONFIRM',
-}
-
-interface OpenNone {
-  payload: undefined;
-}
-
-interface OpenSignInChoice {
-  payload: undefined;
-}
-
-interface OpenSignIn {
-  payload: InfoType | undefined;
-}
-
-interface OpenSignUp {
-  payload: undefined;
-}
-
-interface OpenUser {
-  payload: undefined;
-}
-
-interface OpenAnnouncements {
-  payload: undefined;
-}
-
-interface OpenAnnouncementView {
-  payload: string;
-}
-
-interface OpenAddAnnouncement {
-  payload: string;
-}
-
-interface OpenAccountSettings {
-  payload: InfoType | undefined;
-}
-
-interface OpenAccountSettingsConfirm {
-  payload: UserForm;
-}
-
-interface AppStateType {
-  openWindow: ActionType;
-  payload: string | UserForm | InfoType | undefined;
+const initialInfoType: InfoType = {
+  error: null,
+  message: null,
 }
 
 const initialState: AppStateType = {
-  openWindow: ActionType.OPEN_NONE,
-  payload: undefined,
+  openWindow: Window.OPEN_NONE,
+  accountSettingsPayload: initialInfoType,
+  signInPayload: initialInfoType,
+  announcementsPayload: initialInfoType,
+  announcementPayload: '',
+  announcementUpdatePayload: '',
+  search: '',
+  categoryId: '',
 }
 
 export const appSlice = createSlice({
@@ -70,54 +36,64 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     openNone: (state, action: OpenNone) => {
-      state.openWindow = ActionType.OPEN_NONE;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_NONE;
     },
 
     openSignInChoice: (state, action: OpenSignInChoice) => {
-      state.openWindow = ActionType.OPEN_SIGN_IN_CHOICE;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_SIGN_IN_CHOICE;
+    },
+
+    openSignup: (state, action: OpenSignup) => {
+      state.openWindow = Window.OPEN_SIGNUP;
     },
 
     openSignIn: (state, action: OpenSignIn) => {
-      state.openWindow = ActionType.OPEN_SIGN_IN;
-      state.payload = action.payload;
-    },
+      state.openWindow = Window.OPEN_SIGN_IN;
 
-    openSignup: (state, action: OpenSignUp) => {
-      state.openWindow = ActionType.OPEN_SIGNUP;
-      state.payload = action.payload;
+      if(action.payload === null) state.signInPayload = initialInfoType;
+      else state.signInPayload = action.payload;
     },
 
     openUser: (state, action: OpenUser) => {
-      state.openWindow = ActionType.OPEN_USER;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_USER;
     },
 
     openAnnouncements: (state, action: OpenAnnouncements) => {
-      state.openWindow = ActionType.OPEN_ANNOUNCEMENTS;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_ANNOUNCEMENTS;
+
+      if(action.payload === null) state.announcementsPayload = initialInfoType;
+      else state.announcementsPayload = action.payload;
     },
 
-    openAnnouncementView: (state, action: OpenAnnouncementView) => {
-      state.openWindow = ActionType.OPEN_ANNOUNCEMENT_VIEW;
-      state.payload = action.payload;
+    openAnnouncement: (state, action: OpenAnnouncement) => {
+      state.openWindow = Window.OPEN_ANNOUNCEMENT;
+      state.announcementPayload = action.payload;
+    },
+
+    openAnnouncementUpdate: (state, action: OpenAnnouncement) => {
+      state.openWindow = Window.OPEN_UPDATE_ANNOUNCEMENT;
+      state.announcementUpdatePayload = action.payload;
     },
 
     openAddAnnouncement: (state, action: OpenAddAnnouncement) => {
-      state.openWindow = ActionType.OPEN_ADD_ANNOUNCEMENT;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_ADD_ANNOUNCEMENT;
     },
 
     openAccountSettings: (state, action: OpenAccountSettings) => {
-      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS;
-      state.payload = action.payload;
+      state.openWindow = Window.OPEN_ACCOUNT_SETTINGS;
+
+      if(action.payload === null) state.accountSettingsPayload = initialInfoType;
+      else state.accountSettingsPayload = action.payload;
     },
 
-    openAccountSettingsConfirm: (state, action: OpenAccountSettingsConfirm) => {
-      state.openWindow = ActionType.OPEN_ACCOUNT_SETTINGS_CONFIRM;
-      state.payload = action.payload;
+    changeCategoryId: (state, action: ChangeCategoryId) => {
+      state.categoryId = action.payload;
     },
+
+    changeSearch: (state, action: ChangeSearch) => {
+      state.search = action.payload;
+    }
+
   }
 });
 
@@ -126,10 +102,12 @@ export const {
   openSignInChoice,
   openSignIn,
   openSignup,
+  openAccountSettings,
   openUser,
   openAnnouncements,
-  openAnnouncementView,
   openAddAnnouncement,
-  openAccountSettings,
-  openAccountSettingsConfirm,
+  openAnnouncement,
+  openAnnouncementUpdate,
+  changeCategoryId,
+  changeSearch
 } = appSlice.actions;

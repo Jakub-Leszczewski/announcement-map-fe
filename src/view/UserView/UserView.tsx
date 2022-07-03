@@ -1,51 +1,61 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './UserView.css'
 import { Button } from '../../components/common/Button/Button'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { useDispatch, useSelector } from 'react-redux'
-import { openAccountSettings, openNone, openSignup } from '../../store/slices/app-slice'
+import { useDispatch } from 'react-redux'
 import { UserAvatarBig } from '../../components/UserAvatarBig/UserAvatarBig'
 import { setJwt } from '../../store/slices/user-slice'
 import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
+import {
+  openAccountSettings,
+  openAddAnnouncement,
+  openAnnouncements,
+  openNone,
+} from '../../store/slices/app-slice'
+import { ErrorResponse, UserLogoutResponse } from 'types';
 
 export const UserView = () => {
-  const dispatch = useDispatch();
-  const userData = useUserDataAuth();
-  const [logout, setLogout] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [logoutStatus, setLogoutStatus] = useState<number | null>(null);
 
-  useEffect(() => {
-    (async () => {
-      if(logout) {
-        const logoutData = await api('http://localhost:3001/api/auth/logout', {method: HttpMethods.DELETE});
-        if(logoutData.status === 200) {
-          setLogoutStatus(200);
-          setLogout(false);
-        }
-      }
-    })();
+  const dispatch = useDispatch();
+  const userData = useUserDataAuth();
 
+  if (!userData) return null;
+
+  useEffect(() => {
     if(logoutStatus === 200) {
       dispatch(setJwt(null));
-      dispatch(openNone(undefined));
+      dispatch(openNone());
     }
-  }, [logout, logoutStatus]);
+  }, [logoutStatus]);
 
   const goBackHandler = () => {
-    dispatch(openNone(undefined));
+    dispatch(openNone());
   }
 
-  const logoutHandler = () => {
-    setLogout(true);
+  const logoutHandler = async () => {
+    const logoutData = await api<UserLogoutResponse>('http://localhost:3001/api/auth/logout', {
+      method: HttpMethods.DELETE
+    });
+
+    if(logoutData.status === 200) setLogoutStatus(200);
+    else setError((logoutData.data as ErrorResponse)?.error || null)
   }
 
   const goAccountSettingsHandler = () => {
-    dispatch(openAccountSettings(undefined));
+    dispatch(openAccountSettings(null));
   }
 
-  if (!userData) return null;
+  const goAddAnnouncementHandler = () => {
+    dispatch(openAddAnnouncement());
+  }
+
+  const goAnnouncementHandler = () => {
+    dispatch(openAnnouncements(null));
+  }
 
   return(
     <section className="UserView">
@@ -54,17 +64,18 @@ export const UserView = () => {
         <UserAvatarBig/>
       </div>
 
-      <h2 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h2>
+      <h3 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h3>
 
-      <div className="UserView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" >Twoje ogłoszenia</Button>
-        <Button width="100%" height={30} borderRadius="15px" >Dodaj ogłoszenie</Button>
-        <Button width="100%" height={30} borderRadius="15px" onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
-      </div>
+      {error && <p className="UserView__error">{error}</p>}
+      <nav className="UserView__buttons-container">
+        <Button onClick={goAnnouncementHandler}>Twoje ogłoszenia</Button>
+        <Button onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
+        <Button onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
+      </nav>
 
-      <div className="UserView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" onClick={logoutHandler}>Wyloguj się</Button>
-      </div>
+      <nav className="UserView__buttons-container">
+        <Button onClick={logoutHandler}>Wyloguj się</Button>
+      </nav>
     </section>
   );
 }

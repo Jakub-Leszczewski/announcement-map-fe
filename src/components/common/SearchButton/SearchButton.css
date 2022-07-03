@@ -1,0 +1,17 @@
+.SearchButton {
+    font-size: 1.35rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: none;
+    cursor: pointer;
+}
+
+.SearchButton:hover>i {
+    color: #696969;
+}
+
+i:active {
+    color: #7c7c7c;
+}

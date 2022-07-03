@@ -1,0 +1,10 @@
+.AnnouncementForm {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin: 10px auto;
+}
+
+.AnnouncementForm>.SelectCategories {
+    height: 45px;
+}

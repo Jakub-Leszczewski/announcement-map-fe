@@ -1,10 +1,16 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, HTMLInputTypeAttribute } from 'react'
 import './ShortTextInput.css';
 
 interface Props {
-  placeholder: string;
+  min?: string | number;
+  max?: string | number;
+  step?: string | number;
+  type?: HTMLInputTypeAttribute;
+  pattern?: string;
+  inputMode?: "search" | "text" | "email" | "tel" | "url" | "none" | "numeric" | "decimal";
+  placeholder?: string;
+  label?: string;
   name?: string;
-  email?: boolean;
   required?: boolean;
   minLength?: number;
   maxLength?: number;
@@ -14,20 +20,28 @@ interface Props {
 }
 
 export function ShortTextInput({
-  placeholder, name, email, required, minLength, maxLength, value, disabled, onChange
+  pattern, inputMode, min, max, step, label, type, placeholder, name, required, minLength, maxLength, value, disabled, onChange
 }: Props) {
   return (
-    <input
-      className="ShortTextInput"
-      name={name}
-      type={email ? 'email' : 'text'}
-      placeholder={placeholder}
-      required={required}
-      minLength={minLength ?? 0}
-      maxLength={maxLength ?? 255}
-      onChange={onChange}
-      value={value}
-      disabled={disabled}
-    />
+    <label className="ShortTextInput">
+      {label && <span>{label}{required && <span className="ShortTextInput--required">*</span>}</span>}
+      <input
+        className="ShortTextInput__input"
+        name={name}
+        type={type || 'text'}
+        placeholder={placeholder}
+        required={required}
+        minLength={minLength ?? 0}
+        maxLength={maxLength ?? 255}
+        onChange={onChange}
+        value={value}
+        disabled={disabled}
+        min={min}
+        max={max}
+        step={step}
+        pattern={pattern}
+        inputMode={inputMode}
+      />
+    </label>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import './SignInChoiceView.css';
 import { Button } from '../../components/common/Button/Button';
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
@@ -9,25 +9,25 @@ export const SignInChoiceView = () => {
   const dispatch = useDispatch();
 
   const goBackHandler = () => {
-    dispatch(openNone(undefined));
+    dispatch(openNone());
   }
 
   const goSignInHandler = () => {
-    dispatch(openSignIn(undefined));
+    dispatch(openSignIn(null));
   }
 
   const goSignupHandler = () => {
-    dispatch(openSignup(undefined));
+    dispatch(openSignup());
   }
 
   return(
     <section className="SignInChoiceView">
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
-      <div className="SignInChoiceView__buttons-container">
-        <Button width="100%" height={30} borderRadius="15px" onClick={goSignInHandler}>Zaloguj się</Button>
-        <Button width="100%" height={30} borderRadius="15px" onClick={goSignupHandler}>Zarejestruj się</Button>
-      </div>
+      <nav className="SignInChoiceView__buttons-container">
+        <Button onClick={goSignInHandler}>Zaloguj się</Button>
+        <Button onClick={goSignupHandler}>Zarejestruj się</Button>
+      </nav>
     </section>
   );
 }
