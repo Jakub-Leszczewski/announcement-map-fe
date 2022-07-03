@@ -30,7 +30,7 @@ export const Map = () => {
   );
 
   return (
-    <div className="Map">
+    <main className="Map">
       {
         userLocation &&
         <MapContainer center={userLocation.coords} zoom={13}>
@@ -55,6 +55,6 @@ export const Map = () => {
           </Marker>
         </MapContainer>
       }
-    </div>
+    </main>
   )
 }

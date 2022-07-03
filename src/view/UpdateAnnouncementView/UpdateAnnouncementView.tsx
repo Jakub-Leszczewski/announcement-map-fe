@@ -44,9 +44,7 @@ export const UpdateAnnouncementView = () => {
     }
   }, [loading])
 
-  const goBackHandler = () => {
-    dispatch(openAnnouncement(announcementId));
-  }
+  const goBackHandler = () => dispatch(openAnnouncement(announcementId));
 
   const changeFormHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setError(null);
@@ -77,9 +75,7 @@ export const UpdateAnnouncementView = () => {
     }))
   }
 
-  const resetFindAddressHandler = () => {
-    setFindAddress(undefined);
-  }
+  const resetFindAddressHandler = () => setFindAddress(undefined);
 
   const addAnnouncementApiCall = async (lat: number, lon: number) => {
     const data = await api<CreateAnnouncementResponse | ErrorResponse>(
@@ -93,7 +89,7 @@ export const UpdateAnnouncementView = () => {
 
     if(data.newJwt) setNewJwt(data.newJwt);
 
-    if(data.status === 200) setMessage('Pomyślnie dodano ogłoszenie');
+    if(data.status === 200) setMessage('Pomyślnie zapisano.');
     else setError((data.data as ErrorResponse)?.error || null);
   }
 
@@ -137,7 +133,7 @@ export const UpdateAnnouncementView = () => {
         addAuctionLinkHandler={addAuctionLinkHandler}
       />
 
-      <Button type="submit" form="announcement-form">Dodaj ogłoszenie</Button>
+      <Button type="submit" form="announcement-form">Zapisz</Button>
     </section>
   );
 }

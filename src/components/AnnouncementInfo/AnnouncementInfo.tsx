@@ -2,14 +2,15 @@ import React from 'react'
 import './AnnouncementInfo.css'
 import { GetAnnouncementResponse } from 'types';
 import { AuctionLink } from '../AuctionLink/AuctionLink'
-import { useApiAuth } from '../../hooks/useApiAuth'
+import { useApi } from '../../hooks/useApi'
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 interface Props {
   id: string;
 }
 
 export const AnnouncementInfo = ({ id }: Props) => {
-  const [loading, status, data] = useApiAuth<GetAnnouncementResponse>(`http://localhost:3001/api/announcement/${id}`);
+  const [loading, status, data] = useApi<GetAnnouncementResponse>(`http://localhost:3001/api/announcement/${id}`);
 
   if(loading) return <section className="AnnouncementInfo">loading...</section>
 
@@ -20,16 +21,16 @@ export const AnnouncementInfo = ({ id }: Props) => {
     return (
         <section className="AnnouncementInfo">
           <header className="AnnouncementInfo__header">
-            <h3>{data.title ?? ''}</h3>
+            <h3>{data.title}</h3>
             <p>{Number(data.price ?? 0).toFixed(2)} zł</p>
           </header>
           <p className="AnnouncementInfo__id">id: {id}</p>
 
           <p className="AnnouncementInfo__address">
             {
-            `${data.country ?? ''} 
-              ${data.city ?? ''} 
-              ${data.zipCode ?? ''} 
+            `${data.country} 
+              ${data.city} 
+              ${data.zipCode} 
               ${data.street ?? ''} 
               ${data.buildingNumber ?? ''}${data.apartamentNumber ? `/${data.apartamentNumber}` : ''} `
             }
@@ -41,9 +42,16 @@ export const AnnouncementInfo = ({ id }: Props) => {
             {data.auctionLinks?.map((e) => (<AuctionLink name={e.name} url={e.url} key={e.id}/>))}
           </div>
 
-          <p className="AnnouncementInfo__date">
-            {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : ''}
-          </p>
+          <footer className="AnnouncementInfo__footer">
+            <p className="AnnouncementInfo__date">
+              {data.createdAt ? new Date(data.createdAt).toLocaleDateString() : ''}
+            </p>
+
+            <div className="AnnouncementInfo__views-container">
+              <i className="bi bi-eye-fill"/>
+              <p>{data.views}</p>
+            </div>
+          </footer>
         </section>
       )
   }

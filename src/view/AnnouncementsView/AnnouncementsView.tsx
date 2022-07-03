@@ -36,7 +36,7 @@ export const AnnouncementsView = () => {
         appStore.announcementsPayload.message &&
         <p className="AnnouncementsView__message">{appStore.announcementsPayload.message}</p>
       }
-      <div className="AnnouncementsView__announcement-container">
+      <div className="AnnouncementsView__container">
         {
           data.length > 0
             ? (data as GetUserAnnouncementsResponse)?.map((e) => (
@@ -45,6 +45,7 @@ export const AnnouncementsView = () => {
                 id={e.id}
                 title={e.title}
                 price={e.price}
+                views={e.views}
                 country={e.country}
                 city={e.city}
                 zipCode={e.zipCode}

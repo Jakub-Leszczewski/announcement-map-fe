@@ -64,18 +64,18 @@ export const UserView = () => {
         <UserAvatarBig/>
       </div>
 
-      <h2 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h2>
+      <h3 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h3>
 
       {error && <p className="UserView__error">{error}</p>}
-      <div className="UserView__buttons-container">
+      <nav className="UserView__buttons-container">
         <Button onClick={goAnnouncementHandler}>Twoje ogłoszenia</Button>
         <Button onClick={goAddAnnouncementHandler}>Dodaj ogłoszenie</Button>
         <Button onClick={goAccountSettingsHandler}>Zarządzaj kontem</Button>
-      </div>
+      </nav>
 
-      <div className="UserView__buttons-container">
+      <nav className="UserView__buttons-container">
         <Button onClick={logoutHandler}>Wyloguj się</Button>
-      </div>
+      </nav>
     </section>
   );
 }
