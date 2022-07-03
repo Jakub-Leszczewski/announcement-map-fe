@@ -51,6 +51,28 @@
     margin: 3px;
 }
 
+.AnnouncementInfo__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AnnouncementInfo__views-container {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.AnnouncementInfo__views-container i {
+    font-size: .7rem;
+    margin-right: 4px;
+}
+
+.AnnouncementInfo__views-container p {
+    font-weight: bold;
+    font-size: .7rem;
+}
+
 @media only screen and (min-width: 400px) {
     .AnnouncementInfo__header h3, .AnnouncementInfo__header p {
         font-size: 1.2rem;

@@ -35,3 +35,25 @@
 .AnnouncementShortInfo__date {
     font-size: .7rem;
 }
+
+.AnnouncementShortInfo__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AnnouncementShortInfo__views-container {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.AnnouncementShortInfo__views-container i {
+    font-size: .7rem;
+    margin-right: 4px;
+}
+
+.AnnouncementShortInfo__views-container p {
+    font-weight: bold;
+    font-size: .7rem;
+}

@@ -1,12 +1,13 @@
 import React from 'react';
 import './AnnouncementShortInfo.css'
 import { useDispatch } from 'react-redux'
-import { openAnnouncement, openUser } from '../../store/slices/app-slice'
+import { openAnnouncement } from '../../store/slices/app-slice'
 
 interface Props {
   id: string
   title: string;
   price: number;
+  views: number
   country: string;
   city: string;
   zipCode: string;
@@ -17,7 +18,7 @@ interface Props {
 }
 
 export const AnnouncementShortInfo = ({
-  id, title, price, country, city, zipCode, street, buildingNumber, apartamentNumber, createdAt
+  id, title, price, views, country, city, zipCode, street, buildingNumber, apartamentNumber, createdAt
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -44,9 +45,16 @@ export const AnnouncementShortInfo = ({
         }
       </p>
 
-      <p className="AnnouncementShortInfo__date">
-        {createdAt ? new Date(createdAt).toLocaleDateString() : ''}
-      </p>
+      <footer className="AnnouncementShortInfo__footer">
+        <p className="AnnouncementShortInfo__date">
+          {createdAt ? new Date(createdAt).toLocaleDateString() : ''}
+        </p>
+
+        <div className="AnnouncementShortInfo__views-container">
+          <i className="bi bi-eye-fill"/>
+          <p>{views}</p>
+        </div>
+      </footer>
     </section>
   );
 }

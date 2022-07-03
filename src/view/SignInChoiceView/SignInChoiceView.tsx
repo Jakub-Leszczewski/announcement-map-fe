@@ -24,10 +24,10 @@ export const SignInChoiceView = () => {
     <section className="SignInChoiceView">
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
 
-      <div className="SignInChoiceView__buttons-container">
+      <nav className="SignInChoiceView__buttons-container">
         <Button onClick={goSignInHandler}>Zaloguj się</Button>
         <Button onClick={goSignupHandler}>Zarejestruj się</Button>
-      </div>
+      </nav>
     </section>
   );
 }

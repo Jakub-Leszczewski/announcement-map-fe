@@ -49,22 +49,13 @@ export const AnnouncementView = () => {
     setSubmitStatus(data.status);
   }
 
-  const noButtonHandler = () => {
-    setConfirm(false);
-  }
+  const noButtonHandler = () => setConfirm(false);
 
-  const goBackHandler = () => {
-    dispatch(openAnnouncements(null));
-  }
+  const goBackHandler = () => dispatch(openAnnouncements(null));
 
-  const removeAnnouncementHandler = () => {
-    setConfirm(true);
-  }
+  const removeAnnouncementHandler = () => setConfirm(true);
 
-  const updateAnnouncementHandler = () => {
-    dispatch(openAnnouncementUpdate(appStore.announcementPayload));
-    console.log(appStore)
-  }
+  const updateAnnouncementHandler = () => dispatch(openAnnouncementUpdate(appStore.announcementPayload));
 
   return(
     <section className="AnnouncementView">

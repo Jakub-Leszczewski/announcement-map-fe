@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import './AccountSettingsView.css'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
 import { useDispatch, useSelector } from 'react-redux'
@@ -18,9 +18,6 @@ import { PasswordConfirm } from '../../components/PasswordConfirm/PasswordConfir
 import { initialUserForm } from '../../components/form/AccountSettingsForm/account-settings-form-initial'
 
 export const  AccountSettingsView = () => {
-  const userData = useUserDataAuth();
-  if(!userData) return null;
-
   const [form, setForm] = useState<UserFormUpdate>(initialUserForm);
   const [error, setError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
@@ -32,12 +29,23 @@ export const  AccountSettingsView = () => {
   const refreshUser = useRefreshUser();
   const setJwt = useSetJwt();
   const jwt = useJwt();
+  const userData = useUserDataAuth();
 
-  if(!refreshUser || !setJwt) return null;
+  if(!refreshUser || !setJwt || !userData) return null;
 
   useEffect(() => {
     if(newJwt) setJwt(newJwt);
-  }, [newJwt])
+  }, [newJwt]);
+
+  useEffect(() => {
+    if(userData) {
+      const {id, avatar, username, role, ...userFormData} = userData;
+      setForm(prev => ({
+        ...prev,
+        ...userFormData,
+      }));
+    }
+  }, []);
 
   const goBackHandler = () => {
     dispatch(openUser());
@@ -68,10 +76,10 @@ export const  AccountSettingsView = () => {
 
     if(data.status !== 200) setError((data.data as ErrorResponse)?.error || null);
     else {
-      setForm(prev => ({
-        ...prev,
-        password: '',
-      }))
+      // setForm(prev => ({
+      //   ...prev,
+      //   password: '',
+      // }))
       await refreshUser();
       setError(null);
     }
