@@ -34,7 +34,7 @@ export const Map = () => {
   return (
     <main className="Map">
       {
-        userLocation &&
+        userLocation && userLocation.coords &&
         <MapContainer center={userLocation.coords} zoom={13}>
           <TileLayer
             url={"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"}
