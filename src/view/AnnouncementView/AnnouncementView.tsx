@@ -12,6 +12,7 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { ActionConfirm } from '../../components/ActionConfirm/ActionConfirm'
+import { apiUrl } from '../../config'
 
 export const AnnouncementView = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ export const AnnouncementView = () => {
   }, [submitStatus]);
 
   const yesButtonHandler = async () => {
-    const data = await api<DeleteAnnouncementResponse>(`http://localhost:3001/api/announcement/${appStore.announcementPayload}`, {
+    const data = await api<DeleteAnnouncementResponse>(`${apiUrl}/announcement/${appStore.announcementPayload}`, {
       method: HttpMethods.DELETE,
       jwt,
     });

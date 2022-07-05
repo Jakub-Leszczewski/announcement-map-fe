@@ -13,6 +13,7 @@ import { AnnouncementForm } from '../../components/form/AnnouncementForm/Announc
 import { openUser } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { initialAnnouncementForm } from '../../components/form/AnnouncementForm/announcement-form-initial'
+import { apiUrl } from '../../config'
 
 export const AddAnnouncementView = () => {
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ export const AddAnnouncementView = () => {
   }
 
   const addAnnouncementApiCall = async (lat: number, lon: number) => {
-    const data = await api<CreateAnnouncementResponse | ErrorResponse>('http://localhost:3001/api/announcement/', {
+    const data = await api<CreateAnnouncementResponse | ErrorResponse>(`${apiUrl}/announcement/`, {
       method: HttpMethods.POST,
       jwt: jwt,
       payload: { ...form, lat, lon: lon },
