@@ -9,6 +9,7 @@ import { SignInForm } from '../../components/form/SignInForm/SignInForm'
 import { openNone, openSignInChoice } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 const initialSignInFormState: UserFormSignIn= {
   username: '',
@@ -19,6 +20,7 @@ export const SignInView = () => {
   const [form, setForm] = useState<UserFormSignIn>(initialSignInFormState);
   const [error, setError] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const setJwt = useSetJwt();
   const appStore = useSelector((store: StoreType) => store.app);
@@ -58,29 +60,36 @@ export const SignInView = () => {
       setError(null);
       setNewJwt(authData.jwt);
     } else setError(authData.error);
+
+    setLoading(true);
   }
 
   return(
     <section className="SignInView">
       <UserMenuHeader title="Logowanie" onClick={goBackHandler}/>
+      <div className="SignInView__container">
+        {
+          appStore.signInPayload.message &&
+          <p className="SignInView__message">{appStore.signInPayload.message}</p>
+        }
 
-      {
-        appStore.signInPayload.message &&
-        <p className="SignInView__message">{appStore.signInPayload.message}</p>
-      }
+        {
+          error &&
+          <p className="SignInView__error">
+            {error === "Incorrect username or password." ? "Błędny login lub hasło." : error}
+          </p>
+        }
 
-      {
-        error &&
-        <p className="SignInView__error">
-          {error === "Incorrect username or password." ? "Błędny login lub hasło." : error}
-        </p>
-      }
-
-      <SignInForm
-        form={form}
-        changeFormHandler={changeFormHandler}
-        onSubmitHandler={onSubmitHandler}
-      />
+        <SignInForm
+          form={form}
+          changeFormHandler={changeFormHandler}
+          onSubmitHandler={(e) => {
+            onSubmitHandler(e);
+            setLoading(true);
+          }}
+        />
+      </div>
+      {loading && <LoadingSpinner/>}
     </section>
   );
 }

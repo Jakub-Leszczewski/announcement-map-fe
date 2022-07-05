@@ -1,5 +1,7 @@
 .AnnouncementInfo {
     width: 100%;
+    height: fit-content;
+    min-height: 80px;
 }
 
 .AnnouncementInfo__header {

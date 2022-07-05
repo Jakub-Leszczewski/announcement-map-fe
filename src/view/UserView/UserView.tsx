@@ -24,7 +24,9 @@ export const UserView = () => {
   const dispatch = useDispatch();
   const userData = useUserDataAuth();
 
-  if (!userData) return null;
+  useEffect(() => {
+    // if (!userData) dispatch(openNone());
+  }, [userData]);
 
   useEffect(() => {
     if(logoutStatus === 200) {
@@ -65,7 +67,7 @@ export const UserView = () => {
         <UserAvatarBig/>
       </div>
 
-      <h3 className="UserView__name">{userData.firstName + ' ' + userData.lastName}</h3>
+      <h3 className="UserView__name">{userData?.firstName + ' ' + userData?.lastName}</h3>
 
       {error && <p className="UserView__error">{error}</p>}
       <nav className="UserView__buttons-container">

@@ -11,6 +11,7 @@ export const useApi = <T>(url: string, method?: HttpMethods, payload?: any): [bo
   const [data, setData] = useState<T | ErrorResponse | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     (async () => {
       const data = await api<T>(url,{method, payload})
       setLoading(false);
