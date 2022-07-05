@@ -12,6 +12,7 @@ import { groupAnnouncementByCoords } from '../../utils/group-announcement-by-coo
 import { useSelector } from 'react-redux'
 import { StoreType } from '../../store'
 import { useApi } from '../../hooks/useApi'
+import { apiUrl } from '../../config'
 
 export const Map = () => {
   const appStore = useSelector((store:StoreType) => store.app);
@@ -20,7 +21,7 @@ export const Map = () => {
   const userLocation = useCurrenGeolocation([52.2408503,21.0065499]);
 
   const [loading, status, data] = useApi<GetAnnouncementsResponse>(
-    `http://localhost:3001/api/announcement/?search=${search}&category=${category}`
+    `${apiUrl}/announcement/?search=${search}&category=${category}`
   );
 
   const announcementGroups = useMemo(() => (

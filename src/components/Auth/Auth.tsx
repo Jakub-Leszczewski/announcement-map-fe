@@ -6,6 +6,7 @@ import { auth } from '../../utils/api/auth'
 import { setJwt } from '../../store/slices/user-slice'
 import { decodeJwt } from '../../utils/decode-jwt'
 import { api } from '../../utils/api/api'
+import { apiUrl } from '../../config'
 
 interface Props {
   children: React.ReactNode;
@@ -46,7 +47,7 @@ export const Auth = ({children}: Props) => {
   const refreshUserHandler = async () => {
     if(userStore.jwt) {
       if (decodedJwt !== null) {
-        const data = await api<GetUserResponse>(`http://localhost:3001/api/user/${decodedJwt.id}`, {
+        const data = await api<GetUserResponse>(`${apiUrl}/user/${decodedJwt.id}`, {
           jwt: userStore.jwt,
         });
 
@@ -55,7 +56,7 @@ export const Auth = ({children}: Props) => {
         else setUserData(null)
       }
     } else {
-      const authData = await auth('http://localhost:3001/api/auth/token');
+      const authData = await auth(`${apiUrl}/auth/token`);
 
       if(authData.status === 200) setNewJwt(authData.jwt);
       else setNewJwt(null);

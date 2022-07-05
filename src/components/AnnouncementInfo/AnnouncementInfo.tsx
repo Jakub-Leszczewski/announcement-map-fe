@@ -4,13 +4,14 @@ import { GetAnnouncementResponse } from 'types';
 import { AuctionLink } from '../AuctionLink/AuctionLink'
 import { useApi } from '../../hooks/useApi'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { apiUrl } from '../../config'
 
 interface Props {
   id: string;
 }
 
 export const AnnouncementInfo = ({ id }: Props) => {
-  const [loading, status, data] = useApi<GetAnnouncementResponse>(`http://localhost:3001/api/announcement/${id}`);
+  const [loading, status, data] = useApi<GetAnnouncementResponse>(`${apiUrl}/announcement/${id}`);
 
   if(loading) return <section className="AnnouncementInfo">loading...</section>
 

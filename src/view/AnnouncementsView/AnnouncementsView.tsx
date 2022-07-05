@@ -9,6 +9,7 @@ import { GetUserAnnouncementsResponse } from 'types';
 import { AnnouncementShortInfo } from '../../components/AnnouncementShortInfo/AnnouncementShortInfo'
 import { useUserDataAuth } from '../../hooks/useUserDataAuth'
 import { StoreType } from '../../store'
+import { apiUrl } from '../../config'
 
 export const AnnouncementsView = () => {
   const appStore = useSelector((store: StoreType) => store.app);
@@ -18,7 +19,7 @@ export const AnnouncementsView = () => {
 
   if(!jwt || !user) return null;
 
-  const [loading, status, data] = useApiAuth<GetUserAnnouncementsResponse>(`http://localhost:3001/api/user/${user.id}/announcement`)
+  const [loading, status, data] = useApiAuth<GetUserAnnouncementsResponse>(`${apiUrl}/user/${user.id}/announcement`)
 
 
   const goBackHandler = () => {
