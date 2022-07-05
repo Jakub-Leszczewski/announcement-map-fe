@@ -41,8 +41,8 @@ export async function checkAddressCoords ({
       if(data.length > 0 && data[0].class !== 'building') all = false;
 
       if (data.length > 0) return {
-        lat: data[0].lat,
-        lon: data[0].lon,
+        lat: Number(data[0].lat),
+        lon: Number(data[0].lon),
         country,
         city,
         zipCode,

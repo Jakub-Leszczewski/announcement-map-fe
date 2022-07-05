@@ -40,7 +40,12 @@ export const UpdateAnnouncementView = () => {
 
   useEffect(() => {
     if(!loading && status === 200 && data) {
-      setForm(data as GetAnnouncementResponse);
+      setForm({
+        ...data as GetAnnouncementResponse,
+        street: (data as GetAnnouncementResponse).street ?? '',
+        buildingNumber: (data as GetAnnouncementResponse).buildingNumber ?? '',
+        apartamentNumber: (data as GetAnnouncementResponse).apartamentNumber ?? '',
+      });
     }
   }, [loading])
 
@@ -77,13 +82,13 @@ export const UpdateAnnouncementView = () => {
 
   const resetFindAddressHandler = () => setFindAddress(undefined);
 
-  const addAnnouncementApiCall = async (lat: number, lon: number) => {
+  const updateAnnouncementApiCall = async (lat: number, lon: number) => {
     const data = await api<CreateAnnouncementResponse | ErrorResponse>(
       `http://localhost:3001/api/announcement/${announcementId}`,
       {
         method: HttpMethods.PATCH,
         jwt: jwt,
-        payload: { ...form, lat, lon: lon },
+        payload: { ...form, lat, lon },
       }
     );
 
@@ -106,9 +111,9 @@ export const UpdateAnnouncementView = () => {
         apartamentNumber: form.apartamentNumber || undefined,
       });
 
-      if(geoData?.all) await addAnnouncementApiCall(geoData.lat, geoData.lon);
+      if(geoData?.all) await updateAnnouncementApiCall(geoData.lat, geoData.lon);
       else setFindAddress(geoData);
-    } else await addAnnouncementApiCall(findAddress.lat, findAddress.lon);
+    } else await updateAnnouncementApiCall(findAddress.lat, findAddress.lon);
   }
 
   return (

@@ -52,7 +52,6 @@ export function SignupView() {
       payload: form,
     });
 
-
     if(data.status !== 201) setError((data.data as ErrorResponse)?.error || null);
 
     setSubmitStatus(data.status);
@@ -60,7 +59,7 @@ export function SignupView() {
 
   return (
     <section className="SignupView">
-      {error && <p className="SignupForm__error">{error}</p>}
+      {error && <p className="SignupView__error">{error}</p>}
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
       <SignupForm
         form={form}
