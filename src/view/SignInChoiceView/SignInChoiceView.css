@@ -1,6 +1,4 @@
 .SignInChoiceView {
-    border: 1px solid #B1B1B1;
-    border-radius: 10px;
     padding: 5px;
     width: 250px;
     background: white;
@@ -9,8 +7,9 @@
 .SignInChoiceView__buttons-container {
     display: flex;
     flex-direction: column;
-    width: 300px;
-    margin: 10px auto;
+    padding: 0 5px;
+    width: 100%;
+    margin: auto;
 }
 
 .SignInChoiceView__buttons-container>.Button {

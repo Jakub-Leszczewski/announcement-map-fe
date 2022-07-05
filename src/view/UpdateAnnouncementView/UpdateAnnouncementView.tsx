@@ -10,12 +10,13 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useJwt } from '../../hooks/useJwt'
 import { AnnouncementForm } from '../../components/form/AnnouncementForm/AnnouncementForm'
-import { openAnnouncement } from '../../store/slices/app-slice'
+import { openAnnouncement, openNone } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { StoreType } from '../../store'
 import { useApiAuth } from '../../hooks/useApiAuth'
 import { initialAnnouncementForm } from '../../components/form/AnnouncementForm/announcement-form-initial'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 export const UpdateAnnouncementView = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ export const UpdateAnnouncementView = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+  const [sendFormLoading, setSendFormLoading] = useState<boolean>(false)
 
   const [loading, status, data] = useApiAuth<GetAnnouncementResponse>(
     `${apiUrl}/announcement/${announcementId}`
@@ -33,10 +35,10 @@ export const UpdateAnnouncementView = () => {
   const jwt = useJwt();
   const setJwt = useSetJwt();
 
-  if(!setJwt) return null;
+  if(!setJwt) dispatch(openNone());
 
   useEffect(() => {
-    if(newJwt) setJwt(newJwt);
+    if(newJwt) (setJwt as any)(newJwt);
   }, [newJwt]);
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export const UpdateAnnouncementView = () => {
         apartamentNumber: (data as GetAnnouncementResponse).apartamentNumber ?? '',
       });
     }
-  }, [loading])
+  }, [loading]);
 
   const goBackHandler = () => dispatch(openAnnouncement(announcementId));
 
@@ -115,31 +117,39 @@ export const UpdateAnnouncementView = () => {
       if(geoData?.all) await updateAnnouncementApiCall(geoData.lat, geoData.lon);
       else setFindAddress(geoData);
     } else await updateAnnouncementApiCall(findAddress.lat, findAddress.lon);
+
+    setSendFormLoading(false);
   }
 
   return (
     <section className="AddAnnouncementView">
       <UserMenuHeader title="Aktualizuj ogłoszenie" onClick={goBackHandler}/>
 
-      {error && <p className="AddAnnouncementView__error">{error}</p>}
-      {message && <p className="AddAnnouncementView__message">{message}</p>}
+      <div className="AddAnnouncementView__container">
+        {error && <p className="AddAnnouncementView__error">{error}</p>}
+        {message && <p className="AddAnnouncementView__message">{message}</p>}
 
-      <AnnouncementForm
-        form={form}
-        changeFormHandler={changeFormHandler}
-        resetFindAddressHandler={resetFindAddressHandler}
-        findAddress={findAddress}
-        onSubmitHandler={onSubmitHandler}
-        id="announcement-form"
-      />
+        <AnnouncementForm
+          form={form}
+          changeFormHandler={changeFormHandler}
+          resetFindAddressHandler={resetFindAddressHandler}
+          findAddress={findAddress}
+          onSubmitHandler={(e) => {
+            setSendFormLoading(true);
+            onSubmitHandler(e);
+          }}
+          id="announcement-form"
+        />
 
-      <AuctionLinkInput
-        form={form}
-        removeAuctionLinkHandler={removeAuctionLinkHandler}
-        addAuctionLinkHandler={addAuctionLinkHandler}
-      />
+        <AuctionLinkInput
+          form={form}
+          removeAuctionLinkHandler={removeAuctionLinkHandler}
+          addAuctionLinkHandler={addAuctionLinkHandler}
+        />
 
-      <Button type="submit" form="announcement-form">Zapisz</Button>
+        <Button type="submit" form="announcement-form">Zapisz</Button>
+      </div>
+      {(loading || sendFormLoading) && <LoadingSpinner/>}
     </section>
   );
 }

@@ -4,7 +4,7 @@ import { Button } from '../common/Button/Button';
 import './MainNav.css';
 import { User } from '../User/User'
 import { useDispatch } from 'react-redux'
-import { openAddAnnouncement } from '../../store/slices/app-slice'
+import { openAddAnnouncement, openSignInChoice } from '../../store/slices/app-slice'
 import { SelectCategoriesWithLogic } from '../SelectCategoriesWithLogic/SelectCategoriesWithLogic'
 import { useIsAuth } from '../../hooks/useIsAuth'
 
@@ -14,6 +14,7 @@ export function MainNav() {
 
   const goAddAnnouncement = () => {
     if(isAuth) dispatch(openAddAnnouncement());
+    else dispatch(openSignInChoice());
   }
   return (
     <nav className="MainNav">

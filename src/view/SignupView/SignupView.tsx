@@ -9,6 +9,7 @@ import { CreateUserResponse, ErrorResponse } from 'types'
 import { SignupForm } from '../../components/form/SignupForm/SignupForm'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 const initialUserFormState: UserFormSignup = {
   firstName: '',
@@ -23,6 +24,7 @@ export function SignupView() {
   const [form, setForm] = useState<UserFormSignup>(initialUserFormState);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
@@ -56,17 +58,25 @@ export function SignupView() {
     if(data.status !== 201) setError((data.data as ErrorResponse)?.error || null);
 
     setSubmitStatus(data.status);
+    setLoading(false);
   }
 
   return (
     <section className="SignupView">
-      {error && <p className="SignupView__error">{error}</p>}
       <UserMenuHeader title="Rejestracja" onClick={goBackHandler}/>
-      <SignupForm
-        form={form}
-        changeFormHandler={changeFormHandler}
-        onSubmitHandler={onSubmitHandler}
-      />
+
+      <div className="SignupView__container">
+        {error && <p className="SignupView__error">{error}</p>}
+        <SignupForm
+          form={form}
+          changeFormHandler={changeFormHandler}
+          onSubmitHandler={(e) => {
+            onSubmitHandler(e);
+            setLoading(true);
+          }}
+        />
+      </div>
+      {loading && <LoadingSpinner/>}
     </section>
   );
 }

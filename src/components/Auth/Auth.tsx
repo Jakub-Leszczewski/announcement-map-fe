@@ -37,7 +37,6 @@ export const Auth = ({children}: Props) => {
 
   const [newJwt, setNewJwt] = useState<string | null | undefined>(undefined);
   const [userData, setUserData] = useState<GetUserResponse | null>(null);
-
   useEffect(() => {
     if(newJwt !== undefined) dispatch(setJwt(newJwt));
   }, [newJwt]);
