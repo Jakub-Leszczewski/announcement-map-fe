@@ -1,31 +1,32 @@
 import React, { useEffect, useState } from 'react'
 
 interface UserCurrentGeolocation{
-  coords: [number, number];
+  coords: [number, number] | null;
   isAllow: boolean;
 }
 
-export const useCurrenGeolocation = (initialLocation: [number, number]): UserCurrentGeolocation | null => {
+export const useCurrenGeolocation = (initialLocation: [number, number]): UserCurrentGeolocation => {
   const [coords, setCoords] = useState<[number, number] | null>(null);
   const [isAllow, setIsAllow] = useState<boolean>(false);
 
   useEffect(() => {
     (async () => {
-      const permissions = await navigator.permissions.query({ name: 'geolocation' });
-
-      if (permissions.state === 'granted') {
-        navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
           setCoords([position.coords.latitude, position.coords.longitude]);
           setIsAllow(true);
-        });
-      } else {
-        setCoords(initialLocation);
-        setIsAllow(false);
-      }
+        },
+        () => {
+          setCoords(initialLocation);
+          setIsAllow(false);
+        }, {
+          enableHighAccuracy:true,
+          maximumAge: 10000,
+          timeout: 5000
+        }
+      );
     })();
   }, []);
-
-  if(!coords) return null;
 
   return {
     coords,
