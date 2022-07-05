@@ -15,6 +15,7 @@ import { useSetJwt } from '../../hooks/useSetJwt'
 import { StoreType } from '../../store'
 import { useApiAuth } from '../../hooks/useApiAuth'
 import { initialAnnouncementForm } from '../../components/form/AnnouncementForm/announcement-form-initial'
+import { apiUrl } from '../../config'
 
 export const UpdateAnnouncementView = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export const UpdateAnnouncementView = () => {
   const [newJwt, setNewJwt] = useState<string | null>(null);
 
   const [loading, status, data] = useApiAuth<GetAnnouncementResponse>(
-    `http://localhost:3001/api/announcement/${announcementId}`
+    `${apiUrl}/announcement/${announcementId}`
   );
 
   const jwt = useJwt();
@@ -84,7 +85,7 @@ export const UpdateAnnouncementView = () => {
 
   const updateAnnouncementApiCall = async (lat: number, lon: number) => {
     const data = await api<CreateAnnouncementResponse | ErrorResponse>(
-      `http://localhost:3001/api/announcement/${announcementId}`,
+      `${apiUrl}/announcement/${announcementId}`,
       {
         method: HttpMethods.PATCH,
         jwt: jwt,

@@ -2,6 +2,7 @@ import { HttpMethods } from '../../types/http-methods'
 import { auth } from './auth'
 import { decodeJwt } from '../decode-jwt'
 import { ErrorResponse } from 'types';
+import { apiUrl } from '../../config'
 
 interface ApiHandlerReturn<T> {
   status: number | null;
@@ -39,7 +40,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
   const apiCallWithAuthRefresh = async (jwt: string): Promise<ApiHandlerReturn<T>> => {
     const data = await apiCall(jwt || '');
     if(data.status === 401) {
-      const authData = await auth('http://localhost:3001/api/auth/token');
+      const authData = await auth(`${apiUrl}/auth/token`);
 
       if(authData.status === 200) {
         const data = await apiCall(authData.jwt || '');
@@ -65,7 +66,7 @@ export const api = async <T>(url: string, options?: Options): Promise<ApiHandler
     const decodedJwt = decodeJwt(options?.jwt);
     if(decodedJwt && decodedJwt.exp * 1000 > Date.now() + 5000) return apiCallWithAuthRefresh(options?.jwt as string);
     else {
-      const authData = await auth('http://localhost:3001/api/auth/token');
+      const authData = await auth(`${apiUrl}/auth/token`);
       if(authData.status === 200) {
         const data = await apiCall(authData.jwt as string);
         return {

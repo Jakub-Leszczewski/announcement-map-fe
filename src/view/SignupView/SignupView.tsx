@@ -8,6 +8,7 @@ import { UserFormSignup } from '../../types/user-form'
 import { CreateUserResponse, ErrorResponse } from 'types'
 import { SignupForm } from '../../components/form/SignupForm/SignupForm'
 import { openSignIn, openSignInChoice } from '../../store/slices/app-slice'
+import { apiUrl } from '../../config'
 
 const initialUserFormState: UserFormSignup = {
   firstName: '',
@@ -47,7 +48,7 @@ export function SignupView() {
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = await api<CreateUserResponse | ErrorResponse>('http://localhost:3001/api/user/', {
+    const data = await api<CreateUserResponse | ErrorResponse>(`${apiUrl}/user/`, {
       method: HttpMethods.POST,
       payload: form,
     });

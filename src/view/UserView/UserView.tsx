@@ -15,6 +15,7 @@ import {
   openNone,
 } from '../../store/slices/app-slice'
 import { ErrorResponse, UserLogoutResponse } from 'types';
+import { apiUrl } from '../../config'
 
 export const UserView = () => {
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export const UserView = () => {
   }
 
   const logoutHandler = async () => {
-    const logoutData = await api<UserLogoutResponse>('http://localhost:3001/api/auth/logout', {
+    const logoutData = await api<UserLogoutResponse>(`${apiUrl}/auth/logout`, {
       method: HttpMethods.DELETE
     });
 
