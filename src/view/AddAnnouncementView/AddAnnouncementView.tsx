@@ -10,10 +10,11 @@ import { api } from '../../utils/api/api'
 import { HttpMethods } from '../../types/http-methods'
 import { useJwt } from '../../hooks/useJwt'
 import { AnnouncementForm } from '../../components/form/AnnouncementForm/AnnouncementForm'
-import { openUser } from '../../store/slices/app-slice'
+import { openNone, openUser } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { initialAnnouncementForm } from '../../components/form/AnnouncementForm/announcement-form-initial'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 export const AddAnnouncementView = () => {
   const dispatch = useDispatch();
@@ -22,14 +23,15 @@ export const AddAnnouncementView = () => {
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const jwt = useJwt();
   const setJwt = useSetJwt();
 
-  if(!setJwt) return null;
+  if(!setJwt) dispatch(openNone());
 
   useEffect(() => {
-    if(newJwt) setJwt(newJwt);
+    if(newJwt) (setJwt as any)(newJwt);
   }, [newJwt]);
 
   const goBackHandler = () => {
@@ -101,31 +103,39 @@ export const AddAnnouncementView = () => {
       if(geoData?.all) await addAnnouncementApiCall(geoData.lat, geoData.lon);
       else setFindAddress(geoData);
     } else await addAnnouncementApiCall(findAddress.lat, findAddress.lon);
+
+    setLoading(false);
   }
 
   return (
     <section className="AddAnnouncementView">
       <UserMenuHeader title="Dodaj ogłoszenie" onClick={goBackHandler}/>
 
-      {error && <p className="AddAnnouncementView__error">{error}</p>}
-      {message && <p className="AddAnnouncementView__message">{message}</p>}
+      <div className="AddAnnouncementView__container">
+        {error && <p className="AddAnnouncementView__error">{error}</p>}
+        {message && <p className="AddAnnouncementView__message">{message}</p>}
 
-      <AnnouncementForm
-        form={form}
-        changeFormHandler={changeFormHandler}
-        resetFindAddressHandler={resetFindAddressHandler}
-        findAddress={findAddress}
-        onSubmitHandler={onSubmitHandler}
-        id="announcement-form"
-      />
+        <AnnouncementForm
+          form={form}
+          changeFormHandler={changeFormHandler}
+          resetFindAddressHandler={resetFindAddressHandler}
+          findAddress={findAddress}
+          onSubmitHandler={(e) => {
+            onSubmitHandler(e);
+            setLoading(true);
+          }}
+          id="announcement-form"
+        />
 
-      <AuctionLinkInput
-        form={form}
-        removeAuctionLinkHandler={removeAuctionLinkHandler}
-        addAuctionLinkHandler={addAuctionLinkHandler}
-      />
+        <AuctionLinkInput
+          form={form}
+          removeAuctionLinkHandler={removeAuctionLinkHandler}
+          addAuctionLinkHandler={addAuctionLinkHandler}
+        />
 
-      <Button type="submit" form="announcement-form">Dodaj ogłoszenie</Button>
+        <Button type="submit" form="announcement-form">Dodaj ogłoszenie</Button>
+      </div>
+      {loading && <LoadingSpinner/>}
     </section>
   );
 }

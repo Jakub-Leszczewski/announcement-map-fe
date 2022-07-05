@@ -12,11 +12,12 @@ import { useJwt } from '../../hooks/useJwt'
 import { ErrorResponse, UpdateUserResponse } from 'types'
 import { AccountSettingsForm } from '../../components/form/AccountSettingsForm/AccountSettingsForm'
 import { useRefreshUser } from '../../hooks/useRefreshUser'
-import { openAccountSettings, openUser } from '../../store/slices/app-slice'
+import { openAccountSettings, openNone, openUser } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { PasswordConfirm } from '../../components/PasswordConfirm/PasswordConfirm'
 import { initialUserForm } from '../../components/form/AccountSettingsForm/account-settings-form-initial'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 export const  AccountSettingsView = () => {
   const [form, setForm] = useState<UserFormUpdate>(initialUserForm);
@@ -24,6 +25,7 @@ export const  AccountSettingsView = () => {
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [newJwt, setNewJwt] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const accountSettingsInfo = useSelector((store: StoreType) => store.app.accountSettingsPayload);
   const dispatch = useDispatch();
@@ -32,10 +34,10 @@ export const  AccountSettingsView = () => {
   const jwt = useJwt();
   const userData = useUserDataAuth();
 
-  if(!refreshUser || !setJwt || !userData) return null;
+  if(!refreshUser || !setJwt || !userData) dispatch(openNone());
 
   useEffect(() => {
-    if(newJwt) setJwt(newJwt);
+    if(newJwt) (setJwt as any)(newJwt);
   }, [newJwt]);
 
   useEffect(() => {
@@ -47,6 +49,10 @@ export const  AccountSettingsView = () => {
       }));
     }
   }, []);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [confirm])
 
   const goBackHandler = () => {
     dispatch(openUser());
@@ -67,7 +73,7 @@ export const  AccountSettingsView = () => {
   };
 
   const callUserUpdateApi = async (): Promise<number | null> => {
-    const data = await api<UpdateUserResponse | ErrorResponse>(`${apiUrl}/user/${userData.id}`, {
+    const data = await api<UpdateUserResponse | ErrorResponse>(`${apiUrl}/user/${userData?.id}`, {
       method: HttpMethods.PATCH,
       payload: form,
       jwt,
@@ -77,11 +83,7 @@ export const  AccountSettingsView = () => {
 
     if(data.status !== 200) setError((data.data as ErrorResponse)?.error || null);
     else {
-      // setForm(prev => ({
-      //   ...prev,
-      //   password: '',
-      // }))
-      await refreshUser();
+      await (refreshUser as any)();
       setError(null);
     }
 
@@ -91,12 +93,12 @@ export const  AccountSettingsView = () => {
 
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if(form.email !== userData.email || form.newPassword) {
+    if(form.email !== userData?.email || form.newPassword) {
       setConfirm(true);
     } else {
-      await callUserUpdateApi()
+      await callUserUpdateApi();
     }
+    setLoading(false);
   }
 
   const onConfirmHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -105,6 +107,8 @@ export const  AccountSettingsView = () => {
     const submitStatus = await callUserUpdateApi()
 
     if(submitStatus !== 401) setConfirm(false);
+
+    setLoading(false);
   }
 
   return (
@@ -132,7 +136,10 @@ export const  AccountSettingsView = () => {
         <AccountSettingsForm
           form={form}
           changeFormHandler={changeFormHandler}
-          onSubmitHandler={onSubmitHandler}
+          onSubmitHandler={(e) => {
+            onSubmitHandler(e);
+            setLoading(true);
+          }}
         />
 
         {
@@ -140,12 +147,16 @@ export const  AccountSettingsView = () => {
           <PasswordConfirm
             error={error}
             changeFormHandler={changeFormHandler}
-            onConfirmHandler={onConfirmHandler}
+            onConfirmHandler={(e) => {
+              onConfirmHandler(e);
+              setLoading(true);
+            }}
             form={form}
             message={'Aby zapisać zmiany podaj swoje hasło.'}
          />
         }
       </div>
+      {loading && <LoadingSpinner/>}
     </section>
   );
 }

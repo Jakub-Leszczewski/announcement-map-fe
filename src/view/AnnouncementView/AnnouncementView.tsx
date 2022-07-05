@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { UserMenuHeader } from '../../components/UserMenuHeader/UserMenuHeader'
-import { openAnnouncements, openAnnouncementUpdate } from '../../store/slices/app-slice'
+import { openAnnouncements, openAnnouncementUpdate, openNone } from '../../store/slices/app-slice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useJwt } from '../../hooks/useJwt'
 import './AnnouncementView.css'
@@ -13,6 +13,7 @@ import { HttpMethods } from '../../types/http-methods'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { ActionConfirm } from '../../components/ActionConfirm/ActionConfirm'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../../components/LoadingSpinner/LoadingSpinner'
 
 export const AnnouncementView = () => {
   const dispatch = useDispatch();
@@ -21,11 +22,12 @@ export const AnnouncementView = () => {
   const [newJwt, setNewJwt] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<number | null>(null);
   const [confirm, setConfirm] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const jwt = useJwt();
   const setJwt = useSetJwt();
 
-  if(!jwt || !setJwt) return null;
+  if(!setJwt) dispatch(openNone());
 
   useEffect(() => {
     if(submitStatus === 200) {
@@ -35,7 +37,7 @@ export const AnnouncementView = () => {
       }));
     }
 
-    if(newJwt) setJwt(newJwt);
+    if(newJwt) (setJwt as any)(newJwt);
   }, [submitStatus]);
 
   const yesButtonHandler = async () => {
@@ -48,6 +50,7 @@ export const AnnouncementView = () => {
     if(data.status !== 200) setError((data.data as ErrorResponse)?.error || null);
 
     setSubmitStatus(data.status);
+    setLoading(false);
   }
 
   const noButtonHandler = () => setConfirm(false);
@@ -74,11 +77,16 @@ export const AnnouncementView = () => {
           confirm &&
           <ActionConfirm
           message={`Czy na pewno chcesz usunąć ten produkt o id: ${appStore.announcementPayload}`}
-          yesButtonHandler={yesButtonHandler}
+          yesButtonHandler={() => {
+            yesButtonHandler();
+            setLoading(true);
+          }}
           noButtonHandler={noButtonHandler}
         />
         }
       </div>
+
+      {loading && <LoadingSpinner/>}
     </section>
   )
 }
