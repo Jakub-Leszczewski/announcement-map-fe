@@ -2,6 +2,7 @@ import React, { ChangeEvent } from 'react'
 import './SelectCategories.css';
 import { useApi } from '../../hooks/useApi'
 import { CategoryEntity } from 'types';
+import { apiUrl } from '../../config'
 
 interface Props {
   value?: string;
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export function SelectCategories({ value, label, firstOption, required, name, onChange }: Props) {
-  const [loading, status, categories] = useApi<CategoryEntity[]>('http://localhost:3001/api/category');
+  const [loading, status, categories] = useApi<CategoryEntity[]>(`${apiUrl}/category`);
 
   return(
     <label className="SelectCategories">

@@ -8,6 +8,7 @@ import { UserFormSignIn } from '../../types/user-form'
 import { SignInForm } from '../../components/form/SignInForm/SignInForm'
 import { openNone, openSignInChoice } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
+import { apiUrl } from '../../config'
 
 const initialSignInFormState: UserFormSignIn= {
   username: '',
@@ -48,7 +49,7 @@ export const SignInView = () => {
   const onSubmitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const authData = await auth('http://localhost:3001/api/auth/signin', {
+    const authData = await auth(`${apiUrl}/auth/signin`, {
       username: form.username,
       password: form.password,
     });

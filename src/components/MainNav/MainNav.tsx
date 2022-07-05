@@ -6,12 +6,14 @@ import { User } from '../User/User'
 import { useDispatch } from 'react-redux'
 import { openAddAnnouncement } from '../../store/slices/app-slice'
 import { SelectCategoriesWithLogic } from '../SelectCategoriesWithLogic/SelectCategoriesWithLogic'
+import { useIsAuth } from '../../hooks/useIsAuth'
 
 export function MainNav() {
+  const isAuth = useIsAuth();
   const dispatch = useDispatch();
 
   const goAddAnnouncement = () => {
-    dispatch(openAddAnnouncement());
+    if(isAuth) dispatch(openAddAnnouncement());
   }
   return (
     <nav className="MainNav">

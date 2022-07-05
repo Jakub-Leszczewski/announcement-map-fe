@@ -16,6 +16,7 @@ import { openAccountSettings, openUser } from '../../store/slices/app-slice'
 import { useSetJwt } from '../../hooks/useSetJwt'
 import { PasswordConfirm } from '../../components/PasswordConfirm/PasswordConfirm'
 import { initialUserForm } from '../../components/form/AccountSettingsForm/account-settings-form-initial'
+import { apiUrl } from '../../config'
 
 export const  AccountSettingsView = () => {
   const [form, setForm] = useState<UserFormUpdate>(initialUserForm);
@@ -66,7 +67,7 @@ export const  AccountSettingsView = () => {
   };
 
   const callUserUpdateApi = async (): Promise<number | null> => {
-    const data = await api<UpdateUserResponse | ErrorResponse>(`http://localhost:3001/api/user/${userData.id}`, {
+    const data = await api<UpdateUserResponse | ErrorResponse>(`${apiUrl}/user/${userData.id}`, {
       method: HttpMethods.PATCH,
       payload: form,
       jwt,
