@@ -1,0 +1,10 @@
+.AdPopup {
+    max-height: 50vh;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.AdPopup>hr {
+    margin: 20px;
+}
+

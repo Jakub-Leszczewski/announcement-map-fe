@@ -1,0 +1,27 @@
+.SignInForm {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.SignInForm>.Button {
+    margin: 10px 0 0 0;
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+}
+
+.PasswordInput, .ShortTextInput {
+    margin: 3px 0;
+}
+
+.SignInForm__error {
+    color: red;
+    font-size: 0.7rem;
+}
+
+.SignInForm__message {
+    color: green;
+    font-size: 0.7rem;
+}

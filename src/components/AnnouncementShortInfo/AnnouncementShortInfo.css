@@ -1,0 +1,59 @@
+.AnnouncementShortInfo {
+    border: 1px solid #B1B1B1;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+.AnnouncementShortInfo:hover {
+    background: rgba(0, 0, 0, 0.04);
+}
+
+.AnnouncementShortInfo__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.AnnouncementShortInfo__header h3, .AnnouncementShortInfo__header p {
+    font-size: 1.1rem;
+    font-weight: bolder;
+}
+
+.AnnouncementShortInfo__id {
+    font-size: .7rem;
+}
+
+.AnnouncementShortInfo__address {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 10px 0 !important;
+}
+
+.AnnouncementShortInfo__date {
+    font-size: .7rem;
+}
+
+.AnnouncementShortInfo__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.AnnouncementShortInfo__views-container {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+}
+
+.AnnouncementShortInfo__views-container i {
+    font-size: .7rem;
+    margin-right: 4px;
+}
+
+.AnnouncementShortInfo__views-container p {
+    font-weight: bold;
+    font-size: .7rem;
+}

@@ -1,0 +1,27 @@
+.SignInChoiceView {
+    border: 1px solid #B1B1B1;
+    border-radius: 10px;
+    padding: 5px;
+    width: 250px;
+    background: white;
+}
+
+.SignInChoiceView__buttons-container {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 10px auto;
+}
+
+.SignInChoiceView__buttons-container>.Button {
+    margin: 6px 0;
+    width: 100%;
+    height: 30px;
+    border-radius: 15px;
+}
+
+@media only screen and (min-width: 400px) {
+    .SignInChoiceView {
+        width: 350px;
+    }
+}

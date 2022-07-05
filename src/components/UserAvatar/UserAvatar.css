@@ -1,0 +1,14 @@
+.UserAvatar__avatar {
+    position: relative;
+    cursor: pointer;
+    background: white;
+}
+
+.UserAvatar__avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid black;
+    margin: 0;
+
+}

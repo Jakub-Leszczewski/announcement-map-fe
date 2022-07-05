@@ -1,0 +1,9 @@
+.UserMenuHeader{
+    display: flex;
+    align-items: center;
+}
+
+.UserMenuHeader h2 {
+    font-weight: bolder;
+    font-size: 1.1rem;
+}
