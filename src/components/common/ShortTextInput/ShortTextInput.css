@@ -1,0 +1,22 @@
+.ShortTextInput {
+    font-size: .8rem;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.ShortTextInput__input {
+    height: 25px;
+    border: 1px solid #B1B1B1;
+    outline: none;
+    padding: 0 7px;
+    margin-top: 3px;
+    width: 100%;
+}
+
+.ShortTextInput__input:focus {
+    border: 1px solid #757575;
+}
+
+.ShortTextInput--required {
+    color: red;
+}
