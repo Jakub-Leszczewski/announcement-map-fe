@@ -21,7 +21,7 @@ export const User = () => {
     {
       isAuth
       ? <UserAvatar onClick={userAccount}/>
-      : <p className="User__login-text" onClick={userLogInHandler}>zaloguj się</p>
+      : <p className="User__login-text" onClick={userLogInHandler}>logowanie</p>
     }
   </>
 }

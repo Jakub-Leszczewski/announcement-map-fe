@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux'
 import { StoreType } from '../../store'
 import { useApi } from '../../hooks/useApi'
 import { apiUrl } from '../../config'
+import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner'
 
 export const Map = () => {
   const appStore = useSelector((store:StoreType) => store.app);
@@ -56,6 +57,7 @@ export const Map = () => {
           </Marker>
         </MapContainer>
       }
+      {loading && <LoadingSpinner/>}
     </main>
   )
 }
